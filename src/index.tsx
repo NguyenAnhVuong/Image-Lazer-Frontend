@@ -8,7 +8,6 @@ import * as serviceWorker from './serviceWorker';
 import { HistoryRouter as Router } from "redux-first-history/rr6";
 import Header from './components/Layout/Header';
 
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
