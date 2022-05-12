@@ -25,5 +25,12 @@
         "import"
     ],
     "rules": {
+      "no-param-reassign": ["error", {
+        "props": true,  
+        "ignorePropertyModificationsFor": [
+          "state"
+        ]
+      }],
+      "linebreak-style": ["error", "windows"]
     }
 }

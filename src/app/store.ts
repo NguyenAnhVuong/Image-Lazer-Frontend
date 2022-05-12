@@ -17,7 +17,8 @@ export const store = configureStore({
     router: routerReducer,
     test: testReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware),
+  middleware:
+    (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);
