@@ -1,17 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    test: 'test',
-}
+  test: 'test',
+};
 
 const testSlice = createSlice({
-    name: 'test',
-    initialState,
-    reducers: {
-        test(state) {
-            state.test = 'test';
-        }
-    }
+  name: 'test',
+  initialState,
+  reducers: {
+    test(state) {
+      state.test = 'test';
+    },
+  },
 });
 
 export const testActions = testSlice.actions;

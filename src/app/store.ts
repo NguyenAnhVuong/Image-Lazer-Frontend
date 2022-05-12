@@ -7,7 +7,7 @@ import testReducer from '../features/test/testSlice';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
   history: createBrowserHistory(),
-  //other options if needed 
+  // other options if needed
 });
 
 const sagaMiddleware = createSagaMiddleware();
@@ -23,14 +23,14 @@ export const store = configureStore({
 sagaMiddleware.run(rootSaga);
 
 export const history = createReduxHistory(store);
-//if you use @reach/router 
+// if you use @reach/router
 export const reachHistory = reachify(history);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
+ReturnType,
+RootState,
+unknown,
+Action<string>
 >;
