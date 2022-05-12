@@ -9,4 +9,3 @@ export default function* testSaga() {
   console.log('test saga');
   yield takeEvery('*', log);
 }
-

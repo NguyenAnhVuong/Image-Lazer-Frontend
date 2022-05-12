@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { Provider } from 'react-redux';
+import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import App from './App';
 import { history, store } from './app/store';
-import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { HistoryRouter as Router } from "redux-first-history/rr6";
 import Header from './components/Layout/Header';
 
 ReactDOM.render(
@@ -17,7 +17,7 @@ ReactDOM.render(
       </Router>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

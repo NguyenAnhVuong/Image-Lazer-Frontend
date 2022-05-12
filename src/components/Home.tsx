@@ -1,10 +1,12 @@
 import { Button, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
-import 'antd/dist/antd.css';
-import { testActions } from '../features/test/testSlice';
 import { useAppDispatch } from '../app/hooks';
+import { testActions } from '../features/test/testSlice';
+import 'antd/dist/antd.css';
 
-function Home() {
+type Props = {};
+
+function Home(props: Props) {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(testActions.test());
