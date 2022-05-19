@@ -38,6 +38,9 @@
     "linebreak-style": [
       "error",
       "windows"
+    ],
+    "react/function-component-definition": [
+      "off"
     ]
   }
 }
