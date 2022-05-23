@@ -1,27 +1,56 @@
-import { MouseEvent, useState } from 'react';
+import { Button, Form, Input } from 'antd';
 import { useAppDispatch } from '../../app/hooks';
 import { authActions } from '../../features/auth/authSlice';
 import { LoginUser } from '../../models';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
 
-  const handleLogin = async (e: MouseEvent) => {
-    e.preventDefault();
-    const newLoginUser: LoginUser = {
-      email,
-      password,
-    };
+  const handleLogin = (newLoginUser: LoginUser) => {
     dispatch(authActions.loginStart(newLoginUser));
   };
+
   return (
-    <form>
-      <input className="border border-black" type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input className="border border-black" type="password" placeholder="Mật khẩu" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button className="border border-black" type="submit" onClick={(e) => handleLogin(e)}>Đăng nhập</button>
-    </form>
+    <Form
+      name="basic"
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={handleLogin}
+      autoComplete="off"
+    >
+      <Form.Item
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Vui lòng nhập email!',
+          },
+        ]}
+      >
+        <Input className="h-9 rounded-2xl" placeholder="Email" />
+      </Form.Item>
+
+      <Form.Item
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: 'Vui lòng nhập mật khẩu!',
+          },
+        ]}
+      >
+        <Input.Password className="h-9 rounded-2xl" placeholder="Password" />
+      </Form.Item>
+
+      <Form.Item>
+        <div className="flex justify-center">
+          <Button className="bg-red-600 rounded-2xl text-white flex items-center py-4 px-8 justify-center font-semibold text-sm" htmlType="submit">
+            Đăng nhập
+          </Button>
+        </div>
+      </Form.Item>
+    </Form>
   );
 }
 
