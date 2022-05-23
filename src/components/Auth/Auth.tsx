@@ -9,9 +9,9 @@ function Auth() {
       {
         login ? <Login /> : <Register />
       }
-      <button className="no-underline text-black z-50 relative" type="button" onClick={() => setLogin(!login)}>
+      <button type="button" onClick={() => setLogin(!login)}>
         {
-          login ? 'Not on Pinterest yet? Sign up' : 'Already a member? Log in'
+          login ? 'Đăng ký' : 'Đăng nhập'
         }
       </button>
     </div>
