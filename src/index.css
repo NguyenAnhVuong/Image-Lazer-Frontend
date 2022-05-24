@@ -5,3 +5,17 @@
 #root {
   font-family: 'Quicksand', sans-serif;
 }
+
+img {
+  display: unset !important;
+}
+
+@layer components {
+  .header-shadow {
+    box-shadow: rgb(0 0 0 / 10%) 0px 0px 8px;
+  }
+}
+
+.header-pc .ant-input {
+  background-color: #efefef;
+}

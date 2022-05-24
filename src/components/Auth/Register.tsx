@@ -12,7 +12,6 @@ function Register() {
         console.log('Đăng ký thành công');
       } else {
         console.log('Đăng ký thất bại');
-        // setErr('email này đã được đăng ký!');
       }
     } catch (error) {
       console.log(error);

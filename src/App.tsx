@@ -5,8 +5,8 @@ import Home from './components/Home';
 import Auth from './components/Auth/Auth';
 import { AppState, history } from './app/store';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import Header from './components/Layout/Header';
 import { authActions } from './features/auth/authSlice';
+import Header from './components/Layout/Header';
 
 function App() {
   const dispatch = useAppDispatch();

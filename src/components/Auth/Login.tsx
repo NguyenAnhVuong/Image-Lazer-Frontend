@@ -5,7 +5,6 @@ import { LoginUser } from '../../models';
 
 function Login() {
   const dispatch = useAppDispatch();
-
   const handleLogin = (newLoginUser: LoginUser) => {
     dispatch(authActions.loginStart(newLoginUser));
   };

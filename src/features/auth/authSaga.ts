@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { push } from 'redux-first-history';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import authAPi from '../../api/authApi';
 import { LoginUser } from '../../models';
@@ -10,6 +11,7 @@ function* login(action: PayloadAction<LoginUser>): any {
     if (res && res && res.accessToken) {
       yield put(authActions.loginSuccess());
       localStorage.setItem('accessToken', res.accessToken);
+      yield put(push('/'));
     } else {
       yield put(authActions.loginFailed());
     }
