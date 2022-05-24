@@ -1,16 +1,13 @@
 import { Button, Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../app/hooks';
 import { testActions } from '../features/test/testSlice';
-import 'antd/dist/antd.css';
 
-type Props = {};
-
-function Home(props: Props) {
+function Home() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(testActions.test());
-  }, []);
+  }, [dispatch]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
