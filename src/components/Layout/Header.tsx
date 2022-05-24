@@ -22,8 +22,8 @@ function Header() {
                     <a href="#" className="no-underline text-white font-bold text-xl text-center justify-center leading-[0] py-[5px] px-[10px]">Trang chủ</a>
                 </div>
                 <div className="flex-none bg-white sm:bg-gray-200 justify-center p-[10px] rounded-[24px] sm:flex-auto hover:bg-[#d3d0d0]">
-                    <BsSearch className="text-2xl text-gray-600"/>
-                    <input className="hidden sm:bg-transparent sm:w-4/5 sm:h-full sm:py-[5px] sm:px-0 sm:border-none sm:focus:outline-none" type="text" placeholder="Search" />
+                    <BsSearch className="text-2xl text-gray-600 inline-block py-1"/>
+                    <input className="hidden sm:bg-transparent sm:w-4/5 sm:h-full sm:py-[5px] sm:px-0 sm:border-none sm:focus:outline-none sm:inline-block" type="text" placeholder="Search" />
                 </div>
                 <div className="flex">
                     <div className="hidden sm:m-0 sm:items-center sm:content-center sm:p-1 sm:hover:bg-[#00000033] sm:hover:rounded-[50%] sm:block">
