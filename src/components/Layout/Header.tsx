@@ -3,6 +3,7 @@ import { BsSearch } from 'react-icons/bs';
 import { BsBellFill } from 'react-icons/bs';
 import { AiFillMessage } from 'react-icons/ai';
 import { BiUserCircle } from 'react-icons/bi';
+import { BsChevronDown } from 'react-icons/bs';
 
 function Header() {
   return (
@@ -25,7 +26,7 @@ function Header() {
                     <input className="hidden sm:bg-transparent sm:w-4/5 sm:h-full sm:py-[5px] sm:px-0 sm:border-none sm:focus:outline-none" type="text" placeholder="Search" />
                 </div>
                 <div className="flex">
-                    <div className="hidden sm:m-0 sm:items-center sm:content-center sm:p-1 sm:hover:bg-[#00000033] sm:hover:rounded-[50%]">
+                    <div className="hidden sm:m-0 sm:items-center sm:content-center sm:p-1 sm:hover:bg-[#00000033] sm:hover:rounded-[50%] sm:block">
                         <BsBellFill className="no-underline text-gray-600 font-bold text-3xl p-1 text-center justify-center leading-normal"/>    
                     </div>
                     <div className="my-0 mx-4 sm:m-0 items-center content-center p-1 hover:bg-[#00000033] hover:rounded-[50%]">
@@ -34,8 +35,8 @@ function Header() {
                     <div className="my-0 mx-4 sm:m-0 items-center content-center p-1 hover:bg-[#00000033] hover:rounded-[50%]">
                         <BiUserCircle className="no-underline text-gray-600 font-bold text-3xl p-1 text-center justify-center leading-normal"/>
                     </div>
-                    <div className="hidden sm:m-0 sm:items-center sm:content-center sm:p-1 sm:hover:bg-[#00000033] sm:hover:rounded-[50%]">
-                        <i className="no-underline text-gray-600 font-bold text-3xl p-1 text-center justify-center leading-normal"></i>
+                    <div className="hidden sm:m-0 sm:items-center sm:content-center sm:p-1 sm:hover:bg-[#00000033] sm:hover:rounded-[50%] sm:block">
+                        <BsChevronDown className="no-underline text-gray-600 font-bold text-3xl p-1 text-center justify-center leading-normal"/>
                     </div>
                 </div>
             </div>
