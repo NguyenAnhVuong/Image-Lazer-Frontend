@@ -37,6 +37,7 @@ function Header() {
                     </div>
                     <div className="hidden sm:m-0 sm:items-center sm:content-center sm:p-1 sm:hover:bg-[#00000033] sm:hover:rounded-[50%] sm:block">
                         <BsChevronDown className="no-underline text-gray-600 font-bold text-3xl p-1 text-center justify-center leading-normal"/>
+                        
                     </div>
                 </div>
             </div>
