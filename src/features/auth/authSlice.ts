@@ -16,7 +16,7 @@ const authSlide = createSlice({
   initialState,
   reducers: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loginStart(state, payload: PayloadAction<LoginUser>) {
+    loginStart(state, action: PayloadAction<LoginUser>) {
       state.loading = true;
     },
     loginSuccess(state) {
