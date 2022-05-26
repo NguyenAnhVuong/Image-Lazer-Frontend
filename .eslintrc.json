@@ -41,6 +41,13 @@
     ],
     "react/function-component-definition": [
       "off"
-    ]
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 125
+      }
+    ],
+    "react/jsx-props-no-spreading": "off"
   }
 }

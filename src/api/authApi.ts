@@ -23,7 +23,7 @@ const authAPi = {
   },
   refreshToken: async () => {
     try {
-      const res = await axios.post('/api/auth/refresh-token', {
+      const res = await axios.post('/users/auth/refresh', {
         withCredentials: true,
       });
       return res.data;

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function HeaderMobile() {
   return (
     <div className="flex justify-center xl:hidden">
-      <div className="flex items-center header-shadow w-[264px] rounded-[32px] h-[60px] fixed bottom-4">
+      <div className="flex items-center header-shadow w-[264px] rounded-[32px] h-[60px] fixed bottom-4 bg-white z-10">
         <div className="grid grid-cols-4 w-full px-2">
           <Link to="/" className="col-span-1 flex justify-center text-[#767676]">
             <HiHome className="p-2" size={40} />
