@@ -9,12 +9,12 @@ import Register from './Register';
 function Auth() {
   const [login, setLogin] = useState(true);
   const navigate = useNavigate();
-  const loginSuccess = useAppSelector((state: AppState) => state.auth.success);
+  const userName = useAppSelector((state: AppState) => state.auth.userName);
   useEffect(() => {
-    if (loginSuccess) {
+    if (userName) {
       navigate('/');
     }
-  }, [loginSuccess, navigate]);
+  }, [userName, navigate]);
 
   return (
     <div className='bg-[url("./images/Loginbg.jpg")] h-screen bg-cover bg-center'>
@@ -32,7 +32,7 @@ function Auth() {
           </div>
 
           {
-            login ? <Login /> : <Register />
+            login ? <Login /> : <Register setLogin={setLogin} />
           }
           <div className="flex justify-center">
             {

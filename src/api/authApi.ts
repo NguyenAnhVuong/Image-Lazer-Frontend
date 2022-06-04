@@ -16,10 +16,10 @@ const authAPi = {
       if (res && res.data) {
         return res.data;
       }
+      return 0;
     } catch (err) {
       return 0;
     }
-    return 1;
   },
   refreshToken: async () => {
     try {

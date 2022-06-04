@@ -1,6 +1,7 @@
 import PhotoAlbum, {
   RenderPhoto,
 } from 'react-photo-album';
+import PlusButton from './PlusButton';
 
 const Home = () => {
   const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48];
@@ -68,7 +69,7 @@ const Home = () => {
   );
 
   return (
-    <div className="p-2 xl:px-16">
+    <div className="p-2 xl:px-20">
       <div className="hidden xl:block">
         <PhotoAlbum
           photos={photos}
@@ -104,6 +105,7 @@ const Home = () => {
           renderPhoto={renderPhoto}
         />
       </div>
+      <PlusButton />
     </div>
   );
 };

@@ -5,12 +5,13 @@ import authAPi from '../../api/authApi';
 import { LoginUser } from '../../models';
 import { authActions } from './authSlice';
 
-function* login(action: PayloadAction<LoginUser>): any {
+function* loginSaga(action: PayloadAction<LoginUser>): any {
   try {
     const res = yield call(authAPi.login, action.payload);
-    if (res && res && res.accessToken) {
-      yield put(authActions.loginSuccess());
+    if (res && res && res.accessToken && res.userName) {
+      yield put(authActions.loginSuccess(res.userName));
       localStorage.setItem('accessToken', res.accessToken);
+      localStorage.setItem('userName', res.userName);
       yield put(push('/'));
     } else {
       yield put(authActions.loginFailed());
@@ -21,5 +22,5 @@ function* login(action: PayloadAction<LoginUser>): any {
 }
 
 export default function* authSaga() {
-  yield takeLatest(authActions.loginStart.type, login);
+  yield takeLatest(authActions.loginStart.type, loginSaga);
 }
