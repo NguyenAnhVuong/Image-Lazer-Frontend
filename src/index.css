@@ -5,3 +5,59 @@
 #root {
   font-family: 'Quicksand', sans-serif;
 }
+
+img {
+  display: unset !important;
+}
+
+@layer components {
+  .header-shadow {
+    box-shadow: rgb(0 0 0 / 10%) 0px 0px 8px;
+  }
+}
+
+.header-pc .ant-input {
+  background-color: #efefef;
+}
+
+.ant-select-selector {
+  border-radius: 16px !important;
+  padding: 4px 16px !important;
+  height: auto !important;
+}
+
+.ant-select-open .ant-select-selector {
+  border-radius: 16px !important;
+  padding: 4px 16px !important;
+  height: auto !important;
+}
+
+.ant-switch-checked {
+  background-color: #dc2626 !important;
+}
+
+.ant-modal-content {
+  border-radius: 24px !important;
+  overflow: hidden;
+}
+
+.plus-modal .ant-modal-content {
+  width: 360px;
+  bottom: 96px !important;
+  right: 100px !important;
+  position: fixed;
+}
+
+.plus-modal .ant-modal-content .ant-modal-body {
+  padding: 16px;
+}
+
+.setting-modal .ant-modal-content {
+  width: 200px;
+  right: 0 !important;
+  position: fixed;
+}
+
+.setting-modal .ant-modal-content .ant-modal-body {
+  padding: 0;
+}

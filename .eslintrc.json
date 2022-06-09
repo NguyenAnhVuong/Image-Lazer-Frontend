@@ -41,6 +41,20 @@
     ],
     "react/function-component-definition": [
       "off"
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 135
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "prefer-destructuring": [
+      "error",
+      {
+        "object": true,
+        "array": false
+      }
     ]
   }
 }

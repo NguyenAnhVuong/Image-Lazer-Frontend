@@ -1,10 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsPinterest } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
+import { AppState } from '../../app/store';
 import Login from './Login';
 import Register from './Register';
 
 function Auth() {
   const [login, setLogin] = useState(true);
+  const navigate = useNavigate();
+  const userName = useAppSelector((state: AppState) => state.auth.userName);
+  useEffect(() => {
+    if (userName) {
+      navigate('/');
+    }
+  }, [userName, navigate]);
+
   return (
     <div className='bg-[url("./images/Loginbg.jpg")] h-screen bg-cover bg-center'>
       <div className="bg-[#00000080] h-screen flex justify-center items-center">
@@ -21,7 +32,7 @@ function Auth() {
           </div>
 
           {
-            login ? <Login /> : <Register />
+            login ? <Login /> : <Register setLogin={setLogin} />
           }
           <div className="flex justify-center">
             {
@@ -35,7 +46,6 @@ function Auth() {
               }
             </button>
           </div>
-
         </div>
       </div>
     </div>

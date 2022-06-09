@@ -3,12 +3,16 @@ import { LoginUser } from '../../models';
 
 export interface AuthState {
   loading: boolean;
+  userName: string;
   success: boolean;
+  error: boolean;
 }
 
 const initialState: AuthState = {
   loading: false,
+  userName: '',
   success: false,
+  error: false,
 };
 
 const authSlide = createSlice({
@@ -16,15 +20,23 @@ const authSlide = createSlice({
   initialState,
   reducers: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loginStart(state, payload: PayloadAction<LoginUser>) {
+    loginStart(state, action: PayloadAction<LoginUser>) {
       state.loading = true;
     },
-    loginSuccess(state) {
-      state.success = true;
+    loginSuccess(state, action: PayloadAction<string>) {
       state.loading = false;
+      state.userName = action.payload;
+      state.success = true;
     },
     loginFailed(state) {
       state.loading = false;
+      state.success = false;
+      state.error = true;
+    },
+    logout(state) {
+      state.userName = '';
+      state.success = false;
+      state.error = false;
     },
   },
 });

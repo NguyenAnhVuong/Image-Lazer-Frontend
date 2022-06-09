@@ -1,21 +1,27 @@
 import {
   Button, Form, Input, InputNumber,
 } from 'antd';
+import { useState } from 'react';
 import authAPi from '../../api/authApi';
 import { RegisterUser } from '../../models';
 
-function Register() {
+export interface RegisterProps {
+  setLogin: (login: boolean) => void;
+}
+
+const Register = ({ setLogin }: RegisterProps) => {
+  const [errorMesage, setErrorMessage] = useState('');
   const handleRegister = async (newRegisterUser: RegisterUser) => {
     try {
       const success = await authAPi.register(newRegisterUser);
       if (success) {
+        setLogin(true);
         console.log('Đăng ký thành công');
       } else {
-        console.log('Đăng ký thất bại');
-        // setErr('email này đã được đăng ký!');
+        setErrorMessage('Tài khoản đã tồn tại!');
       }
     } catch (error) {
-      console.log(error);
+      setErrorMessage('Tài khoản đã tồn tại!');
     }
   };
   return (
@@ -74,16 +80,22 @@ function Register() {
       >
         <Input.Password className="h-9 rounded-2xl" placeholder="Password" />
       </Form.Item>
+      <div className="flex justify-center">
+        <p className="text-[#ff4d4f]">{errorMesage}</p>
+      </div>
 
       <Form.Item>
         <div className="flex justify-center">
-          <Button className="bg-red-600 rounded-2xl text-white flex items-center py-4 px-8 justify-center font-semibold text-sm" htmlType="submit">
+          <Button
+            className="bg-red-600 rounded-2xl text-white flex items-center py-4 px-8 justify-center font-semibold text-sm"
+            htmlType="submit"
+          >
             Đăng Ký
           </Button>
         </div>
       </Form.Item>
     </Form>
   );
-}
+};
 
 export default Register;
