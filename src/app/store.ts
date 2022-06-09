@@ -6,6 +6,7 @@ import rootSaga from './rootSaga';
 import testReducer from '../features/test/testSlice';
 import { authReducer } from '../features/auth/authSlice';
 import { albumsReducer } from '../features/album/albumSlice';
+import { chatReducer } from '../features/chat/chatSlice';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
   history: createBrowserHistory(),
@@ -20,6 +21,7 @@ export const store = configureStore({
     test: testReducer,
     auth: authReducer,
     albums: albumsReducer,
+    chat: chatReducer,
   },
   middleware:
     (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware),

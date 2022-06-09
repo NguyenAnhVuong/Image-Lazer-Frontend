@@ -20,28 +20,17 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "import"
-  ],
+  "plugins": ["react", "@typescript-eslint", "import"],
   "rules": {
     "no-param-reassign": [
       "error",
       {
         "props": true,
-        "ignorePropertyModificationsFor": [
-          "state"
-        ]
+        "ignorePropertyModificationsFor": ["state"]
       }
     ],
-    "linebreak-style": [
-      "error",
-      "windows"
-    ],
-    "react/function-component-definition": [
-      "off"
-    ],
+    "linebreak-style": ["error", "windows"],
+    "react/function-component-definition": ["off"],
     "max-len": [
       "error",
       {
@@ -55,6 +44,7 @@
         "object": true,
         "array": false
       }
-    ]
+    ],
+    "jsx-quotes": ["error", "prefer-single"]
   }
 }

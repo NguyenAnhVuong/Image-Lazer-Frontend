@@ -11,6 +11,7 @@ import User from './components/User/User';
 import UserInformation from './components/User/UserInformation';
 import { albumsActions } from './features/album/albumSlice';
 import { authActions } from './features/auth/authSlice';
+import Messages from './components/Messages';
 
 const App = () => {
   const dispatch = useAppDispatch();
