@@ -7,6 +7,7 @@ import { AppState, history } from './app/store';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { authActions } from './features/auth/authSlice';
 import Header from './components/Layout/Header';
+import Messages from './components/Messages';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -22,8 +23,9 @@ function App() {
     <Router history={history}>
       {loginSuccess && <Header />}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/auth' element={<Auth />} />
+        <Route path='/notifications' element={<Messages />} />
       </Routes>
     </Router>
   );

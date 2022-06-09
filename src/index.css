@@ -19,3 +19,37 @@ img {
 .header-pc .ant-input {
   background-color: #efefef;
 }
+
+.customBorderRadiusAntModal .ant-modal-content {
+  border-radius: 30px;
+  height: 85vh;
+  width: 25vw;
+  position: fixed;
+}
+
+.customBorderRadiusAntModal .ant-modal-content .ant-modal-body {
+  height: 100%;
+}
+
+/* Scroll */
+.custom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #5b5b5b;
+}
+/* Scroll */
+

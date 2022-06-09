@@ -13,9 +13,9 @@ const root = ReactDOM.createRoot(
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 );
