@@ -8,7 +8,7 @@ import axiosJWT from '../../api/axiosJWT';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { authActions } from '../../features/auth/authSlice';
-import Messages from '../Messages';
+import Messages from '../Chat/Messages';
 
 const HeaderPC = () => {
   const userName = useAppSelector((state: AppState) => state.auth.userName);

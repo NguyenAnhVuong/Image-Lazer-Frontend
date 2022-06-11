@@ -4,10 +4,10 @@ import { Button, Input, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BiSend } from 'react-icons/bi';
-import { getDirectChatHistory, sendDirectMessage } from '../realtimeCommunication/socketConnection';
-import { AppState } from '../app/store';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { chatActions } from '../features/chat/chatSlice';
+import { getDirectChatHistory, sendDirectMessage } from '../../realtimeCommunication/socketConnection';
+import { AppState } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { chatActions } from '../../features/chat/chatSlice';
 
 interface User {
   avatar: string;
@@ -93,44 +93,62 @@ const ListUserChatItem = (props: User) => {
         footer={null}
         onCancel={handleCancel}
         closable={false}
-        wrapClassName='customBorderRadiusAntModal'
+        wrapClassName="customBorderRadiusAntModal"
       >
-        <div className='flex mb-6'>
-          <span className='flex-none'>
+        <div className="flex mb-6">
+          <span className="flex-none">
             <IoIosArrowBack
-              className='text-2xl cursor-pointer'
+              className="text-2xl cursor-pointer"
               onClick={() => {
                 setIsModalVisible(false);
                 openModalMessages();
               }}
             />
           </span>
-          <h1 className='text-base font-bold grow text-center'>{fullName}</h1>
+          <h1 className="text-base font-bold grow text-center">{fullName}</h1>
         </div>
-        <div className='relative h-[90%]'>
-          <div className='custom-scroll overflow-auto h-[85%]' ref={divElement}>
+        <div className="relative h-[90%]">
+          <div className="custom-scroll overflow-auto h-[85%]" ref={divElement}>
             <p>{id}</p>
             <p>{email}</p>
             <p>{avatar}</p>
-            {messages && messages.map((message: Message) => (
-              <p
-                key={message._id}
-                className={(email !== message.author.email) ? 'text-right' : 'text-left'}
-              >
-                {message.content}
-              </p>
-            ))}
+            {messages
+              && messages.map((message: Message) => (
+                // <div className={(email !== message.author.email) ? 'flex justify-end' : 'flex justify-start'}>
+                <div
+                  className={`flex ${
+                    email !== message.author.email
+                      ? 'justify-end'
+                      : 'justify-start'
+                  }`}
+                >
+                  {email === message.author.email && (
+                    <img
+                      src={avatar}
+                      alt="avatar"
+                      className="rounded-full w-6 h-6"
+                    />
+                  )}
+                  <p
+                    key={message._id}
+                    // className="rounded-3xl bg-[#efefef] mx-4 p-3"
+                    className={`mx-4 ${email === message.author.email && 'rounded-3xl bg-[#efefef] p-3'}`}
+                  >
+                    {message.content}
+                  </p>
+                </div>
+              ))}
           </div>
-          <div className='flex absolute space-x-2 bottom-0 inset-x-0'>
+          <div className="flex absolute space-x-2 bottom-0 inset-x-0">
             <Input
-              placeholder='Nhập tin nhắn'
-              className='rounded-3xl '
+              placeholder="Nhập tin nhắn"
+              className="rounded-3xl "
               value={message}
               onChange={handleMessageValueChange}
               onKeyDown={handleKeyPressed}
             />
             <BiSend
-              className='rounded-full min-w-fit bg-red-600 p-2 text-white cursor-pointer'
+              className="rounded-full min-w-fit bg-red-600 p-2 text-white cursor-pointer"
               size={48}
               onClick={handleSendMessage}
             />
