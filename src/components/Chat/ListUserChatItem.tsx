@@ -130,8 +130,7 @@ const ListUserChatItem = (props: User) => {
                   )}
                   <p
                     key={message._id}
-                    // className="rounded-3xl bg-[#efefef] mx-4 p-3"
-                    className={`mx-4 ${
+                    className={`mx-4 font-medium text-sm ${
                       email === message.author.email
                       && 'rounded-3xl bg-[#efefef] p-3 col-start-2'
                     }`}
