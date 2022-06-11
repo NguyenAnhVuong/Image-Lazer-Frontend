@@ -3,7 +3,7 @@
 import ListUserChatItem from './ListUserChatItem';
 
 interface User {
-  id: string;
+  _id: string;
   fullName: string;
   avatar: string;
   email: string;
@@ -20,24 +20,23 @@ const ListUserChat = ({
   users,
   closeModalMessages,
   openModalMessages,
-}: Mock) => {
-  console.log(users);
-  return (
-    <>
-      {users.map(
-        (user): JSX.Element => (
-          <ListUserChatItem
-            key={user.id}
-            avatar={user.avatar}
-            fullName={user.fullName}
-            email={user.email}
-            id={user.id}
-            closeModalMessages={() => closeModalMessages()}
-            openModalMessages={() => openModalMessages()}
-          />
-        ),
-      )}
-    </>
-  );
-};
+}: Mock) => (
+  <>
+    {users.map(
+      (user): JSX.Element => (
+        <ListUserChatItem
+            // eslint-disable-next-line no-underscore-dangle
+          key={user._id}
+          avatar={user.avatar}
+          fullName={user.fullName}
+          email={user.email}
+            // eslint-disable-next-line no-underscore-dangle
+          id={user._id}
+          closeModalMessages={() => closeModalMessages()}
+          openModalMessages={() => openModalMessages()}
+        />
+      ),
+    )}
+  </>
+);
 export default ListUserChat;

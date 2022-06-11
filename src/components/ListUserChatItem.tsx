@@ -1,6 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-shadow */
 import { Button, Input, Modal } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BiSend } from 'react-icons/bi';
 import { getDirectChatHistory, sendDirectMessage } from '../realtimeCommunication/socketConnection';
@@ -17,9 +18,16 @@ interface User {
   openModalMessages: () => void;
 }
 
+interface Message {
+  _id: string;
+  author: any;
+  content: string;
+}
+
 const ListUserChatItem = (props: User) => {
   const [message, setMessage] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const divElement = useRef<HTMLDivElement>(null);
 
   const {
     id, fullName, avatar, email, closeModalMessages, openModalMessages,
@@ -69,6 +77,12 @@ const ListUserChatItem = (props: User) => {
     getDirectChatHistory(chosenChatDetails.id || '');
   }, [chosenChatDetails]);
 
+  useEffect(() => {
+    if (divElement.current) {
+      divElement.current.scrollTop = divElement.current.scrollHeight;
+    }
+  });
+
   return (
     <>
       <Button onClick={handleChooseActiveConversation}>{fullName}</Button>
@@ -94,11 +108,18 @@ const ListUserChatItem = (props: User) => {
           <h1 className='text-base font-bold grow text-center'>{fullName}</h1>
         </div>
         <div className='relative h-[90%]'>
-          <div className='custom-scroll overflow-auto h-[85%]'>
+          <div className='custom-scroll overflow-auto h-[85%]' ref={divElement}>
             <p>{id}</p>
             <p>{email}</p>
             <p>{avatar}</p>
-            {messages && messages.map((message) => <p>{message}</p>)}
+            {messages && messages.map((message: Message) => (
+              <p
+                key={message._id}
+                className={(email !== message.author.email) ? 'text-right' : 'text-left'}
+              >
+                {message.content}
+              </p>
+            ))}
           </div>
           <div className='flex absolute space-x-2 bottom-0 inset-x-0'>
             <Input

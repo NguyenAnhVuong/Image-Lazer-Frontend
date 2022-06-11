@@ -1,5 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import Cookies from 'js-cookie';
+import { updateDirectChatHistoryIfActive } from './updateChat';
 
 interface DirectMessage {
   receiverUserId: string | undefined;
@@ -21,7 +22,7 @@ let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 // eslint-disable-next-line import/prefer-default-export
 export const connectWithSocketServer = function () {
   const jwtToken: string | undefined = Cookies.get('refreshToken');
-  console.log(jwtToken);
+  // console.log(jwtToken);
   socket = io('http://localhost:3008', {
     auth: {
       token: jwtToken,
@@ -36,6 +37,7 @@ export const connectWithSocketServer = function () {
   socket.on('directChatHistory', (data: any) => {
     console.log('directChatHistory');
     console.log(data);
+    updateDirectChatHistoryIfActive(data);
   });
 };
 

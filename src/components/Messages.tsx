@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AiFillMessage, AiFillEdit } from 'react-icons/ai';
 import { Modal } from 'antd';
+// import axios from 'axios';
 import {
   connectWithSocketServer,
   // getDirectChatHistory,
@@ -8,6 +9,8 @@ import {
 } from '../realtimeCommunication/socketConnection';
 import MockUser from '../realtimeCommunication/MockUser';
 import ListUserChat from './ListUserChat';
+import axiosJWT from '../api/axiosJWT';
+// import followApi from '../api/followApi';
 // import Message from './Message';
 
 // interface User {
@@ -31,9 +34,27 @@ const Messages:React.FC = () => {
 
   // const handleMessage = (user:User) => (<Message user={user} />);
 
+  const id = localStorage.getItem('id');
   useEffect(() => {
     connectWithSocketServer();
-  }, []);
+    if (id) {
+      // eslint-disable-next-line @typescript-eslint/return-await
+      // eslint-disable-next-line no-inner-declarations
+      const fetchData = async () => {
+        const followers = await axiosJWT.get(`/follows/followedBy/${id}`);
+        // eslint-disable-next-line array-callback-return
+        followers.data.map((follower: any) => {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          const { followed_user_id } = follower;
+          // console.log(followed_user_id);
+          MockUser.push(followed_user_id);
+        });
+      };
+      // console.log(MockUser);
+
+      fetchData();
+    }
+  }, [id]);
   return (
     <>
       <div className='hidden xl:block'>

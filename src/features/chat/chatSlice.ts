@@ -5,8 +5,8 @@ interface SetChosenChatDetails {
   fullName: string;
 }
 
-interface SetMessages {
-  messages: [];
+export interface SetMessages {
+  messages: any;
 }
 
 interface ChosenChatDetails {
