@@ -120,23 +120,55 @@ const ListUserChatItem = (props: User) => {
                   }`}
                 >
                   {((email === message.author.email
-                    && messages[index + 1] && email !== messages[index + 1].author.email)
-                    || ((index + 1 === messages.length) && email === message.author.email)) && (
+                    && messages[index + 1]
+                    && email !== messages[index + 1].author.email)
+                    || (index + 1 === messages.length
+                      && email === message.author.email)) && (
                       <img
                         src={avatar}
                         alt="avatar"
                         className="rounded-full w-6 h-6"
                       />
                   )}
-                  <p
+                  <div
                     key={message._id}
-                    className={`mx-4 font-medium text-sm ${
-                      email === message.author.email
-                      && 'rounded-3xl bg-[#efefef] p-3 col-start-2'
+                    className={`flex flex-col mx-4 ${
+                      email === message.author.email && 'col-start-2'
                     }`}
                   >
-                    {message.content}
-                  </p>
+                    {/* <p className="text-left">
+                      {((email === message.author.email
+                        && messages[index + 1]
+                        && email !== messages[index + 1].author.email)
+                        || (index + 1 === messages.length
+                          && email === message.author.email)) && (
+                          <span> </span>
+                      )}
+                    </p> */}
+                    {((email === message.author.email
+                      && messages[index - 1]
+                      && email !== messages[index - 1].author.email)
+                      || (index === 0
+                        && email === message.author.email)) && (
+                        <span className="text-left">{fullName}</span>
+                    )}
+
+                    {((email !== message.author.email
+                      && messages[index - 1]
+                      && email === messages[index - 1].author.email)
+                      || (index === 0
+                        && email !== message.author.email)) && (
+                        <span className="text-right">Bạn</span>
+                    )}
+                    <p
+                      className={`font-medium text-sm ${
+                        email === message.author.email
+                        && 'rounded-2xl bg-[#efefef] p-3'
+                      }`}
+                    >
+                      {message.content}
+                    </p>
+                  </div>
                 </div>
               ))}
           </div>
