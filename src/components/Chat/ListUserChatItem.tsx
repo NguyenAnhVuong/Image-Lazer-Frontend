@@ -109,30 +109,32 @@ const ListUserChatItem = (props: User) => {
         </div>
         <div className="relative h-[90%]">
           <div className="custom-scroll overflow-auto h-[85%]" ref={divElement}>
-            <p>{id}</p>
-            <p>{email}</p>
-            <p>{avatar}</p>
             {messages
-              && messages.map((message: Message) => (
+              && messages.map((message: Message, index) => (
                 // <div className={(email !== message.author.email) ? 'flex justify-end' : 'flex justify-start'}>
                 <div
-                  className={`flex ${
+                  className={`grid items-center ${
                     email !== message.author.email
                       ? 'justify-end'
-                      : 'justify-start'
+                      : 'justify-start grid-cols-[24px]'
                   }`}
                 >
-                  {email === message.author.email && (
-                    <img
-                      src={avatar}
-                      alt="avatar"
-                      className="rounded-full w-6 h-6"
-                    />
+                  {((email === message.author.email
+                    && messages[index + 1] && email !== messages[index + 1].author.email)
+                    || ((index + 1 === messages.length) && email === message.author.email)) && (
+                      <img
+                        src={avatar}
+                        alt="avatar"
+                        className="rounded-full w-6 h-6"
+                      />
                   )}
                   <p
                     key={message._id}
                     // className="rounded-3xl bg-[#efefef] mx-4 p-3"
-                    className={`mx-4 ${email === message.author.email && 'rounded-3xl bg-[#efefef] p-3'}`}
+                    className={`mx-4 ${
+                      email === message.author.email
+                      && 'rounded-3xl bg-[#efefef] p-3 col-start-2'
+                    }`}
                   >
                     {message.content}
                   </p>

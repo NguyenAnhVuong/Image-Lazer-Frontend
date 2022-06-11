@@ -4,9 +4,13 @@ interface SetChosenChatDetails {
   id: string;
   fullName: string;
 }
-
+export interface Message {
+  _id: string;
+  author: any;
+  content: string;
+}
 export interface SetMessages {
-  messages: any;
+  messages: Message[];
 }
 
 interface ChosenChatDetails {
@@ -18,7 +22,7 @@ interface ChosenChatDetails {
 
 export interface ChatState {
   chosenChatDetails: ChosenChatDetails;
-  messages: [];
+  messages: Message[];
 }
 
 const initialState: ChatState = {

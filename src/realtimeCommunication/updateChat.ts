@@ -1,10 +1,10 @@
 import { store } from '../app/store';
-import { chatActions, SetMessages } from '../features/chat/chatSlice';
+import { chatActions, Message } from '../features/chat/chatSlice';
 
 interface UpdateChatHistory {
   participants: any[];
   usersInConversation: any[];
-  messages: SetMessages;
+  messages: Message[];
 }
 
 const updateChatHistoryIfSameConversationActive = ({
