@@ -1,5 +1,3 @@
-// import React from 'react';
-
 import ListUserChatItem from './ListUserChatItem';
 
 interface User {

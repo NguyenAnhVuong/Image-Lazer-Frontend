@@ -6,6 +6,6 @@ interface User {
   userName: string;
 }
 
-const MockUser: User[] = [];
+const ListFollowedUser: User[] = [];
 
-export default MockUser;
+export default ListFollowedUser;

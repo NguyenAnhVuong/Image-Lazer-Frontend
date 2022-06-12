@@ -85,7 +85,16 @@ const ListUserChatItem = (props: User) => {
 
   return (
     <>
-      <Button onClick={handleChooseActiveConversation}>{fullName}</Button>
+      <Button
+        type="link"
+        onClick={handleChooseActiveConversation}
+        size="large"
+        className="grid grid-rows-2 gap-3 grid-flow-col mt-5"
+      >
+        <img src={avatar} alt="avatar" className="rounded-full h-8 w-8 row-span-2 m-[10px]" />
+        <h3 className="text-lg col-span-1">{fullName}</h3>
+        <p className="col-span-1">Đang theo dõi</p>
+      </Button>
       <Modal
         style={{ top: 90, left: '39vw' }}
         visible={isModalVisible}
@@ -136,29 +145,18 @@ const ListUserChatItem = (props: User) => {
                       email === message.author.email && 'col-start-2'
                     }`}
                   >
-                    {/* <p className="text-left">
-                      {((email === message.author.email
-                        && messages[index + 1]
-                        && email !== messages[index + 1].author.email)
-                        || (index + 1 === messages.length
-                          && email === message.author.email)) && (
-                          <span> </span>
-                      )}
-                    </p> */}
                     {((email === message.author.email
                       && messages[index - 1]
                       && email !== messages[index - 1].author.email)
-                      || (index === 0
-                        && email === message.author.email)) && (
-                        <span className="text-left">{fullName}</span>
+                      || (index === 0 && email === message.author.email)) && (
+                      <span className="text-left">{fullName}</span>
                     )}
 
                     {((email !== message.author.email
                       && messages[index - 1]
                       && email === messages[index - 1].author.email)
-                      || (index === 0
-                        && email !== message.author.email)) && (
-                        <span className="text-right">Bạn</span>
+                      || (index === 0 && email !== message.author.email)) && (
+                      <span className="text-right">Bạn</span>
                     )}
                     <p
                       className={`font-medium text-sm ${
