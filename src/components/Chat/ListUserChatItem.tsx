@@ -91,7 +91,11 @@ const ListUserChatItem = (props: User) => {
         size="large"
         className="grid grid-rows-2 gap-3 grid-flow-col mt-5"
       >
-        <img src={avatar} alt="avatar" className="rounded-full h-8 w-8 row-span-2 m-[10px]" />
+        <img
+          src={avatar}
+          alt="avatar"
+          className="rounded-full h-8 w-8 row-span-2 m-[10px]"
+        />
         <h3 className="text-lg col-span-1">{fullName}</h3>
         <p className="col-span-1">Đang theo dõi</p>
       </Button>
@@ -161,7 +165,8 @@ const ListUserChatItem = (props: User) => {
                     <p
                       className={`font-medium text-sm ${
                         email === message.author.email
-                        && 'rounded-2xl bg-[#efefef] p-3'
+                          ? 'rounded-2xl bg-[#efefef] p-3'
+                          : 'rounded-2xl bg-[#fff] p-3 shadow-md'
                       }`}
                     >
                       {message.content}
