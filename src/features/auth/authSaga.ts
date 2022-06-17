@@ -8,11 +8,10 @@ import { authActions } from './authSlice';
 function* loginSaga(action: PayloadAction<LoginUser>): any {
   try {
     const res = yield call(authAPi.login, action.payload);
-    if (res && res && res.accessToken && res.userName && res.id) {
-      yield put(authActions.loginSuccess(res.userName));
-      localStorage.setItem('accessToken', res.accessToken);
-      localStorage.setItem('userName', res.userName);
-      // localStorage.setItem('id', res.id);
+    if (res && res.data && res.data.accessToken && res.data.userName) {
+      yield put(authActions.loginSuccess(res.data.userName));
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('userName', res.data.userName);
       yield put(push('/'));
     } else {
       yield put(authActions.loginFailed());
