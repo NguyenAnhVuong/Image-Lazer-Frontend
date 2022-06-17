@@ -22,12 +22,14 @@ const updateChatHistoryIfSameConversationActive = ({
 
 // eslint-disable-next-line import/prefer-default-export
 export const updateDirectChatHistoryIfActive = (data:any) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { chosenChatDetails } = store.getState().chat;
+  const id = store.getState().user.user.id || '';
 
   const { participants, messages } = data;
 
   const receiverId = chosenChatDetails?.id;
-  const userId = localStorage.getItem('id');
+  const userId = id;
   if (receiverId && userId) {
     const usersInConversation = [receiverId, userId];
     updateChatHistoryIfSameConversationActive({ participants, usersInConversation, messages });

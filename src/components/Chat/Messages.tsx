@@ -4,12 +4,13 @@ import { Modal } from 'antd';
 import {
   connectWithSocketServer,
 } from '../../realtimeCommunication/socketConnection';
-import ListFollowedUser from '../../realtimeCommunication/ListFollowedUser';
 import ListUserChat from './ListUserChat';
-import axiosJWT from '../../api/axiosJWT';
+import { useAppSelector } from '../../app/hooks';
+import { AppState } from '../../app/store';
 
 const Messages:React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const following = useAppSelector((state: AppState) => state.user.user.following);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -19,25 +20,9 @@ const Messages:React.FC = () => {
     setIsModalVisible(false);
   };
 
-  const id = localStorage.getItem('id');
   useEffect(() => {
     connectWithSocketServer();
-    if (id) {
-      const fetchData = async () => {
-        const followers = await axiosJWT.get(`/follows/followedBy/${id}`);
-        // eslint-disable-next-line array-callback-return
-        followers.data.map((follower: any) => {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { followed_user_id } = follower;
-          // console.log(followed_user_id);
-          ListFollowedUser.push(followed_user_id);
-        });
-      };
-      // console.log(MockUser);
-
-      fetchData();
-    }
-  }, [id]);
+  }, []);
   return (
     <div className="hidden xl:block">
       <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
@@ -63,7 +48,7 @@ const Messages:React.FC = () => {
               </span> */}
           </div>
           <ListUserChat
-            users={ListFollowedUser}
+            users={following || []}
             closeModalMessages={() => setIsModalVisible(false)}
             openModalMessages={() => setIsModalVisible(true)}
           />

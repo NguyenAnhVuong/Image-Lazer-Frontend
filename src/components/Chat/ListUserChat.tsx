@@ -1,7 +1,7 @@
 import ListUserChatItem from './ListUserChatItem';
 
 interface User {
-  _id: string;
+  id: string;
   fullName: string;
   avatar: string;
   email: string;
@@ -24,12 +24,12 @@ const ListUserChat = ({
       (user): JSX.Element => (
         <ListUserChatItem
             // eslint-disable-next-line no-underscore-dangle
-          key={user._id}
+          key={user.id}
           avatar={user.avatar}
           fullName={user.fullName}
           email={user.email}
             // eslint-disable-next-line no-underscore-dangle
-          id={user._id}
+          id={user.id}
           closeModalMessages={() => closeModalMessages()}
           openModalMessages={() => openModalMessages()}
         />
