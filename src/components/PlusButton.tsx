@@ -1,33 +1,36 @@
-import { Modal } from 'antd';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { IoMdAlbums } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import CreateAlbumModal from './Album/CreateAlbumModal';
 
 const PlusButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLButtonElement>(null);
   const [createAlbumModalOpen, setCreateAlbumModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
-      <FaPlus
-        className="rounded-full bg-white header-shadow cursor-pointer p-4 font-bold hidden
+      <button ref={ref} className="block" type="button" onClick={() => setIsOpen((state) => !state)}>
+        <FaPlus
+          className="rounded-full bg-white header-shadow cursor-pointer p-4 font-bold hidden
         xl:inline-block fixed right-8 bottom-24 hover:bg-[#efefef]"
-        size={56}
-        onClick={() => setIsOpen(true)}
-      />
-      <Modal
-        wrapClassName="plus-modal"
-        style={{ top: 2000 }}
-        visible={isOpen}
-        title={null}
-        closable={false}
-        footer={null}
-        mask={false}
-        centered
-        onCancel={() => setIsOpen(false)}
-      >
+          size={56}
+        />
+      </button>
+      <div className={`fixed bg-white bottom-20 right-24 min-w-[200px] p-2 rounded-2xl ${isOpen ? 'block' : 'hidden'}`}>
         <Link
           className="flex items-center text-base font-bold p-2 hover:bg-graybg rounded-xl w-full text-black"
           to="/create-image"
@@ -44,7 +47,7 @@ const PlusButton = () => {
           <IoMdAlbums className="" size={20} />
           <span className="ml-2">Tạo Album</span>
         </button>
-      </Modal>
+      </div>
       <CreateAlbumModal isOpen={createAlbumModalOpen} setIsOpen={setCreateAlbumModalOpen} />
     </>
   );

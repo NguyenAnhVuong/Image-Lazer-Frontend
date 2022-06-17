@@ -1,23 +1,29 @@
-import PhotoAlbum, { RenderPhoto } from 'react-photo-album';
-import { MdDelete, MdModeEditOutline } from 'react-icons/md';
-import { FaAngleDown } from 'react-icons/fa';
+/* eslint-disable jsx-a11y/control-has-associated-label */
+// import { Modal, Select } from 'antd';
 import { useState } from 'react';
-import { Modal, Select } from 'antd';
+import { FaAngleDown } from 'react-icons/fa';
+import { MdDelete, MdModeEditOutline } from 'react-icons/md';
+import PhotoAlbum, { RenderPhoto } from 'react-photo-album';
+import { useNavigate } from 'react-router-dom';
+// import { useAppSelector } from '../app/hooks';
+// import { AppState } from '../app/store';
 import { ImageInformation } from '../models';
-import { useAppSelector } from '../app/hooks';
-import { AppState } from '../app/store';
+import ListSelectAlbumModal from './Album/ListSelectAlbumModal';
 
 export interface ImageAlbumProps {
   images: ImageInformation[];
+  goverment: boolean;
 }
 
-const Colection = ({ images }: ImageAlbumProps) => {
-  const userAlbums = useAppSelector((state: AppState) => state.albums.albums);
+const Colection = ({ images, goverment }: ImageAlbumProps) => {
+  // const userAlbums = useAppSelector((state: AppState) => state.albums.albums);
   const [currentAlbum, setCurrentAlbum] = useState('Album mặc định');
   const [selectAlbumModal, setSelectAlbumModal] = useState(false);
+  const navigate = useNavigate();
   const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48];
 
   const photos: any = images.map((image: ImageInformation) => ({
+    id: image.id,
     src: image.src,
     width: image.width,
     height: image.height,
@@ -49,7 +55,14 @@ const Colection = ({ images }: ImageAlbumProps) => {
         paddingBottom: 0,
       }}
     >
-      <div className="absolute left-0 top-0 right-0 bottom-0 hover:block hover:bg-[#0a0a0a49] group">
+      <div className="absolute left-0 top-0 right-0 bottom-0 group">
+        <div
+          className="absolute left-0 top-0 right-0 bottom-0 hidden group-hover:block group-hover:bg-[#0a0a0a49]"
+          role="button"
+          tabIndex={0}
+          onClick={restImageProps.onClick}
+          onKeyDown={restImageProps.onClick}
+        />
         <div className="hidden group-hover:block">
           <div className="absolute top-4 flex px-3 justify-between w-full">
             <button
@@ -67,15 +80,18 @@ const Colection = ({ images }: ImageAlbumProps) => {
               Lưu
             </button>
           </div>
-
-          <div className="absolute bottom-3 right-3">
-            <button className="p-2 bg-graybg rounded-full" type="button">
-              <MdModeEditOutline size={20} />
-            </button>
-            <button className="p-2 bg-graybg rounded-full ml-2" type="button">
-              <MdDelete size={20} />
-            </button>
-          </div>
+          {
+            !!goverment && (
+              <div className="absolute bottom-3 right-3">
+                <button className="p-2 bg-graybg rounded-full" type="button">
+                  <MdModeEditOutline size={20} />
+                </button>
+                <button className="p-2 bg-graybg rounded-full ml-2" type="button">
+                  <MdDelete size={20} />
+                </button>
+              </div>
+            )
+          }
         </div>
       </div>
       <img
@@ -103,7 +119,11 @@ const Colection = ({ images }: ImageAlbumProps) => {
             return 7;
           }}
           spacing={16}
+          targetRowHeight={200}
           renderPhoto={renderPhoto}
+          onClick={(event, photo: any) => {
+            navigate(`/image/${photo.id}`);
+          }}
         />
       </div>
 
@@ -122,31 +142,17 @@ const Colection = ({ images }: ImageAlbumProps) => {
           spacing={8}
           targetRowHeight={200}
           renderPhoto={renderPhoto}
+          onClick={(event, photo: any) => {
+            navigate(`/image/${photo.id}`);
+          }}
         />
       </div>
-      <Modal
-        visible={selectAlbumModal}
-        title="Chọn Album"
-        footer={null}
-        onCancel={() => setSelectAlbumModal(false)}
-      >
-        <Select
-          className="w-full"
-          placeholder="Chọn Album ảnh"
-          allowClear
-          onChange={(value) => { setCurrentAlbum(value); setSelectAlbumModal(false); }}
-          value={currentAlbum}
-        >
-          {
-            userAlbums.map((album) => (
-              <Select.Option key={album.id} value={album.name}>
-                <img className="w-12 h-12 rounded-xl object-cover" src={album.image?.src} alt="" />
-                <span className="font-bold text-base ml-2">{album.name}</span>
-              </Select.Option>
-            ))
-          }
-        </Select>
-      </Modal>
+      <ListSelectAlbumModal
+        selectAlbumModal={selectAlbumModal}
+        setSelectAlbumModal={setSelectAlbumModal}
+        currentAlbum={currentAlbum}
+        setCurrentAlbum={setCurrentAlbum}
+      />
     </div>
   );
 };

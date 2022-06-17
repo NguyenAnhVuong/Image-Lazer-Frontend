@@ -12,7 +12,7 @@ function* loginSaga(action: PayloadAction<LoginUser>): any {
       yield put(authActions.loginSuccess(res.userName));
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('userName', res.userName);
-      localStorage.setItem('id', res.id);
+      // localStorage.setItem('id', res.id);
       yield put(push('/'));
     } else {
       yield put(authActions.loginFailed());
