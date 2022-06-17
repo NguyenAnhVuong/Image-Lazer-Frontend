@@ -39,7 +39,6 @@ const User = () => {
           albums: res.albums,
         });
       }
-      console.log(res);
     }
   };
 

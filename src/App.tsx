@@ -6,6 +6,7 @@ import { AppState, history } from './app/store';
 import Auth from './components/Auth/Auth';
 import Home from './components/Home';
 import CreateImagePage from './components/Image/CreateImagePage';
+import EditImagePage from './components/Image/EditImagePage';
 import ImageDetail from './components/Image/ImageDetail';
 import Header from './components/Layout/Header';
 import User from './components/User/User';
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/create-image" element={<CreateImagePage />} />
               <Route path="/user-information" element={<UserInformation />} />
+              <Route path="/image/edit/:id" element={<EditImagePage />} />
             </>
           )
           : <Route path="*" element={<Auth />} />}

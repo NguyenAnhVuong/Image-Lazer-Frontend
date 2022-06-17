@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 // import { Modal, Select } from 'antd';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { MdDelete, MdModeEditOutline } from 'react-icons/md';
 import PhotoAlbum, { RenderPhoto } from 'react-photo-album';
@@ -21,6 +21,7 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
   const [selectAlbumModal, setSelectAlbumModal] = useState(false);
   const navigate = useNavigate();
   const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48];
+  const refId = useRef('');
 
   const photos: any = images.map((image: ImageInformation) => ({
     id: image.id,
@@ -60,7 +61,7 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
           className="absolute left-0 top-0 right-0 bottom-0 hidden group-hover:block group-hover:bg-[#0a0a0a49]"
           role="button"
           tabIndex={0}
-          onClick={restImageProps.onClick}
+          onClick={() => { restImageProps.onClick(); navigate(`/image/${refId.current}`); }}
           onKeyDown={restImageProps.onClick}
         />
         <div className="hidden group-hover:block">
@@ -84,7 +85,10 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
             !!goverment && (
               <div className="absolute bottom-3 right-3">
                 <button className="p-2 bg-graybg rounded-full" type="button">
-                  <MdModeEditOutline size={20} />
+                  <MdModeEditOutline
+                    size={20}
+                    onClick={() => { restImageProps.onClick(); navigate(`/image/edit/${refId.current}`); }}
+                  />
                 </button>
                 <button className="p-2 bg-graybg rounded-full ml-2" type="button">
                   <MdDelete size={20} />
@@ -122,7 +126,7 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
           targetRowHeight={200}
           renderPhoto={renderPhoto}
           onClick={(event, photo: any) => {
-            navigate(`/image/${photo.id}`);
+            refId.current = photo.id;
           }}
         />
       </div>

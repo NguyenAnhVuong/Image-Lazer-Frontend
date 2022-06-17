@@ -102,7 +102,7 @@ const ImageDetail = () => {
           <div className="lg:flex-1">
             <div className="flex h-12 justify-between px-5 my-4">
               <div className="flex">
-                <img className="h-12 w-12" src={`/uploads/${image?.user?.avatar}`} alt="" />
+                <img className="h-12 w-12" src={`/uploads/${image?.user?.avatar || 'default_avatar.png'}`} alt="" />
                 <div className="flex flex-col justify-center ml-2">
                   <span className="font-bold">{image?.user?.fullName}</span>
                   <span className="font-medium">
