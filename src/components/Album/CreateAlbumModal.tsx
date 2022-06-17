@@ -3,8 +3,8 @@ import {
 } from 'antd';
 import { useState } from 'react';
 import albumsApi from '../../api/albumsApi';
-import { useAppDispatch } from '../../app/hooks';
-import { albumsActions } from '../../features/album/albumSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { userActions } from '../../features/user/userSlice';
 import { AlbumInformation } from '../../models';
 
 type CreateAlbumModalProps = {
@@ -16,6 +16,7 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
+  const userName = useAppSelector((state: any) => state.auth.userName);
 
   const handleCreateAlbum = async (album: AlbumInformation) => {
     const newAlbum: AlbumInformation = {
@@ -28,7 +29,7 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
       setIsOpen(false);
       setErrorMessage('');
       form.resetFields();
-      dispatch(albumsActions.getAlbumsStart());
+      dispatch(userActions.getUserStart(userName));
     } else {
       setErrorMessage('Album này đã tồn tại!');
     }

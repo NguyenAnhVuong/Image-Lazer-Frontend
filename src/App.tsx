@@ -5,27 +5,25 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { AppState, history } from './app/store';
 import Auth from './components/Auth/Auth';
 import Home from './components/Home';
+import CreateImagePage from './components/Image/CreateImagePage';
+import ImageDetail from './components/Image/ImageDetail';
 import Header from './components/Layout/Header';
-import CreateImagePage from './components/User/CreateImagePage';
 import User from './components/User/User';
 import UserInformation from './components/User/UserInformation';
-import { albumsActions } from './features/album/albumSlice';
 import { authActions } from './features/auth/authSlice';
+import { userActions } from './features/user/userSlice';
 
 const App = () => {
   const dispatch = useAppDispatch();
   const userName = useAppSelector((state: AppState) => state.auth.userName);
-  const getAlbumsSuccess = useAppSelector((state: AppState) => state.albums.success);
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     const userNameLocal = localStorage.getItem('userName');
-    if (accessToken && userNameLocal) {
+    if (accessToken !== 'undefined' && userNameLocal) {
       dispatch(authActions.loginSuccess(userNameLocal));
-      if (!getAlbumsSuccess) {
-        dispatch(albumsActions.getAlbumsStart());
-      }
+      dispatch(userActions.getUserStart(userNameLocal));
     }
-  }, [dispatch, getAlbumsSuccess, userName]);
+  }, [dispatch, userName]);
 
   return (
     <Router history={history}>
@@ -41,6 +39,7 @@ const App = () => {
           )
           : <Route path="*" element={<Auth />} />}
         <Route path="/user/:userName" element={<User />} />
+        <Route path="/image/:id" element={<ImageDetail />} />
       </Routes>
     </Router>
   );

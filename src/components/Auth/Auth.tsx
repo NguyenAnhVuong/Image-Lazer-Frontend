@@ -9,12 +9,12 @@ import Register from './Register';
 function Auth() {
   const [login, setLogin] = useState(true);
   const navigate = useNavigate();
-  const userName = useAppSelector((state: AppState) => state.auth.userName);
+  const loginSuccess = useAppSelector((state: AppState) => state.auth.success);
   useEffect(() => {
-    if (userName) {
+    if (loginSuccess) {
       navigate('/');
     }
-  }, [userName, navigate]);
+  }, [loginSuccess, navigate]);
 
   return (
     <div className='bg-[url("./images/Loginbg.jpg")] h-screen bg-cover bg-center'>

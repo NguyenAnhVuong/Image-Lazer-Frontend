@@ -10,17 +10,7 @@ const authAPi = {
     }
     return 1;
   },
-  login: async (loginUser: LoginUser) => {
-    try {
-      const res = await axios.post('/users/auth/signin', loginUser);
-      if (res && res.data) {
-        return res.data;
-      }
-      return 0;
-    } catch (err) {
-      return 0;
-    }
-  },
+  login: (loginUser: LoginUser): Promise<any> => axios.post('/users/auth/signin', loginUser),
   refreshToken: async () => {
     try {
       const res = await axios.post('/users/auth/refresh', {

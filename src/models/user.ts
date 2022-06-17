@@ -1,13 +1,17 @@
+// eslint-disable-next-line import/no-cycle
 import { AlbumInformation } from './album';
+// eslint-disable-next-line import/no-cycle
 import { ImageInformation } from './image';
 
 export interface UserInformation {
-  userName: string;
-  fullName: string;
-  email: string;
-  topics: string[];
-  followers: number;
-  following: number;
-  createdImages: ImageInformation[];
-  albums: AlbumInformation[];
+  id?: string;
+  userName?: string;
+  fullName?: string;
+  avatar?: string;
+  email?: string;
+  topics?: string[];
+  followers: string[];
+  following?: string[];
+  createdImages?: ImageInformation[];
+  albums?: AlbumInformation[];
 }

@@ -20,6 +20,8 @@ const User = () => {
   const saveRef = useRef<any>();
   const userName = useAppSelector((state: AppState) => state.auth.userName);
   const [settingOpen, setSettingOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const userRedux = useAppSelector((state: AppState) => state.user);
 
   const getUser = async () => {
     if (params && params.userName) {
@@ -28,6 +30,7 @@ const User = () => {
         setUser({
           userName: res.userName,
           email: res.email,
+          avatar: res.avatar,
           topics: res.topics,
           fullName: res.fullName,
           followers: res.followers,
@@ -43,7 +46,7 @@ const User = () => {
   useEffect(() => {
     getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params, userRedux]);
 
   useEffect(() => {
     if (added) {
@@ -56,7 +59,7 @@ const User = () => {
   }, [added]);
 
   return (
-    <div>
+    <div className="pb-20">
       <button
         className="fixed top-0 left-0 h-14 flex items-center xl:hidden header-shadow w-full bg-white flex-row-reverse"
         type="button"
@@ -69,7 +72,7 @@ const User = () => {
         <div className="w-32 h-32">
           <img
             className="object-cover"
-            src="/uploads/default_avatar.png"
+            src={`/uploads/${user?.avatar}`}
             alt=""
           />
         </div>
@@ -80,12 +83,12 @@ const User = () => {
           {user?.userName}
         </p>
         <p className="text-base font-bold">
-          {user?.followers || '0'}
+          {user?.followers?.length}
           {' '}
           người đang theo dõi
         </p>
         <p className="text-base font-bold">
-          {user?.following || '0'}
+          {user?.following?.length}
           {' '}
           người bạn đang theo dõi
         </p>
@@ -132,7 +135,7 @@ const User = () => {
               <div>
                 {
                   user && user.createdImages && user.createdImages.length > 0
-                    ? (<Colection images={user.createdImages} />)
+                    ? (<Colection images={user.createdImages} goverment={userName === user.userName} />)
                     : <div>Đã thêm</div>
                 }
               </div>
@@ -147,7 +150,7 @@ const User = () => {
                         className="rounded-2xl bg-cover pt-[calc(1900%/29)] bg-center relative"
                         style={{ backgroundImage: `url("${album.image?.src}")` }}
                       >
-                        <HiLockClosed className="p-2 bg-white rounded-full absolute top-2 left-2" size={32} />
+                        {!!album.secret && <HiLockClosed className="p-2 bg-white rounded-full absolute top-2 left-2" size={32} />}
                       </div>
                       <span className="block text-base font-bold ml-2 mt-1 xl:text-xl xl:mt-2">{album.name}</span>
                     </div>

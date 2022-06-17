@@ -2,10 +2,10 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
 import { createReduxHistoryContext, reachify } from 'redux-first-history';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from './rootSaga';
-import testReducer from '../features/test/testSlice';
 import { authReducer } from '../features/auth/authSlice';
-import { albumsReducer } from '../features/album/albumSlice';
+import testReducer from '../features/test/testSlice';
+import { userReducer } from '../features/user/userSlice';
+import rootSaga from './rootSaga';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
   history: createBrowserHistory(),
@@ -19,7 +19,7 @@ export const store = configureStore({
     router: routerReducer,
     test: testReducer,
     auth: authReducer,
-    albums: albumsReducer,
+    user: userReducer,
   },
   middleware:
     (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware),
