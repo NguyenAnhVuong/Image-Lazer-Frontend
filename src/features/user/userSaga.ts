@@ -8,6 +8,7 @@ function* getUserSaga(action: PayloadAction<string>): any {
     const res = yield call(userAPi.getUserByUserName, action.payload);
     if (res && !res.errorCode) {
       const user = {
+        id: res.id,
         userName: res.userName,
         email: res.email,
         avatar: res.avatar,
