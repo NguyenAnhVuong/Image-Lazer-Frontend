@@ -3,6 +3,13 @@ import { AlbumInformation } from './album';
 // eslint-disable-next-line import/no-cycle
 import { ImageInformation } from './image';
 
+interface User {
+  id: string;
+  fullName: string;
+  avatar: string;
+  email: string;
+  userName: string;
+}
 export interface UserInformation {
   id?: string;
   userName?: string;
@@ -11,7 +18,7 @@ export interface UserInformation {
   email?: string;
   topics?: string[];
   followers: string[];
-  following?: string[];
+  following?: User[];
   createdImages?: ImageInformation[];
   albums?: AlbumInformation[];
 }

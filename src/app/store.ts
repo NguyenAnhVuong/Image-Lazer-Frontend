@@ -3,6 +3,7 @@ import { createBrowserHistory } from 'history';
 import { createReduxHistoryContext, reachify } from 'redux-first-history';
 import createSagaMiddleware from 'redux-saga';
 import { authReducer } from '../features/auth/authSlice';
+import { chatReducer } from '../features/chat/chatSlice';
 import testReducer from '../features/test/testSlice';
 import { userReducer } from '../features/user/userSlice';
 import rootSaga from './rootSaga';
@@ -19,6 +20,7 @@ export const store = configureStore({
     router: routerReducer,
     test: testReducer,
     auth: authReducer,
+    chat: chatReducer,
     user: userReducer,
   },
   middleware:

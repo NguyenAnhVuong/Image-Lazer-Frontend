@@ -1,6 +1,5 @@
 import { Input } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import { AiFillMessage } from 'react-icons/ai';
 import { BsPinterest } from 'react-icons/bs';
 import { FaBell, FaSearch } from 'react-icons/fa';
 import { HiChevronDown } from 'react-icons/hi';
@@ -9,6 +8,7 @@ import axiosJWT from '../../api/axiosJWT';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { authActions } from '../../features/auth/authSlice';
+import Messages from '../Chat/Messages';
 
 const HeaderPC = () => {
   const userName = useAppSelector((state: AppState) => state.auth.userName);
@@ -59,9 +59,10 @@ const HeaderPC = () => {
             <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
               <FaBell className="p-3" size={48} />
             </div>
-            <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
+            {/* <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
               <AiFillMessage className="p-3" size={48} />
-            </div>
+            </div> */}
+            <Messages />
             <div className="p-3 hover:bg-[#efefef] rounded-full cursor-pointer w-12">
               <Link to={`/user/${userName}`}>
                 <img
