@@ -1,10 +1,16 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 // import { Modal, Select } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
 import { useRef, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { MdDelete, MdModeEditOutline } from 'react-icons/md';
 import PhotoAlbum, { RenderPhoto } from 'react-photo-album';
 import { useNavigate } from 'react-router-dom';
+import imageApi from '../api/imageApi';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { AppState } from '../app/store';
+import { userActions } from '../features/user/userSlice';
 // import { useAppSelector } from '../app/hooks';
 // import { AppState } from '../app/store';
 import { ImageInformation } from '../models';
@@ -22,6 +28,9 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
   const navigate = useNavigate();
   const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48];
   const refId = useRef('');
+  const dispatch = useAppDispatch();
+  const userName = useAppSelector((state: AppState) => state.auth.userName);
+  const { confirm } = Modal;
 
   const photos: any = images.map((image: ImageInformation) => ({
     id: image.id,
@@ -46,6 +55,30 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
     }),
   }));
 
+  const handleDeleteImage = async (id: string) => {
+    const res = await imageApi.deleteImage(id);
+    if (res) {
+      dispatch(userActions.getUserStart(userName));
+    }
+  };
+
+  const showConfirm = async () => {
+    confirm({
+      title: 'Bạn có chắc là muốn xóa ảnh này?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Bạn sẽ không thể khôi phục lại ảnh này',
+      okText: 'Xóa',
+      cancelText: 'Hủy',
+      okType: 'danger',
+      onOk() {
+        handleDeleteImage(refId.current);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
   const renderPhoto: RenderPhoto | any = ({ imageProps: { alt, style, ...restImageProps } }: any) => (
     <div
       className="relative mb-2 rounded-2xl overflow-hidden xl:mb-4 cursor-pointer"
@@ -64,7 +97,7 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
           onClick={() => { restImageProps.onClick(); navigate(`/image/${refId.current}`); }}
           onKeyDown={restImageProps.onClick}
         />
-        <div className="hidden group-hover:block">
+        <div className="hidden group-hover:xl:block ">
           <div className="absolute top-4 flex px-3 justify-between w-full">
             <button
               className="text-white flex items-center text-base font-bold max-w-[40%]"
@@ -84,13 +117,20 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
           {
             !!goverment && (
               <div className="absolute bottom-3 right-3">
-                <button className="p-2 bg-graybg rounded-full" type="button">
+                <button
+                  className="p-2 bg-graybg rounded-full"
+                  type="button"
+                  onClick={() => { restImageProps.onClick(); navigate(`/image/edit/${refId.current}`); }}
+                >
                   <MdModeEditOutline
                     size={20}
-                    onClick={() => { restImageProps.onClick(); navigate(`/image/edit/${refId.current}`); }}
                   />
                 </button>
-                <button className="p-2 bg-graybg rounded-full ml-2" type="button">
+                <button
+                  className="p-2 bg-graybg rounded-full ml-2"
+                  type="button"
+                  onClick={() => { restImageProps.onClick(); showConfirm(); }}
+                >
                   <MdDelete size={20} />
                 </button>
               </div>
@@ -147,7 +187,7 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
           targetRowHeight={200}
           renderPhoto={renderPhoto}
           onClick={(event, photo: any) => {
-            navigate(`/image/${photo.id}`);
+            refId.current = photo.id;
           }}
         />
       </div>

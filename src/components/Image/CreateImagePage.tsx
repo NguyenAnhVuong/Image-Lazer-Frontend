@@ -70,7 +70,6 @@ const CreateImagePage = () => {
                 // eslint-disable-next-line jsx-a11y/label-has-associated-control
                 <label
                   className="
-            h-36
             w-64
             flex
             flex-col
@@ -80,7 +79,6 @@ const CreateImagePage = () => {
             rounded-2xl
             overflow-hidden
             xl:w-80
-            xl:h-[480px]
             "
                   htmlFor="image"
                 >
