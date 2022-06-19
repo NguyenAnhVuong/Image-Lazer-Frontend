@@ -10,6 +10,7 @@ export interface AlbumCardInformation {
 }
 
 export interface AlbumInformation {
+  id?: string;
   name: string;
   userName: string;
   fullName: string;

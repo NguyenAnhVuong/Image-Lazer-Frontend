@@ -1,5 +1,5 @@
 import {
-  Button, Form, Input, Modal, Switch,
+  Button, Form, Input, message, Modal, Switch,
 } from 'antd';
 import { useState } from 'react';
 import albumsApi from '../../api/albumsApi';
@@ -12,6 +12,7 @@ type CreateAlbumModalProps = {
   setIsOpen: (value: boolean) => void;
 };
 
+const key = 'updatable';
 const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
@@ -30,6 +31,17 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
       setErrorMessage('');
       form.resetFields();
       dispatch(userActions.getUserStart(userName));
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: 'Tạo Album thành công!',
+          key,
+          duration: 2,
+        });
+      }, 1000);
     } else {
       setErrorMessage('Album này đã tồn tại!');
     }

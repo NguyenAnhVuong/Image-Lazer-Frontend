@@ -39,6 +39,32 @@ const albumsApi = {
     }
     return 0;
   },
+  updateImageInAlbum: async (newAlbumInfo: AlbumCardInformation) => {
+    try {
+      const res = await axiosJWT.patch(`/albums/${newAlbumInfo.id}`, {
+        name: newAlbumInfo.name,
+        description: newAlbumInfo.description,
+        secret: newAlbumInfo.secret ? 1 : 0,
+      });
+      if (res && res.data && !res.data.errorCode) {
+        return 1;
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+    return 0;
+  },
+  deleteAlbum: async (albumId?: string) => {
+    try {
+      const res = await axiosJWT.delete(`/albums/delete/${albumId}`);
+      if (res && res.data && !res.data.errorCode) {
+        return 1;
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+    return 0;
+  },
   deleteImageInAlbum: async (imageId: string, album: string) => {
     try {
       const res = await axiosJWT.delete(

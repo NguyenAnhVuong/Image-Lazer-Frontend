@@ -1,5 +1,5 @@
 import {
-  Button, Form, Input, Select,
+  Button, Form, Input, message, Select,
 } from 'antd';
 import { useState } from 'react';
 import { BsFillCloudUploadFill } from 'react-icons/bs';
@@ -12,6 +12,7 @@ import { AppState } from '../../app/store';
 import { userActions } from '../../features/user/userSlice';
 import { CreateImage, ImageInformation, topics } from '../../models';
 
+const key = 'updatable';
 const CreateImagePage = () => {
   const userAlbums = useAppSelector((state: AppState) => state.user.user.albums);
   const userName = useAppSelector((state: AppState) => state.auth.userName);
@@ -49,6 +50,17 @@ const CreateImagePage = () => {
       setImage({
         name: '', src: '', height: 0, width: 0,
       });
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: 'Tạo ảnh thành công!',
+          key,
+          duration: 2,
+        });
+      }, 1000);
       form.resetFields();
       dispatch(userActions.getUserStart(userName));
     }

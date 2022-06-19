@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Empty, Modal } from 'antd';
+import { Empty, message, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { CgMoreAlt } from 'react-icons/cg';
 import { HiLockClosed } from 'react-icons/hi';
@@ -13,26 +13,44 @@ import { AlbumInformation } from '../../models';
 import Colection from '../Colection';
 import EditAlbumModal from './EditAlbumModal';
 
+const key = 'updatable';
 const Album = () => {
   const { confirm } = Modal;
   const navigate = useNavigate();
   const user = useAppSelector((state: AppState) => state.user.user);
   const [reRender, setReRender] = useState(false);
-  const [album, setAlbum] = useState<AlbumInformation>();
+  const [album, setAlbum] = useState<AlbumInformation>({} as AlbumInformation);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenSetting, setIsOpenSetting] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
   const params = useParams<{ id: string }>();
+  const handleDeleteAlbum = async (id?: string) => {
+    const res = await albumsApi.deleteAlbum(id);
+    if (res) {
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: `Đã xóa Album ${album.name}!`,
+          key,
+          duration: 2,
+        });
+      }, 1000);
+      navigate(`/user/${user.userName}`);
+    }
+  };
   const showConfirm = async () => {
     confirm({
       title: 'Bạn có chắc là muốn xóa Abum này?',
       icon: <ExclamationCircleOutlined />,
-      content: 'Bạn sẽ không thể khôi phục lại Album này',
+      content: 'Khi xóa Album, tất cả các ảnh trong Album sẽ bị xóa',
       okText: 'Xóa',
       cancelText: 'Hủy',
       okType: 'danger',
       onOk() {
-        console.log('Ok');
+        handleDeleteAlbum(params?.id);
       },
       onCancel() {
         console.log('Cancel');
@@ -57,6 +75,7 @@ const Album = () => {
       const res = await albumsApi.getAlbumById(params?.id || '');
       if (res) {
         const albumInfo = {
+          id: params.id,
           name: res.name,
           userName: res.userName,
           fullName: res.fullName,
@@ -72,7 +91,7 @@ const Album = () => {
     } else {
       navigate('/');
     }
-  }, [navigate, params, params.id]);
+  }, [navigate, params, params.id, reRender]);
 
   return (
     <div>
@@ -90,12 +109,12 @@ const Album = () => {
         </div>
       </div>
       <div className="mt-20">
-        <div className="flex flex-col items-center text-sm lg:text-base font-medium">
+        <div className="flex flex-col items-center text-sm lg:text-base font-medium mb-5">
           <div className="flex items-center mb-5">
             <h1 className="text-4xl font-bold m-0">{album?.name}</h1>
             <div className="relative">
               <button
-                className="bg-graybg rounded-full ml-2 hover:bg-graybg"
+                className="bg-graybg rounded-full ml-2 hover:bg-graybg hidden xl:block"
                 type="button"
                 ref={ref}
                 onClick={() => setIsOpenSetting((state) => !state)}
@@ -160,7 +179,7 @@ const Album = () => {
         }
 
       </div>
-      <EditAlbumModal isOpen={isOpenEditModal} setIsOpen={setIsOpenEditModal} />
+      <EditAlbumModal albumInfo={album} setReRender={setReRender} isOpen={isOpenEditModal} setIsOpen={setIsOpenEditModal} />
     </div>
   );
 };

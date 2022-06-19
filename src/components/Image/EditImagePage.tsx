@@ -1,6 +1,6 @@
 import { ZoomInOutlined } from '@ant-design/icons';
 import {
-  Button, Form, Image, Input, Select, Space,
+  Button, Form, Image, Input, message, Select, Space,
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -11,6 +11,7 @@ import { AppState } from '../../app/store';
 import { userActions } from '../../features/user/userSlice';
 import { CreateImage, ImageInformation, topics } from '../../models';
 
+const key = 'updatable';
 const EditImagePage = () => {
   const userAlbums = useAppSelector((state: AppState) => state.user.user.albums);
   const userName = useAppSelector((state: AppState) => state.auth.userName);
@@ -31,6 +32,17 @@ const EditImagePage = () => {
     };
     const res = await imageApi.updateImage(params.id || '', newImage);
     if (res) {
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: 'Lưu thông tin Ảnh thành công!',
+          key,
+          duration: 2,
+        });
+      }, 1000);
       navigate(`/image/${params.id}`);
       dispatch(userActions.getUserStart(userName));
     }
@@ -79,7 +91,7 @@ const EditImagePage = () => {
         <button type="button" className="absolute left-0" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="p-3 text-black" size={48} />
         </button>
-        <span className="text-base font-bold">Thêm Ảnh</span>
+        <span className="text-base font-bold">Thay đổi thông tin Ảnh</span>
       </div>
       <div className="flex flex-col items-center p-4 mt-14 xl:flex-row  xl:w-[1200px]">
         <div className="xl:w-[40%] xl:flex xl:justify-center">

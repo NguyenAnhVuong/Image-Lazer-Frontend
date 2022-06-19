@@ -1,6 +1,7 @@
 import { Empty } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { HiLockClosed } from 'react-icons/hi';
+import { IoIosArrowBack } from 'react-icons/io';
 import { RiSettingsFill } from 'react-icons/ri';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axiosJWT from '../../api/axiosJWT';
@@ -88,8 +89,12 @@ const User = () => {
   return (
     <div className="pb-20">
       <div
-        className="fixed top-0 left-0 h-14 flex items-center xl:hidden header-shadow w-full bg-white flex-row-reverse z-10"
+        className="fixed top-0 left-0 h-14 flex items-center xl:hidden header-shadow w-full bg-white justify-between p-2 z-10"
       >
+        <button className="" type="button" onClick={() => navigate(-1)}>
+          <IoIosArrowBack className="p-3 text-black" size={48} />
+        </button>
+        <span className="font-bold text-base">Trang cá nhân</span>
         <button ref={ref} onClick={() => setIsOpen((state) => !state)} type="button">
           <RiSettingsFill className="p-3" size={48} />
         </button>

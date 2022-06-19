@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 // import { Modal, Select } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 import { useRef, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { MdDelete, MdModeEditOutline } from 'react-icons/md';
@@ -23,7 +23,7 @@ export interface ImageAlbumProps {
   setReRender: (reRender: boolean) => void;
   albumName: string;
 }
-
+const key = 'updatable';
 const Colection = ({
   images, useToAlbum, isUserAlbum, reRender, setReRender, albumName,
 }: ImageAlbumProps) => {
@@ -64,6 +64,17 @@ const Colection = ({
   const handleDeleteImage = async (id: string) => {
     const res = await imageApi.deleteImage(id);
     if (res) {
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: 'Xóa ảnh thành công!',
+          key,
+          duration: 2,
+        });
+      }, 1000);
       dispatch(userActions.getUserStart(userName));
       setReRender(!reRender);
     }
@@ -89,6 +100,17 @@ const Colection = ({
   const handleDeleteImageInAlbum = async (imageId: string, album: string) => {
     const res = await albumsApi.deleteImageInAlbum(imageId, album);
     if (res) {
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: `Xóa ảnh khỏi Album ${album} thành công!`,
+          key,
+          duration: 2,
+        });
+      }, 1000);
       dispatch(userActions.getUserStart(userName));
       setReRender(!reRender);
     }
@@ -114,7 +136,17 @@ const Colection = ({
   const handleSavePostToAlbum = async (imageId: string, album: string) => {
     const res = await albumsApi.saveImageToAlbum(imageId, album);
     if (res) {
-      console.log('Save image to album success');
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: `Đã lưu ảnh vào Album ${album} !`,
+          key,
+          duration: 2,
+        });
+      }, 1000);
       dispatch(userActions.getUserStart(userName));
     }
   };
@@ -186,6 +218,41 @@ const Colection = ({
                     onClick={() => { restImageProps.onClick(); showConfirmToDeleteImageInAlbum(); }}
                   >
                     <MdDelete size={20} />
+                  </button>
+                </div>
+              )
+          }
+        </div>
+        <div className="xl:hidden">
+          {
+            user.createdImages?.find((image) => image.src === restImageProps.src) ? (
+              <div className="absolute bottom-2 right-2 flex flex-col">
+                <button
+                  className="p-2 bg-graybg rounded-full"
+                  type="button"
+                  onClick={() => { restImageProps.onClick(); navigate(`/image/edit/${refId.current}`); }}
+                >
+                  <MdModeEditOutline
+                    size={16}
+                  />
+                </button>
+                <button
+                  className="p-2 bg-graybg rounded-full mt-2"
+                  type="button"
+                  onClick={() => { restImageProps.onClick(); showConfirm(); }}
+                >
+                  <MdDelete size={16} />
+                </button>
+              </div>
+            )
+              : useToAlbum && isUserAlbum && (
+                <div className="absolute bottom-2 right-2">
+                  <button
+                    className="p-2 bg-graybg rounded-full ml-2"
+                    type="button"
+                    onClick={() => { restImageProps.onClick(); showConfirmToDeleteImageInAlbum(); }}
+                  >
+                    <MdDelete size={16} />
                   </button>
                 </div>
               )

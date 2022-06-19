@@ -1,10 +1,13 @@
 import { ExclamationCircleOutlined, ZoomInOutlined } from '@ant-design/icons';
-import { Image, Modal, Space } from 'antd';
+import {
+  Image, message, Modal, Space,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline, MdDelete } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
+import albumsApi from '../../api/albumsApi';
 import imageApi from '../../api/imageApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
@@ -12,6 +15,7 @@ import { userActions } from '../../features/user/userSlice';
 import { ImageInformation } from '../../models';
 import ListSelectAlbumModal from '../Album/ListSelectAlbumModal';
 
+const key = 'updatable';
 const ImageDetail = () => {
   const [image, setImage] = useState<ImageInformation>();
   const [currentAlbum, setCurrentAlbum] = useState('Album mặc định');
@@ -76,6 +80,24 @@ const ImageDetail = () => {
     });
   };
 
+  const handleSavePostToAlbum = async (imageId: string, album: string) => {
+    const res = await albumsApi.saveImageToAlbum(imageId, album);
+    if (res) {
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: `Đã lưu ảnh vào Album ${album} !`,
+          key,
+          duration: 2,
+        });
+      }, 1000);
+      dispatch(userActions.getUserStart(userName));
+    }
+  };
+
   return (
     <div className="flex justify-center xl:items-center">
       <button
@@ -128,6 +150,7 @@ const ImageDetail = () => {
                     className="rounded-[24px] bg-red-600 text-white
                 flex items-center text-base font-semibold px-4 py-1"
                     type="button"
+                    onClick={() => { handleSavePostToAlbum(image?.id || '', currentAlbum); }}
                   >
                     Lưu
                   </button>
@@ -158,6 +181,23 @@ const ImageDetail = () => {
             </div>
           </div>
           <div className="lg:flex-1">
+            <div className="hidden xl:flex px-5 justify-end mb-10">
+              <button
+                className="flex items-center text-base font-bold max-w-[40%]"
+                type="button"
+                onClick={() => setSelectAlbumModal(true)}
+              >
+                <span className="mr-1 truncate">{currentAlbum}</span>
+                <FaAngleDown size={20} />
+              </button>
+              <button
+                className="bg-primary px-4 py-2 rounded-3xl text-base font-bold text-white ml-4"
+                type="button"
+                onClick={() => { handleSavePostToAlbum(image?.id || '', currentAlbum); }}
+              >
+                Lưu
+              </button>
+            </div>
             <div className="flex h-12 justify-between px-5 my-4">
               <div className="flex">
                 <img className="h-12 w-12" src={`/uploads/${image?.user?.avatar || 'default_avatar.png'}`} alt="" />
