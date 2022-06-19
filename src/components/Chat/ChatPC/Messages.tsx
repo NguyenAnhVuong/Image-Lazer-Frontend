@@ -3,10 +3,10 @@ import { AiFillMessage } from 'react-icons/ai';
 import { Modal } from 'antd';
 import {
   connectWithSocketServer,
-} from '../../realtimeCommunication/socketConnection';
+} from '../../../realtimeCommunication/socketConnection';
 import ListUserChat from './ListUserChat';
-import { useAppSelector } from '../../app/hooks';
-import { AppState } from '../../app/store';
+import { useAppSelector } from '../../../app/hooks';
+import { AppState } from '../../../app/store';
 
 const Messages:React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -31,13 +31,12 @@ const Messages:React.FC = () => {
       <div style={{ borderRadius: '50%' }}>
         <Modal
           visible={isModalVisible}
-          style={{ top: 90, left: '39vw' }}
           closable={false}
           onOk={hideModal}
           onCancel={hideModal}
           mask={false}
           footer={null}
-          wrapClassName="customBorderRadiusAntModal"
+          wrapClassName="customBorderRadiusAntModal customPositionAntModal"
         >
           <div className="flex mb-6">
             <h1 className="text-base font-bold grow text-center">
