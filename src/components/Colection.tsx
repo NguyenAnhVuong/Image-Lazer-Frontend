@@ -275,14 +275,14 @@ const Colection = ({
         <PhotoAlbum
           photos={photos}
           layout="columns"
-          columns={(containerWidth) => {
-            if (containerWidth < 768) return 2;
-            if (containerWidth < 1024) return 3;
-            if (containerWidth < 1280) return 4;
-            if (containerWidth < 1536) return 5;
-            if (containerWidth < 1750) return 6;
-            return 7;
-          }}
+          // columns={(containerWidth) => {
+          //   if (containerWidth < 768) return 2;
+          //   if (containerWidth < 1024) return 3;
+          //   if (containerWidth < 1280) return 4;
+          //   if (containerWidth < 1536) return 5;
+          //   if (containerWidth < 1750) return 6;
+          //   return 7;
+          // }}
           spacing={16}
           targetRowHeight={200}
           renderPhoto={renderPhoto}
@@ -296,14 +296,14 @@ const Colection = ({
         <PhotoAlbum
           photos={photos}
           layout="columns"
-          columns={(containerWidth) => {
-            if (containerWidth < 768) return 2;
-            if (containerWidth < 1024) return 3;
-            if (containerWidth < 1280) return 4;
-            if (containerWidth < 1536) return 5;
-            if (containerWidth < 1750) return 6;
-            return 7;
-          }}
+          // columns={(containerWidth) => {
+          //   if (containerWidth < 768) return 2;
+          //   if (containerWidth < 1024) return 3;
+          //   if (containerWidth < 1280) return 4;
+          //   if (containerWidth < 1536) return 5;
+          //   if (containerWidth < 1750) return 6;
+          //   return 7;
+          // }}
           spacing={8}
           targetRowHeight={200}
           renderPhoto={renderPhoto}

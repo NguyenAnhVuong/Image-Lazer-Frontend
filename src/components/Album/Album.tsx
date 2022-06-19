@@ -7,8 +7,9 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { MdDelete, MdModeEditOutline } from 'react-icons/md';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import albumsApi from '../../api/albumsApi';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
+import { userActions } from '../../features/user/userSlice';
 import { AlbumInformation } from '../../models';
 import Colection from '../Colection';
 import EditAlbumModal from './EditAlbumModal';
@@ -18,12 +19,14 @@ const Album = () => {
   const { confirm } = Modal;
   const navigate = useNavigate();
   const user = useAppSelector((state: AppState) => state.user.user);
+  const userName = useAppSelector((state: AppState) => state.auth.userName);
   const [reRender, setReRender] = useState(false);
   const [album, setAlbum] = useState<AlbumInformation>({} as AlbumInformation);
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenSetting, setIsOpenSetting] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
   const params = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
   const handleDeleteAlbum = async (id?: string) => {
     const res = await albumsApi.deleteAlbum(id);
     if (res) {
@@ -38,7 +41,8 @@ const Album = () => {
           duration: 2,
         });
       }, 1000);
-      navigate(`/user/${user.userName}`);
+      navigate(`/user/${userName}`);
+      dispatch(userActions.getUserStart(userName));
     }
   };
   const showConfirm = async () => {
