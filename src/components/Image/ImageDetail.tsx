@@ -89,8 +89,8 @@ const ImageDetail = () => {
           size={56}
         />
       </button>
-      <div className="pb-40 xl:w-[1016px] 2xl:w-[1200px] xl:rounded-3xl xl:header-shadow xl:p-4 xl:min-h-[660px]">
-        <div className="fixed top-0 flex justify-between px-2 w-full h-14 items-center bg-white header-shadow xl:hidden z-10">
+      <div className="pb-40 xl:w-[1016px] 2xl:w-[1200px] xl:rounded-3xl xl:header-shadow xl:p-4 xl:min-h-[660px] w-full">
+        <div className="fixed top-0 left-0 flex justify-between px-2 w-full h-14 items-center bg-white header-shadow xl:hidden z-10">
           <button className="" type="button" onClick={() => navigate(-1)}>
             <IoIosArrowBack className="p-3 text-black" size={48} />
           </button>
@@ -98,7 +98,7 @@ const ImageDetail = () => {
           {
             userName === image?.user?.userName
               ? (
-                <div className="flex">
+                <div className="flex items-center">
                   <button className="" type="button" onClick={() => { navigate(`/image/edit/${params.id}`); }}>
                     <MdModeEditOutline className="p-3" size={48} />
                   </button>
@@ -107,7 +107,7 @@ const ImageDetail = () => {
                   </button>
                   <button
                     className="rounded-[24px] bg-black text-white
-                flex items-center text-base font-semibold px-4 py-1 ml-2"
+                flex items-center text-base font-semibold px-4 p-1 ml-2"
                     type="button"
                   >
                     Đã lưu
@@ -140,7 +140,7 @@ const ImageDetail = () => {
           <div className="lg:flex-1 flex justify-center items-center">
             <div className="lg:rounded-3xl lg:overflow-hidden">
               <Image
-                className="w-full lg:object-contain lg:rounded-3xl lg:overflow-hidden"
+                className="w-screen lg:w-full lg:object-contain lg:rounded-3xl lg:overflow-hidden"
                 src={image?.src}
                 alt=""
                 preview={{
@@ -170,13 +170,27 @@ const ImageDetail = () => {
                   </span>
                 </div>
               </div>
+              {
+                userName === image?.user?.userName
+                  ? (
+                    <button
+                      className="bg-graybg px-3 text-[#767676] py-4 rounded-3xl flex justify-center items-center font-bold text-base"
+                      type="button"
+                      disabled
+                    >
+                      Chính là bạn
+                    </button>
+                  )
+                  : (
+                    <button
+                      className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
+                      type="button"
+                    >
+                      Theo dõi
+                    </button>
+                  )
+              }
 
-              <button
-                className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
-                type="button"
-              >
-                Theo dõi
-              </button>
             </div>
             {
               !!image && !!image.link && (

@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { AlbumInformation } from './album';
+import { AlbumCardInformation } from './album';
 // eslint-disable-next-line import/no-cycle
 import { ImageInformation } from './image';
 
@@ -20,5 +20,5 @@ export interface UserInformation {
   followers?: FollowUser[];
   following?: FollowUser[];
   createdImages?: ImageInformation[];
-  albums?: AlbumInformation[];
+  albums?: AlbumCardInformation[];
 }

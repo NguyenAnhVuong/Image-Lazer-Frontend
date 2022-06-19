@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { AppState, history } from './app/store';
+import Album from './components/Album/Album';
 import Auth from './components/Auth/Auth';
 import Home from './components/Home';
 import CreateImagePage from './components/Image/CreateImagePage';
@@ -42,6 +43,7 @@ const App = () => {
           : <Route path="*" element={<Auth />} />}
         <Route path="/user/:userName" element={<User />} />
         <Route path="/image/:id" element={<ImageDetail />} />
+        <Route path="/album/:id" element={<Album />} />
       </Routes>
     </Router>
   );

@@ -7,21 +7,26 @@ import { FaAngleDown } from 'react-icons/fa';
 import { MdDelete, MdModeEditOutline } from 'react-icons/md';
 import PhotoAlbum, { RenderPhoto } from 'react-photo-album';
 import { useNavigate } from 'react-router-dom';
+import albumsApi from '../api/albumsApi';
 import imageApi from '../api/imageApi';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
 import { userActions } from '../features/user/userSlice';
-// import { useAppSelector } from '../app/hooks';
-// import { AppState } from '../app/store';
 import { ImageInformation } from '../models';
 import ListSelectAlbumModal from './Album/ListSelectAlbumModal';
 
 export interface ImageAlbumProps {
   images: ImageInformation[];
-  goverment: boolean;
+  useToAlbum: boolean;
+  isUserAlbum: boolean;
+  reRender: boolean;
+  setReRender: (reRender: boolean) => void;
+  albumName: string;
 }
 
-const Colection = ({ images, goverment }: ImageAlbumProps) => {
+const Colection = ({
+  images, useToAlbum, isUserAlbum, reRender, setReRender, albumName,
+}: ImageAlbumProps) => {
   // const userAlbums = useAppSelector((state: AppState) => state.albums.albums);
   const [currentAlbum, setCurrentAlbum] = useState('Album mặc định');
   const [selectAlbumModal, setSelectAlbumModal] = useState(false);
@@ -31,6 +36,7 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
   const dispatch = useAppDispatch();
   const userName = useAppSelector((state: AppState) => state.auth.userName);
   const { confirm } = Modal;
+  const user = useAppSelector((state: AppState) => state.user.user);
 
   const photos: any = images.map((image: ImageInformation) => ({
     id: image.id,
@@ -59,6 +65,7 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
     const res = await imageApi.deleteImage(id);
     if (res) {
       dispatch(userActions.getUserStart(userName));
+      setReRender(!reRender);
     }
   };
 
@@ -79,6 +86,39 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
     });
   };
 
+  const handleDeleteImageInAlbum = async (imageId: string, album: string) => {
+    const res = await albumsApi.deleteImageInAlbum(imageId, album);
+    if (res) {
+      dispatch(userActions.getUserStart(userName));
+      setReRender(!reRender);
+    }
+  };
+
+  const showConfirmToDeleteImageInAlbum = async () => {
+    confirm({
+      title: 'Bạn có chắc là muốn xóa ảnh này khỏi Album?',
+      icon: <ExclamationCircleOutlined />,
+      content: '',
+      okText: 'Xóa',
+      cancelText: 'Hủy',
+      okType: 'danger',
+      onOk() {
+        handleDeleteImageInAlbum(refId.current, albumName);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
+  const handleSavePostToAlbum = async (imageId: string, album: string) => {
+    const res = await albumsApi.saveImageToAlbum(imageId, album);
+    if (res) {
+      console.log('Save image to album success');
+      dispatch(userActions.getUserStart(userName));
+    }
+  };
+
   const renderPhoto: RenderPhoto | any = ({ imageProps: { alt, style, ...restImageProps } }: any) => (
     <div
       className="relative mb-2 rounded-2xl overflow-hidden xl:mb-4 cursor-pointer"
@@ -94,7 +134,9 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
           className="absolute left-0 top-0 right-0 bottom-0 hidden group-hover:block group-hover:bg-[#0a0a0a49]"
           role="button"
           tabIndex={0}
-          onClick={() => { restImageProps.onClick(); navigate(`/image/${refId.current}`); }}
+          onClick={() => {
+            restImageProps.onClick(); navigate(`/image/${refId.current}`);
+          }}
           onKeyDown={restImageProps.onClick}
         />
         <div className="hidden group-hover:xl:block ">
@@ -110,12 +152,13 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
             <button
               className="bg-primary px-4 py-2 rounded-3xl text-base font-bold text-white"
               type="button"
+              onClick={() => { restImageProps.onClick(); handleSavePostToAlbum(refId.current, currentAlbum); }}
             >
               Lưu
             </button>
           </div>
           {
-            !!goverment && (
+            user.createdImages?.find((image) => image.src === restImageProps.src) ? (
               <div className="absolute bottom-3 right-3">
                 <button
                   className="p-2 bg-graybg rounded-full"
@@ -135,6 +178,17 @@ const Colection = ({ images, goverment }: ImageAlbumProps) => {
                 </button>
               </div>
             )
+              : useToAlbum && isUserAlbum && (
+                <div className="absolute bottom-3 right-3">
+                  <button
+                    className="p-2 bg-graybg rounded-full ml-2"
+                    type="button"
+                    onClick={() => { restImageProps.onClick(); showConfirmToDeleteImageInAlbum(); }}
+                  >
+                    <MdDelete size={20} />
+                  </button>
+                </div>
+              )
           }
         </div>
       </div>

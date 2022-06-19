@@ -7,12 +7,12 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { userActions } from '../../features/user/userSlice';
 import { AlbumCardInformation } from '../../models';
 
-type CreateAlbumModalProps = {
+type EditAlbumModalProps = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
 };
 
-const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
+const EditAlbumModal = ({ isOpen, setIsOpen }: EditAlbumModalProps) => {
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
@@ -103,4 +103,4 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
   );
 };
 
-export default CreateAlbumModal;
+export default EditAlbumModal;
