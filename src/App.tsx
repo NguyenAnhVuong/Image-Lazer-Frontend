@@ -3,11 +3,13 @@ import { Route, Routes } from 'react-router-dom';
 import { HistoryRouter as Router } from 'redux-first-history/rr6';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { AppState, history } from './app/store';
+import Album from './components/Album/Album';
 import Auth from './components/Auth/Auth';
 import ChatMobile from './components/Chat/ChatMobile/ChatMobile';
 import ListUserChatItemMobile from './components/Chat/ChatMobile/ListUserChatItemMobile';
 import Home from './components/Home';
 import CreateImagePage from './components/Image/CreateImagePage';
+import EditImagePage from './components/Image/EditImagePage';
 import ImageDetail from './components/Image/ImageDetail';
 import Header from './components/Layout/Header';
 import User from './components/User/User';
@@ -36,12 +38,14 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/create-image" element={<CreateImagePage />} />
             <Route path="/user-information" element={<UserInformation />} />
+            <Route path="/image/edit/:id" element={<EditImagePage />} />
           </>
         ) : (
           <Route path="*" element={<Auth />} />
         )}
         <Route path="/user/:userName" element={<User />} />
         <Route path="/image/:id" element={<ImageDetail />} />
+        <Route path="/album/:id" element={<Album />} />
         <Route path="/notifications" element={<ChatMobile />} />
         <Route
           path="/notifications/:userName"

@@ -1,19 +1,30 @@
-import { ZoomInOutlined } from '@ant-design/icons';
-import { Image, Space } from 'antd';
+import { ExclamationCircleOutlined, ZoomInOutlined } from '@ant-design/icons';
+import {
+  Image, message, Modal, Space,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
+import { MdModeEditOutline, MdDelete } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
+import albumsApi from '../../api/albumsApi';
 import imageApi from '../../api/imageApi';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { AppState } from '../../app/store';
+import { userActions } from '../../features/user/userSlice';
 import { ImageInformation } from '../../models';
 import ListSelectAlbumModal from '../Album/ListSelectAlbumModal';
 
+const key = 'updatable';
 const ImageDetail = () => {
   const [image, setImage] = useState<ImageInformation>();
   const [currentAlbum, setCurrentAlbum] = useState('Album mặc định');
   const [selectAlbumModal, setSelectAlbumModal] = useState(false);
+  const userName = useAppSelector((state: AppState) => state.auth.userName);
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { confirm } = Modal;
 
   useEffect(() => {
     const getImageFromApi = async () => {
@@ -44,6 +55,49 @@ const ImageDetail = () => {
     getImageFromApi();
   }, [params]);
 
+  const handleDeleteImage = async (id: string) => {
+    const res = await imageApi.deleteImage(id);
+    if (res) {
+      dispatch(userActions.getUserStart(userName));
+    }
+  };
+
+  const showConfirm = async () => {
+    confirm({
+      title: 'Bạn có chắc là muốn xóa ảnh này?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Bạn sẽ không thể khôi phục lại ảnh này',
+      okText: 'Xóa',
+      cancelText: 'Hủy',
+      okType: 'danger',
+      onOk() {
+        handleDeleteImage(image?.id || '');
+        navigate(-1);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
+  const handleSavePostToAlbum = async (imageId: string, album: string) => {
+    const res = await albumsApi.saveImageToAlbum(imageId, album);
+    if (res) {
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: `Đã lưu ảnh vào Album ${album} !`,
+          key,
+          duration: 2,
+        });
+      }, 1000);
+      dispatch(userActions.getUserStart(userName));
+    }
+  };
+
   return (
     <div className="flex justify-center xl:items-center">
       <button
@@ -57,32 +111,59 @@ const ImageDetail = () => {
           size={56}
         />
       </button>
-      <div className="pb-40 xl:w-[1016px] 2xl:w-[1200px] xl:rounded-3xl xl:header-shadow xl:p-4 xl:min-h-[660px]">
-        <div className="fixed top-0 flex justify-between px-2 w-full h-14 items-center bg-white header-shadow xl:hidden z-10">
-          <button type="button" className="" onClick={() => navigate(-1)}>
+      <div className="pb-40 xl:w-[1016px] 2xl:w-[1200px] xl:rounded-3xl xl:header-shadow xl:p-4 xl:min-h-[660px] w-full">
+        <div className="fixed top-0 left-0 flex justify-between px-2 w-full h-14 items-center bg-white header-shadow xl:hidden z-10">
+          <button className="" type="button" onClick={() => navigate(-1)}>
             <IoIosArrowBack className="p-3 text-black" size={48} />
           </button>
-          <button
-            className="flex items-center text-base font-bold max-w-[40%]"
-            type="button"
-            onClick={() => setSelectAlbumModal(true)}
-          >
-            <span className="mr-1 truncate">{currentAlbum}</span>
-            <FaAngleDown size={20} />
-          </button>
-          <button
-            className="rounded-[24px] bg-red-600 text-white
+
+          {
+            userName === image?.user?.userName
+              ? (
+                <div className="flex items-center">
+                  <button className="" type="button" onClick={() => { navigate(`/image/edit/${params.id}`); }}>
+                    <MdModeEditOutline className="p-3" size={48} />
+                  </button>
+                  <button className="" type="button">
+                    <MdDelete className="p-3" size={48} onClick={showConfirm} />
+                  </button>
+                  <button
+                    className="rounded-[24px] bg-black text-white
+                flex items-center text-base font-semibold px-4 p-1 ml-2"
+                    type="button"
+                  >
+                    Đã lưu
+                  </button>
+                </div>
+              )
+              : (
+                <>
+                  <button
+                    className="flex items-center text-base font-bold max-w-[40%]"
+                    type="button"
+                    onClick={() => setSelectAlbumModal(true)}
+                  >
+                    <span className="mr-1 truncate">{currentAlbum}</span>
+                    <FaAngleDown size={20} />
+                  </button>
+                  <button
+                    className="rounded-[24px] bg-red-600 text-white
                 flex items-center text-base font-semibold px-4 py-1"
-            type="button"
-          >
-            Lưu
-          </button>
+                    type="button"
+                    onClick={() => { handleSavePostToAlbum(image?.id || '', currentAlbum); }}
+                  >
+                    Lưu
+                  </button>
+                </>
+              )
+          }
+
         </div>
         <div className="mt-14 lg:flex lg:p-2">
           <div className="lg:flex-1 flex justify-center items-center">
             <div className="lg:rounded-3xl lg:overflow-hidden">
               <Image
-                className="w-full lg:object-contain lg:rounded-3xl lg:overflow-hidden"
+                className="w-screen lg:w-full lg:object-contain lg:rounded-3xl lg:overflow-hidden"
                 src={image?.src}
                 alt=""
                 preview={{
@@ -100,9 +181,26 @@ const ImageDetail = () => {
             </div>
           </div>
           <div className="lg:flex-1">
+            <div className="hidden xl:flex px-5 justify-end mb-10">
+              <button
+                className="flex items-center text-base font-bold max-w-[40%]"
+                type="button"
+                onClick={() => setSelectAlbumModal(true)}
+              >
+                <span className="mr-1 truncate">{currentAlbum}</span>
+                <FaAngleDown size={20} />
+              </button>
+              <button
+                className="bg-primary px-4 py-2 rounded-3xl text-base font-bold text-white ml-4"
+                type="button"
+                onClick={() => { handleSavePostToAlbum(image?.id || '', currentAlbum); }}
+              >
+                Lưu
+              </button>
+            </div>
             <div className="flex h-12 justify-between px-5 my-4">
               <div className="flex">
-                <img className="h-12 w-12" src={`/uploads/${image?.user?.avatar}`} alt="" />
+                <img className="h-12 w-12" src={`/uploads/${image?.user?.avatar || 'default_avatar.png'}`} alt="" />
                 <div className="flex flex-col justify-center ml-2">
                   <span className="font-bold">{image?.user?.fullName}</span>
                   <span className="font-medium">
@@ -112,13 +210,27 @@ const ImageDetail = () => {
                   </span>
                 </div>
               </div>
+              {
+                userName === image?.user?.userName
+                  ? (
+                    <button
+                      className="bg-graybg px-3 text-[#767676] py-4 rounded-3xl flex justify-center items-center font-bold text-base"
+                      type="button"
+                      disabled
+                    >
+                      Chính là bạn
+                    </button>
+                  )
+                  : (
+                    <button
+                      className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
+                      type="button"
+                    >
+                      Theo dõi
+                    </button>
+                  )
+              }
 
-              <button
-                className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
-                type="button"
-              >
-                Theo dõi
-              </button>
             </div>
             {
               !!image && !!image.link && (

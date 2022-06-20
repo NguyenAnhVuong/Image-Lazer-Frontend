@@ -1,70 +1,89 @@
+import { ZoomInOutlined } from '@ant-design/icons';
 import {
-  Button, Form, Input, message, Select,
+  Button, Form, Image, Input, message, Select, Space,
 } from 'antd';
-import { useState } from 'react';
-import { BsFillCloudUploadFill } from 'react-icons/bs';
+import { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import imageApi from '../../api/imageApi';
-import uploadApi from '../../api/uploadApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { userActions } from '../../features/user/userSlice';
 import { CreateImage, ImageInformation, topics } from '../../models';
 
 const key = 'updatable';
-const CreateImagePage = () => {
+const EditImagePage = () => {
   const userAlbums = useAppSelector((state: AppState) => state.user.user.albums);
   const userName = useAppSelector((state: AppState) => state.auth.userName);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const params = useParams();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [image, setImage] = useState<ImageInformation>({
-    name: '', src: '', height: 0, width: 0,
-  });
+  const [image, setImage] = useState<ImageInformation>({});
   const [form] = Form.useForm();
 
-  const handleUploadImage = async (e: any) => {
-    const images = e.target.files;
-    const fileImage = new FormData();
-    fileImage.append('image', images[0]);
-    const imageInfor: ImageInformation = await uploadApi.uploadSingleImage(fileImage);
-    if (imageInfor.src) {
-      setImage(imageInfor);
-    }
-  };
-
-  const handleAddImage = async (info: CreateImage) => {
+  const handleUpdateImage = async (info: CreateImage) => {
     const newImage = {
-      image: image.name,
-      image_height: image.height,
-      image_width: image.width,
       title: info.title,
       topic: info.topic,
       description: info.description || '',
       link: info.link,
       album: info.album,
     };
-    const res = await imageApi.createImage(newImage);
+    const res = await imageApi.updateImage(params.id || '', newImage);
     if (res) {
-      setImage({
-        name: '', src: '', height: 0, width: 0,
-      });
       message.loading({
         content: 'Đang tải...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: 'Tạo ảnh thành công!',
+          content: 'Lưu thông tin Ảnh thành công!',
           key,
           duration: 2,
         });
       }, 1000);
-      form.resetFields();
+      navigate(`/image/${params.id}`);
       dispatch(userActions.getUserStart(userName));
     }
   };
+
+  useEffect(() => {
+    const getImageFromApi = async () => {
+      if (params.id) {
+        const res = await imageApi.getImageDetail(params.id);
+        console.log('res: ', res);
+        const imageInfo: ImageInformation = {
+          id: params.id,
+          name: res.image,
+          src: `/uploads/${res.image}`,
+          height: res.image_height,
+          width: res.image_width,
+          comment: res.comment,
+          likes: res.likes,
+          link: res.link,
+          title: res.title,
+          topic: res.topic,
+          description: res.description,
+          user: {
+            userName: res.userInformation.userName,
+            fullName: res.userInformation.fullName,
+            avatar: res.userInformation.avatar,
+            followers: res.userInformation.followers,
+          },
+        };
+        setImage(imageInfo);
+        form.setFieldsValue({
+          title: res.title,
+          topic: res.topic,
+          description: res.description,
+          link: res.link,
+          album: userAlbums?.filter((album) => album.id === res.album_id)[0].name,
+        });
+      }
+    };
+    getImageFromApi();
+  }, [form, params, userAlbums]);
 
   return (
     <div className="xl:flex xl:justify-center">
@@ -72,16 +91,12 @@ const CreateImagePage = () => {
         <button type="button" className="absolute left-0" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="p-3 text-black" size={48} />
         </button>
-        <span className="text-base font-bold">Thêm Ảnh</span>
+        <span className="text-base font-bold">Thay đổi thông tin Ảnh</span>
       </div>
       <div className="flex flex-col items-center p-4 mt-14 xl:flex-row  xl:w-[1200px]">
         <div className="xl:w-[40%] xl:flex xl:justify-center">
-          {
-            image.src
-              ? (
-                // eslint-disable-next-line jsx-a11y/label-has-associated-control
-                <label
-                  className="
+          <div
+            className="
             w-64
             flex
             flex-col
@@ -92,43 +107,30 @@ const CreateImagePage = () => {
             overflow-hidden
             xl:w-80
             "
-                  htmlFor="image"
-                >
-                  <img className="object-cover w-full rounded-xl" src={image.src} alt="" />
-                </label>
-              )
-              : (
-                // eslint-disable-next-line jsx-a11y/label-has-associated-control
-                <label
-                  className="
-            h-36
-            w-64
-            flex
-            flex-col
-            justify-center
-            items-center
-            cursor-pointer
-            border
-            border-black
-            rounded-2xl
-            xl:w-80
-            xl:h-[480px]
-            "
-                  htmlFor="image"
-                >
-                  <BsFillCloudUploadFill size={28} />
-                  <span className="p-3">Chọn một ảnh</span>
-                </label>
-              )
-          }
-
-          <input hidden id="image" type="file" onChange={(e) => handleUploadImage(e)} />
+          >
+            <Image
+              className="object-cover w-full rounded-xl overflow-hidden"
+              src={image.src}
+              alt=""
+              preview={{
+                maskClassName: 'customize-mask',
+                mask: (
+                  <Space direction="vertical" align="center">
+                    <div className="flex items-center">
+                      <ZoomInOutlined />
+                      <span className="ml-1">Phóng to</span>
+                    </div>
+                  </Space>
+                ),
+              }}
+            />
+          </div>
         </div>
         <div className="w-full mt-5 xl:w-[60%]">
           <Form
             name="basic"
             form={form}
-            onFinish={handleAddImage}
+            onFinish={handleUpdateImage}
             autoComplete="off"
             layout="vertical"
           >
@@ -143,7 +145,7 @@ const CreateImagePage = () => {
                   },
                 ]}
               >
-                <Input className="rounded-2xl px-4 py-2" />
+                <Input name="title" className="rounded-2xl px-4 py-2" />
               </Form.Item>
             </div>
 
@@ -176,21 +178,22 @@ const CreateImagePage = () => {
                 </Select>
               </Form.Item>
             </div>
-
-            <Form.Item
-              name="description"
-            >
-              <div>
-                <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+            <div>
+              <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+              <Form.Item
+                name="description"
+              >
                 <Input.TextArea className="rounded-2xl px-4 py-2 h-24 resize-none" />
-              </div>
-            </Form.Item>
-            <Form.Item name="link">
-              <div>
-                <span className="text-sm mb-2 ml-1 block">Liên kết</span>
+              </Form.Item>
+            </div>
+
+            <div>
+              <span className="text-sm mb-2 ml-1 block">Liên kết</span>
+              <Form.Item name="link">
                 <Input className="rounded-2xl px-4 py-2" />
-              </div>
-            </Form.Item>
+              </Form.Item>
+            </div>
+
             <div>
               <span className="text-sm mb-2 ml-1 block">Album ảnh</span>
               <Form.Item
@@ -246,4 +249,4 @@ const CreateImagePage = () => {
   );
 };
 
-export default CreateImagePage;
+export default EditImagePage;
