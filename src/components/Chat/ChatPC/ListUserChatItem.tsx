@@ -4,10 +4,10 @@ import { Button, Input, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BiSend } from 'react-icons/bi';
-import { getDirectChatHistory, sendDirectMessage } from '../../realtimeCommunication/socketConnection';
-import { AppState } from '../../app/store';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { chatActions } from '../../features/chat/chatSlice';
+import { getDirectChatHistory, sendDirectMessage } from '../../../realtimeCommunication/socketConnection';
+import { AppState } from '../../../app/store';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { chatActions } from '../../../features/chat/chatSlice';
 
 interface User {
   avatar: string;
@@ -89,7 +89,7 @@ const ListUserChatItem = (props: User) => {
         type="link"
         onClick={handleChooseActiveConversation}
         size="large"
-        className="grid grid-rows-2 gap-3 grid-flow-col mt-5"
+        className="grid grid-rows-2 gap-3 grid-flow-col mt-5 text-left"
       >
         <img
           src={avatar}
@@ -100,13 +100,12 @@ const ListUserChatItem = (props: User) => {
         <p className="col-span-1">Đang theo dõi</p>
       </Button>
       <Modal
-        style={{ top: 90, left: '39vw' }}
         visible={isModalVisible}
         mask={false}
         footer={null}
         onCancel={handleCancel}
         closable={false}
-        wrapClassName="customBorderRadiusAntModal"
+        wrapClassName="customBorderRadiusAntModal customPositionAntModal"
       >
         <div className="flex mb-6">
           <span className="flex-none">
@@ -126,51 +125,51 @@ const ListUserChatItem = (props: User) => {
               && messages.map((message: Message, index) => (
                 // <div className={(email !== message.author.email) ? 'flex justify-end' : 'flex justify-start'}>
                 <div
-                  className={`grid items-center ${
+                  className={`flex items-center ${
                     email !== message.author.email
                       ? 'justify-end'
-                      : 'justify-start grid-cols-[24px]'
+                      : 'justify-start'
                   }`}
                 >
                   {((email === message.author.email
                     && messages[index + 1]
                     && email !== messages[index + 1].author.email)
                     || (index + 1 === messages.length
-                      && email === message.author.email)) && (
-                      <img
-                        src={avatar}
-                        alt="avatar"
-                        className="rounded-full w-6 h-6"
-                      />
-                  )}
-                  <div
-                    key={message._id}
-                    className={`flex flex-col mx-4 ${
-                      email === message.author.email && 'col-start-2'
-                    }`}
-                  >
+                      && email === message.author.email)) ? (
+                        <img
+                          src={avatar}
+                          alt="avatar"
+                          className="rounded-full w-6 h-6"
+                        />
+                    ) : (<div className="w-6 h-6" />)}
+                  <div className="flex flex-col w-[calc(100% - 2rem)]">
                     {((email === message.author.email
                       && messages[index - 1]
                       && email !== messages[index - 1].author.email)
                       || (index === 0 && email === message.author.email)) && (
-                      <span className="text-left">{fullName}</span>
+                      <span className="text-left mx-4">{fullName}</span>
                     )}
 
                     {((email !== message.author.email
                       && messages[index - 1]
                       && email === messages[index - 1].author.email)
                       || (index === 0 && email !== message.author.email)) && (
-                      <span className="text-right">Bạn</span>
+                      <span className="text-right mx-4">Bạn</span>
                     )}
-                    <p
-                      className={`font-medium text-sm ${
-                        email === message.author.email
-                          ? 'rounded-2xl bg-[#efefef] p-3'
-                          : 'rounded-2xl bg-[#fff] p-3 shadow-md'
-                      }`}
+                    <div
+                      key={message._id}
+                      className="mx-4"
                     >
-                      {message.content}
-                    </p>
+                      <p
+                        className={`font-medium text-sm w-fit ${
+                          email === message.author.email
+                            ? 'rounded-2xl bg-[#efefef] p-3 shadow-md'
+                            : 'rounded-2xl bg-[#fff] p-3 shadow-md'
+                        }`}
+                      >
+                        {message.content}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
