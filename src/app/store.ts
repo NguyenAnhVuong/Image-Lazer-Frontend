@@ -2,8 +2,11 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
 import { createReduxHistoryContext, reachify } from 'redux-first-history';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from './rootSaga';
+import { authReducer } from '../features/auth/authSlice';
+import { chatReducer } from '../features/chat/chatSlice';
 import testReducer from '../features/test/testSlice';
+import { userReducer } from '../features/user/userSlice';
+import rootSaga from './rootSaga';
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
   history: createBrowserHistory(),
@@ -16,6 +19,9 @@ export const store = configureStore({
   reducer: {
     router: routerReducer,
     test: testReducer,
+    auth: authReducer,
+    chat: chatReducer,
+    user: userReducer,
   },
   middleware:
     (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware),
@@ -28,10 +34,7 @@ export const history = createReduxHistory(store);
 export const reachHistory = reachify(history);
 
 export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-ReturnType,
-RootState,
-unknown,
-Action<string>
->;
+export type AppState = ReturnType<typeof store.getState>;
+export type AppThunk<ReturnType = void> =
+  ThunkAction<ReturnType, AppState, unknown, Action<string>
+  >;

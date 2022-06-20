@@ -1,9 +1,11 @@
-import React from 'react';
+import HeaderMobile from './HeaderMobile';
+import HeaderPC from './HeaderPC';
 
-type Props = {};
-
-function Header(props: Props) {
-  return <div>Header</div>;
-}
+const Header = () => (
+  <div>
+    <HeaderMobile />
+    <HeaderPC />
+  </div>
+);
 
 export default Header;

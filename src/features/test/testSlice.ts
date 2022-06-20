@@ -1,15 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
-  test: 'test',
+  test: false,
 };
 
 const testSlice = createSlice({
   name: 'test',
   initialState,
   reducers: {
-    test(state) {
-      state.test = 'test';
+    test(state, action: PayloadAction<boolean>) {
+      state.test = action.payload;
     },
   },
 });
