@@ -1,5 +1,5 @@
 import { Input } from 'antd';
-import { AiFillMessage } from 'react-icons/ai';
+import { useEffect, useRef, useState } from 'react';
 import { BsPinterest } from 'react-icons/bs';
 import { FaBell, FaSearch } from 'react-icons/fa';
 import { HiChevronDown } from 'react-icons/hi';
@@ -8,11 +8,15 @@ import axiosJWT from '../../api/axiosJWT';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { authActions } from '../../features/auth/authSlice';
+import Messages from '../Chat/ChatPC/Messages';
 
 const HeaderPC = () => {
   const userName = useAppSelector((state: AppState) => state.auth.userName);
+  const user = useAppSelector((state: AppState) => state.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLButtonElement>(null);
 
   const handleLogout = async () => {
     const res = await axiosJWT.post('/users/auth/logout');
@@ -23,6 +27,19 @@ const HeaderPC = () => {
       navigate('/');
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="hidden xl:block">
       <div className="h-20 py-4">
@@ -42,21 +59,26 @@ const HeaderPC = () => {
             <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
               <FaBell className="p-3" size={48} />
             </div>
-            <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
+            {/* <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
               <AiFillMessage className="p-3" size={48} />
-            </div>
+            </div> */}
+            <Messages />
             <div className="p-3 hover:bg-[#efefef] rounded-full cursor-pointer w-12">
               <Link to={`/user/${userName}`}>
                 <img
                   className="object-cover h-6 w-6"
-                  src="/uploads/default_avatar.png"
+                  src={`/uploads/${user.avatar || 'default_avatar.png'}`}
                   alt=""
                 />
               </Link>
             </div>
-            <div className="flex items-center relative group">
-              <HiChevronDown className="group-hover:bg-[#efefef] rounded-full cursor-pointer" size={24} />
-              <div className="hidden group-hover:block absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20">
+            <div className="relative flex items-center ">
+              <button type="button" className="group" onClick={() => setIsOpen((state) => !state)} ref={ref}>
+                <HiChevronDown className="group-hover:bg-[#efefef] rounded-full cursor-pointer" size={24} />
+              </button>
+              <div
+                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${isOpen ? 'block' : 'hidden'}`}
+              >
                 <ul className="p-2">
                   <li className="">
                     <Link

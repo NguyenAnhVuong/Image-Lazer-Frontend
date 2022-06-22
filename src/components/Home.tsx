@@ -1,6 +1,4 @@
-import PhotoAlbum, {
-  RenderPhoto,
-} from 'react-photo-album';
+import PhotoAlbum, { RenderPhoto } from 'react-photo-album';
 import PlusButton from './PlusButton';
 
 const Home = () => {
@@ -33,6 +31,7 @@ const Home = () => {
   ];
 
   const photos = unsplashPhotos.map((photo) => ({
+    test: 'test',
     src: unsplashLink(photo.id, photo.width, photo.height),
     width: photo.width,
     height: photo.height,
@@ -50,12 +49,16 @@ const Home = () => {
   const renderPhoto: RenderPhoto | any = ({ imageProps: { alt, style, ...restImageProps } }: any) => (
     <div
       className="relative mb-2 rounded-2xl overflow-hidden xl:mb-4 cursor-pointer"
+      role="button"
+      tabIndex={0}
       style={{
         boxSizing: 'content-box',
         alignItems: 'center',
         width: style?.width,
         paddingBottom: 0,
       }}
+      onClick={restImageProps.onClick}
+      onKeyDown={restImageProps.onClick}
     >
       <div className="absolute left-0 top-0 right-0 bottom-0 hover:bg-[#0a0a0a49]" />
       <img
@@ -85,6 +88,11 @@ const Home = () => {
           spacing={16}
           targetRowHeight={200}
           renderPhoto={renderPhoto}
+          onClick={(event, photo, index) => {
+            console.log('event: ', event);
+            console.log('photo: ', photo);
+            console.log('index: ', index);
+          }}
         />
       </div>
 
@@ -103,6 +111,11 @@ const Home = () => {
           spacing={8}
           targetRowHeight={200}
           renderPhoto={renderPhoto}
+          onClick={(event, photo, index) => {
+            console.log('event: ', event);
+            console.log('photo: ', photo);
+            console.log('index: ', index);
+          }}
         />
       </div>
       <PlusButton />

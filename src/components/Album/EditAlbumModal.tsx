@@ -1,57 +1,71 @@
 import {
   Button, Form, Input, message, Modal, Switch,
 } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import albumsApi from '../../api/albumsApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { userActions } from '../../features/user/userSlice';
-import { AlbumCardInformation } from '../../models';
+import { AlbumCardInformation, AlbumInformation } from '../../models';
 
-type CreateAlbumModalProps = {
+type EditAlbumModalProps = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
+  albumInfo: AlbumInformation;
+  setReRender: (value: boolean) => void;
 };
 
 const key = 'updatable';
-const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
+const EditAlbumModal = ({
+  isOpen, setIsOpen, albumInfo, setReRender,
+}: EditAlbumModalProps) => {
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
   const userName = useAppSelector((state: any) => state.auth.userName);
 
-  const handleCreateAlbum = async (album: AlbumCardInformation) => {
-    const newAlbum: AlbumCardInformation = {
+  const handleUpdateAlbum = async (album: AlbumCardInformation) => {
+    const newAlbumInfo: AlbumCardInformation = {
+      id: albumInfo.id,
       name: album.name,
       description: album.description || '',
       secret: !!album.secret,
     };
-    const res = await albumsApi.createAlbum(newAlbum);
+    const res = await albumsApi.updateImageInAlbum(newAlbumInfo);
     if (res) {
       setIsOpen(false);
       setErrorMessage('');
       form.resetFields();
-      dispatch(userActions.getUserStart(userName));
+      setReRender(true);
       message.loading({
         content: 'Đang tải...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: 'Tạo Album thành công!',
+          content: 'Cập nhật thông tin Album thành công!',
           key,
           duration: 2,
         });
       }, 1000);
+      dispatch(userActions.getUserStart(userName));
     } else {
       setErrorMessage('Album này đã tồn tại!');
     }
   };
 
+  useEffect(() => {
+    form.setFieldsValue({
+      name: albumInfo.name,
+      description: albumInfo.description,
+      secret: albumInfo.secret,
+    });
+  }, [albumInfo, form]);
+
   return (
     <div className="create-album-modal">
       <Modal
         visible={isOpen}
-        title="Thêm Album"
+        title="Thông tin Album"
         closable={false}
         footer={null}
         onCancel={() => setIsOpen(false)}
@@ -59,7 +73,7 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
         <Form
           name="basic"
           form={form}
-          onFinish={handleCreateAlbum}
+          onFinish={handleUpdateAlbum}
           autoComplete="off"
           layout="vertical"
         >
@@ -79,14 +93,15 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
               <Input className="rounded-2xl px-4 py-2" />
             </Form.Item>
           </div>
-          <Form.Item
-            name="description"
-          >
-            <div>
-              <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+          <div>
+            <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+            <Form.Item
+              name="description"
+            >
               <Input.TextArea className="rounded-2xl px-4 py-2 h-24 resize-none" />
-            </div>
-          </Form.Item>
+            </Form.Item>
+          </div>
+
           <div className="flex items-center">
             <span className="text-sm mb-6 ml-1 block mr-4">Giữ bí mật bảng</span>
             <Form.Item name="secret" valuePropName="checked">
@@ -115,4 +130,4 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
   );
 };
 
-export default CreateAlbumModal;
+export default EditAlbumModal;

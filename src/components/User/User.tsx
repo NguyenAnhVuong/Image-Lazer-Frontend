@@ -1,25 +1,34 @@
+import { Empty } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { HiLockClosed } from 'react-icons/hi';
+import { IoIosArrowBack } from 'react-icons/io';
 import { RiSettingsFill } from 'react-icons/ri';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axiosJWT from '../../api/axiosJWT';
 import userAPi from '../../api/userApi';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
+import { authActions } from '../../features/auth/authSlice';
 import { UserInformation } from '../../models';
 import CreateAlbumModal from '../Album/CreateAlbumModal';
 import Colection from '../Colection';
 import PlusButton from '../PlusButton';
-import Setting from './Setting';
 
 const User = () => {
   const params = useParams();
   const [user, setUser] = useState<UserInformation>();
   const [added, setAdded] = useState(true);
   const [createAlbumModalOpen, setCreateAlbumModalOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const createRef = useRef<any>();
   const saveRef = useRef<any>();
   const userName = useAppSelector((state: AppState) => state.auth.userName);
-  const [settingOpen, setSettingOpen] = useState(false);
+  const ref = useRef<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [reRender, setReRender] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const userRedux = useAppSelector((state: AppState) => state.user);
 
   const getUser = async () => {
     if (params && params.userName) {
@@ -28,6 +37,7 @@ const User = () => {
         setUser({
           userName: res.userName,
           email: res.email,
+          avatar: res.avatar,
           topics: res.topics,
           fullName: res.fullName,
           followers: res.followers,
@@ -36,14 +46,13 @@ const User = () => {
           albums: res.albums,
         });
       }
-      console.log(res);
     }
   };
 
   useEffect(() => {
     getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params, userRedux]);
 
   useEffect(() => {
     if (added) {
@@ -55,21 +64,63 @@ const User = () => {
     }
   }, [added]);
 
+  const handleLogout = async () => {
+    const res = await axiosJWT.post('/users/auth/logout');
+    if (res && res.data && !res.data.errorCode) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userName');
+      dispatch(authActions.logout());
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div>
-      <button
-        className="fixed top-0 left-0 h-14 flex items-center xl:hidden header-shadow w-full bg-white flex-row-reverse"
-        type="button"
-        onClick={() => setSettingOpen(true)}
+    <div className="pb-20">
+      <div
+        className="fixed top-0 left-0 h-14 flex items-center xl:hidden header-shadow w-full bg-white justify-between p-2 z-10"
       >
-        <RiSettingsFill className="p-3" size={48} />
-      </button>
-      <Setting isOpen={settingOpen} setIsOpen={setSettingOpen} />
+        <button className="" type="button" onClick={() => navigate(-1)}>
+          <IoIosArrowBack className="p-3 text-black" size={48} />
+        </button>
+        <span className="font-bold text-base">Trang cá nhân</span>
+        <button ref={ref} onClick={() => setIsOpen((state) => !state)} type="button">
+          <RiSettingsFill className="p-3" size={48} />
+        </button>
+        <div
+          className={`absolute bg-white header-shadow top-12 right-0 rounded-2xl w-48 z-20 ${isOpen ? 'block' : 'hidden'}`}
+        >
+          <ul className="p-2">
+            <li className="">
+              <Link
+                className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                to="/user-information"
+              >
+                Thông tin cá nhân
+              </Link>
+            </li>
+            <li className="p-2 hover:bg-graybg rounded-2xl cursor-pointer">
+              <button className="text-base font-bold w-full text-left" type="button" onClick={handleLogout}>Đăng xuất</button>
+            </li>
+          </ul>
+        </div>
+      </div>
       <div className="flex items-center mt-20 flex-col">
         <div className="w-32 h-32">
           <img
             className="object-cover"
-            src="/uploads/default_avatar.png"
+            src={`/uploads/${user?.avatar || 'default_avatar.png'}`}
             alt=""
           />
         </div>
@@ -80,12 +131,12 @@ const User = () => {
           {user?.userName}
         </p>
         <p className="text-base font-bold">
-          {user?.followers || '0'}
+          {user?.followers?.length}
           {' '}
           người đang theo dõi
         </p>
         <p className="text-base font-bold">
-          {user?.following || '0'}
+          {user?.following?.length}
           {' '}
           người bạn đang theo dõi
         </p>
@@ -132,8 +183,27 @@ const User = () => {
               <div>
                 {
                   user && user.createdImages && user.createdImages.length > 0
-                    ? (<Colection images={user.createdImages} />)
-                    : <div>Đã thêm</div>
+                    ? (
+                      <Colection
+                        images={user.createdImages}
+                        useToAlbum={false}
+                        isUserAlbum={false}
+                        reRender={reRender}
+                        setReRender={setReRender}
+                        albumName=""
+                      />
+                    )
+                    : (
+                      <div>
+                        <Empty
+                          description={(
+                            <span>
+                              Chưa có Ảnh nào
+                            </span>
+                          )}
+                        />
+                      </div>
+                    )
                 }
               </div>
             )
@@ -142,15 +212,15 @@ const User = () => {
                 {
                   user && user.albums && user.albums.length > 0
                   && user.albums.map((album) => (!album.secret || userName === params.userName) && (
-                    <div className="" key={album.id}>
+                    <Link to={`/album/${album.id}`} className="text-black" key={album.id}>
                       <div
                         className="rounded-2xl bg-cover pt-[calc(1900%/29)] bg-center relative"
                         style={{ backgroundImage: `url("${album.image?.src}")` }}
                       >
-                        <HiLockClosed className="p-2 bg-white rounded-full absolute top-2 left-2" size={32} />
+                        {!!album.secret && <HiLockClosed className="p-2 bg-white rounded-full absolute top-2 left-2" size={32} />}
                       </div>
                       <span className="block text-base font-bold ml-2 mt-1 xl:text-xl xl:mt-2">{album.name}</span>
-                    </div>
+                    </Link>
                   ))
                 }
               </div>

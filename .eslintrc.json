@@ -56,5 +56,6 @@
         "array": false
       }
     ]
+    // "jsx-quotes": ["error", "prefer-single"]
   }
 }

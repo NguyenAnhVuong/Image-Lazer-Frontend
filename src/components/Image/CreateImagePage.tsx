@@ -1,19 +1,21 @@
 import {
-  Button, Form, Input, Select,
+  Button, Form, Input, message, Select,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BsFillCloudUploadFill } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+import imageApi from '../../api/imageApi';
+import uploadApi from '../../api/uploadApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
+import { userActions } from '../../features/user/userSlice';
 import { CreateImage, ImageInformation, topics } from '../../models';
-import uploadApi from '../../api/uploadApi';
-import userAPi from '../../api/userApi';
-import { albumsActions } from '../../features/album/albumSlice';
 
+const key = 'updatable';
 const CreateImagePage = () => {
-  const userAlbums = useAppSelector((state: AppState) => state.albums.albums);
+  const userAlbums = useAppSelector((state: AppState) => state.user.user.albums);
+  const userName = useAppSelector((state: AppState) => state.auth.userName);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,12 +23,6 @@ const CreateImagePage = () => {
     name: '', src: '', height: 0, width: 0,
   });
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (userAlbums.length === 0) {
-      dispatch(albumsActions.getAlbumsStart());
-    }
-  }, [dispatch, userAlbums]);
 
   const handleUploadImage = async (e: any) => {
     const images = e.target.files;
@@ -49,13 +45,24 @@ const CreateImagePage = () => {
       link: info.link,
       album: info.album,
     };
-    const res = await userAPi.createImage(newImage);
+    const res = await imageApi.createImage(newImage);
     if (res) {
       setImage({
         name: '', src: '', height: 0, width: 0,
       });
+      message.loading({
+        content: 'Đang tải...',
+        key,
+      });
+      setTimeout(() => {
+        message.success({
+          content: 'Tạo ảnh thành công!',
+          key,
+          duration: 2,
+        });
+      }, 1000);
       form.resetFields();
-      dispatch(albumsActions.getAlbumsStart());
+      dispatch(userActions.getUserStart(userName));
     }
   };
 
@@ -75,7 +82,6 @@ const CreateImagePage = () => {
                 // eslint-disable-next-line jsx-a11y/label-has-associated-control
                 <label
                   className="
-            h-36
             w-64
             flex
             flex-col
@@ -85,7 +91,6 @@ const CreateImagePage = () => {
             rounded-2xl
             overflow-hidden
             xl:w-80
-            xl:h-[480px]
             "
                   htmlFor="image"
                 >
@@ -202,7 +207,7 @@ const CreateImagePage = () => {
                   allowClear
                 >
                   {
-                    userAlbums.map((album) => (
+                    userAlbums?.map((album) => (
                       <Select.Option key={album.id} value={album.name}>
                         <img className="w-12 h-12 rounded-xl object-cover" src={album.image?.src} alt="" />
                         <span className="font-bold text-base ml-2 truncate">{album.name}</span>
