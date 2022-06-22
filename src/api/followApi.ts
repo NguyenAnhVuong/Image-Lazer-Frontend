@@ -14,6 +14,8 @@ const followApi = {
     }
     return 0;
   },
+
+  followUser: (userId: string) => axiosJWT.post('/follows', { followed_user_id: userId }),
 };
 
 export default followApi;
