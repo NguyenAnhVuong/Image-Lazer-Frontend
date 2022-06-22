@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-nested-ternary */
 import { ExclamationCircleOutlined, ZoomInOutlined } from '@ant-design/icons';
 import {
   Image, message, Modal, Space,
@@ -8,6 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline, MdDelete } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import albumsApi from '../../api/albumsApi';
+import followApi from '../../api/followApi';
 import imageApi from '../../api/imageApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
@@ -21,6 +24,9 @@ const ImageDetail = () => {
   const [currentAlbum, setCurrentAlbum] = useState('Album mặc định');
   const [selectAlbumModal, setSelectAlbumModal] = useState(false);
   const userName = useAppSelector((state: AppState) => state.auth.userName);
+  const following = useAppSelector(
+    (state: AppState) => state.user.user.following,
+  );
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -43,6 +49,7 @@ const ImageDetail = () => {
           topic: res.topic,
           description: res.description,
           user: {
+            id: res.userInformation._id,
             userName: res.userInformation.userName,
             fullName: res.userInformation.fullName,
             avatar: res.userInformation.avatar,
@@ -98,13 +105,20 @@ const ImageDetail = () => {
     }
   };
 
+  const handleFollowUser = async (userId: string) => {
+    try {
+      const res = await followApi.followUser(userId);
+      if (res.status === 200) {
+        dispatch(userActions.getUserStart(userName));
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <div className="flex justify-center xl:items-center">
-      <button
-        type="button"
-        className="block"
-        onClick={() => navigate(-1)}
-      >
+      <button type="button" className="block" onClick={() => navigate(-1)}>
         <IoIosArrowBack
           className="rounded-full bg-white cursor-pointer p-4 font-bold hidden
         xl:inline-block fixed left-4 top-24 hover:bg-[#efefef]"
@@ -117,47 +131,50 @@ const ImageDetail = () => {
             <IoIosArrowBack className="p-3 text-black" size={48} />
           </button>
 
-          {
-            userName === image?.user?.userName
-              ? (
-                <div className="flex items-center">
-                  <button className="" type="button" onClick={() => { navigate(`/image/edit/${params.id}`); }}>
-                    <MdModeEditOutline className="p-3" size={48} />
-                  </button>
-                  <button className="" type="button">
-                    <MdDelete className="p-3" size={48} onClick={showConfirm} />
-                  </button>
-                  <button
-                    className="rounded-[24px] bg-black text-white
+          {userName === image?.user?.userName ? (
+            <div className="flex items-center">
+              <button
+                className=""
+                type="button"
+                onClick={() => {
+                  navigate(`/image/edit/${params.id}`);
+                }}
+              >
+                <MdModeEditOutline className="p-3" size={48} />
+              </button>
+              <button className="" type="button">
+                <MdDelete className="p-3" size={48} onClick={showConfirm} />
+              </button>
+              <button
+                className="rounded-[24px] bg-black text-white
                 flex items-center text-base font-semibold px-4 p-1 ml-2"
-                    type="button"
-                  >
-                    Đã lưu
-                  </button>
-                </div>
-              )
-              : (
-                <>
-                  <button
-                    className="flex items-center text-base font-bold max-w-[40%]"
-                    type="button"
-                    onClick={() => setSelectAlbumModal(true)}
-                  >
-                    <span className="mr-1 truncate">{currentAlbum}</span>
-                    <FaAngleDown size={20} />
-                  </button>
-                  <button
-                    className="rounded-[24px] bg-red-600 text-white
+                type="button"
+              >
+                Đã lưu
+              </button>
+            </div>
+          ) : (
+            <>
+              <button
+                className="flex items-center text-base font-bold max-w-[40%]"
+                type="button"
+                onClick={() => setSelectAlbumModal(true)}
+              >
+                <span className="mr-1 truncate">{currentAlbum}</span>
+                <FaAngleDown size={20} />
+              </button>
+              <button
+                className="rounded-[24px] bg-red-600 text-white
                 flex items-center text-base font-semibold px-4 py-1"
-                    type="button"
-                    onClick={() => { handleSavePostToAlbum(image?.id || '', currentAlbum); }}
-                  >
-                    Lưu
-                  </button>
-                </>
-              )
-          }
-
+                type="button"
+                onClick={() => {
+                  handleSavePostToAlbum(image?.id || '', currentAlbum);
+                }}
+              >
+                Lưu
+              </button>
+            </>
+          )}
         </div>
         <div className="mt-14 lg:flex lg:p-2">
           <div className="lg:flex-1 flex justify-center items-center">
@@ -193,14 +210,22 @@ const ImageDetail = () => {
               <button
                 className="bg-primary px-4 py-2 rounded-3xl text-base font-bold text-white ml-4"
                 type="button"
-                onClick={() => { handleSavePostToAlbum(image?.id || '', currentAlbum); }}
+                onClick={() => {
+                  handleSavePostToAlbum(image?.id || '', currentAlbum);
+                }}
               >
                 Lưu
               </button>
             </div>
             <div className="flex h-12 justify-between px-5 my-4">
               <div className="flex">
-                <img className="h-12 w-12" src={`/uploads/${image?.user?.avatar || 'default_avatar.png'}`} alt="" />
+                <img
+                  className="h-12 w-12"
+                  src={`/uploads/${
+                    image?.user?.avatar || 'default_avatar.png'
+                  }`}
+                  alt=""
+                />
                 <div className="flex flex-col justify-center ml-2">
                   <span className="font-bold">{image?.user?.fullName}</span>
                   <span className="font-medium">
@@ -210,52 +235,54 @@ const ImageDetail = () => {
                   </span>
                 </div>
               </div>
-              {
-                userName === image?.user?.userName
-                  ? (
-                    <button
-                      className="bg-graybg px-3 text-[#767676] py-4 rounded-3xl flex justify-center items-center font-bold text-base"
-                      type="button"
-                      disabled
-                    >
-                      Chính là bạn
-                    </button>
-                  )
-                  : (
-                    <button
-                      className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
-                      type="button"
-                    >
-                      Theo dõi
-                    </button>
-                  )
-              }
-
+              {userName === image?.user?.userName ? (
+                <button
+                  className="bg-graybg px-3 text-[#767676] py-4 rounded-3xl flex justify-center items-center font-bold text-base"
+                  type="button"
+                  disabled
+                >
+                  Chính là bạn
+                </button>
+              ) : following?.find((f) => f.id === image?.user?.id) ? (
+                <button
+                  className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
+                  type="button"
+                  onClick={() => {
+                    if (image?.user?.id) { handleFollowUser(image.user.id.toString()); }
+                  }}
+                >
+                  Bỏ theo dõi
+                </button>
+              ) : (
+                <button
+                  className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
+                  type="button"
+                  onClick={() => {
+                    if (image?.user?.id) { handleFollowUser(image.user.id.toString()); }
+                  }}
+                >
+                  Theo dõi
+                </button>
+              )}
             </div>
-            {
-              !!image && !!image.link && (
-                <div className="flex items-center justify-center">
-                  <span className="text-base">Bài viết chia sẻ từ</span>
-                  <a
-                    className="text-black font-bold"
-                    href={image?.link}
-                    target="__blank"
-                  >
-                    <span
-                      className="ml-1 text-base max-w-[180px] md:max-w-[280px] truncate flex items-center"
-                    >
-                      {image?.link}
-                    </span>
-                  </a>
-                </div>
-              )
-            }
+            {!!image && !!image.link && (
+              <div className="flex items-center justify-center">
+                <span className="text-base">Bài viết chia sẻ từ</span>
+                <a
+                  className="text-black font-bold"
+                  href={image?.link}
+                  target="__blank"
+                >
+                  <span className="ml-1 text-base max-w-[180px] md:max-w-[280px] truncate flex items-center">
+                    {image?.link}
+                  </span>
+                </a>
+              </div>
+            )}
 
             <div className="text-center p-4">
               <h1 className="font-bold text-3xl">{image?.title}</h1>
-              <p className="text-base">
-                {image?.description}
-              </p>
+              <p className="text-base">{image?.description}</p>
               <div>Like và Comment của Hiếu</div>
             </div>
           </div>

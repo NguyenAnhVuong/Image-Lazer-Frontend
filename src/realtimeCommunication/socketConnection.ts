@@ -35,8 +35,8 @@ export const connectWithSocketServer = function () {
   });
 
   socket.on('directChatHistory', (data: any) => {
-    console.log('directChatHistory');
-    console.log(data);
+    // console.log('directChatHistory');
+    // console.log(data);
     updateDirectChatHistoryIfActive(data);
   });
 };
@@ -46,11 +46,11 @@ export const connectWithSocketServer = function () {
 //   socket.emit('directMessage', data);
 // };
 export const sendDirectMessage = (data: DirectMessage) => {
-  console.log(data);
+  // console.log(data);
   socket.emit('directMessage', data);
 };
 
 export const getDirectChatHistory = (receiverUserId: string) => {
-  console.log(receiverUserId);
+  // console.log(receiverUserId);
   socket.emit('directChatHistory', receiverUserId);
 };

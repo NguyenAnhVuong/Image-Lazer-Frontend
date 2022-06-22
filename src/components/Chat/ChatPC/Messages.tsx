@@ -7,11 +7,47 @@ import {
 import ListUserChat from './ListUserChat';
 import { useAppSelector } from '../../../app/hooks';
 import { AppState } from '../../../app/store';
+import conversationApi from '../../../api/conversationApi';
+
+interface FollowUser {
+  id: string;
+  fullName: string;
+  avatar: string;
+  email: string;
+  userName: string;
+}
 
 const Messages:React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [followUser, setFollowUser] = useState<FollowUser[]>();
   const following = useAppSelector((state: AppState) => state.user.user.following);
+  const userId = useAppSelector(
+    (state: AppState) => state.user.user.id,
+  );
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (userId) {
+        const user = new Set<FollowUser>();
+        const conversationReceiver = await conversationApi.getConversationReceiverUserId(userId);
+        const { data } = conversationReceiver;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (data && following) {
+          data.forEach((item: any) => {
+            if (!following.find((f) => item.id === f.id)) {
+              user.add(item);
+            }
+          });
+          const listUser = Array.from(user);
+          const follower = Array.from(new Set([...following, ...listUser]));
+          console.log('listUser', listUser);
+          console.log('follower', follower);
+          setFollowUser(follower);
+        }
+      }
+    };
+    fetchData();
+  }, [following, isModalVisible, userId]);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -47,7 +83,7 @@ const Messages:React.FC = () => {
               </span> */}
           </div>
           <ListUserChat
-            users={following || []}
+            users={followUser || []}
             closeModalMessages={() => setIsModalVisible(false)}
             openModalMessages={() => setIsModalVisible(true)}
           />
