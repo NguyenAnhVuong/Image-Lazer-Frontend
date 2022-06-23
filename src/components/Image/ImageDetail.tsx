@@ -17,6 +17,9 @@ import { AppState } from '../../app/store';
 import { userActions } from '../../features/user/userSlice';
 import { ImageInformation } from '../../models';
 import ListSelectAlbumModal from '../Album/ListSelectAlbumModal';
+import { getDirectCommentHistory } from '../../realtimeCommunication/socketConnection';
+import { commentActions } from '../../features/comment/commentSlice';
+import ImageComments from './ImageComments';
 
 const key = 'updatable';
 const ImageDetail = () => {
@@ -27,6 +30,7 @@ const ImageDetail = () => {
   const following = useAppSelector(
     (state: AppState) => state.user.user.following,
   );
+  const chosenCommentDetails = useAppSelector((state: AppState) => state.comment.chosenCommentDetails);
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -61,6 +65,13 @@ const ImageDetail = () => {
     };
     getImageFromApi();
   }, [params]);
+
+  useEffect(
+    () => {
+      getDirectCommentHistory(chosenCommentDetails.id || '');
+    },
+    [chosenCommentDetails],
+  );
 
   const handleDeleteImage = async (id: string) => {
     const res = await imageApi.deleteImage(id);
@@ -118,7 +129,20 @@ const ImageDetail = () => {
 
   return (
     <div className="flex justify-center xl:items-center">
-      <button type="button" className="block" onClick={() => navigate(-1)}>
+      <button
+        type="button"
+        className="block"
+        onClick={() => {
+          navigate(-1);
+          dispatch(
+            commentActions.setChosenCommentDetails({
+              id: '',
+              title: '',
+            }),
+          );
+          dispatch(commentActions.setComments({ comments: [] }));
+        }}
+      >
         <IoIosArrowBack
           className="rounded-full bg-white cursor-pointer p-4 font-bold hidden
         xl:inline-block fixed left-4 top-24 hover:bg-[#efefef]"
@@ -197,7 +221,7 @@ const ImageDetail = () => {
               />
             </div>
           </div>
-          <div className="lg:flex-1">
+          <div className="lg:flex-1 lg:max-w-[50%]">
             <div className="hidden xl:flex px-5 justify-end mb-10">
               <button
                 className="flex items-center text-base font-bold max-w-[40%]"
@@ -248,7 +272,9 @@ const ImageDetail = () => {
                   className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
                   type="button"
                   onClick={() => {
-                    if (image?.user?.id) { handleFollowUser(image.user.id.toString()); }
+                    if (image?.user?.id) {
+                      handleFollowUser(image.user.id.toString());
+                    }
                   }}
                 >
                   Bỏ theo dõi
@@ -258,7 +284,9 @@ const ImageDetail = () => {
                   className="bg-graybg px-3 py-4 rounded-3xl flex justify-center items-center font-bold text-base"
                   type="button"
                   onClick={() => {
-                    if (image?.user?.id) { handleFollowUser(image.user.id.toString()); }
+                    if (image?.user?.id) {
+                      handleFollowUser(image.user.id.toString());
+                    }
                   }}
                 >
                   Theo dõi
@@ -283,7 +311,7 @@ const ImageDetail = () => {
             <div className="text-center p-4">
               <h1 className="font-bold text-3xl">{image?.title}</h1>
               <p className="text-base">{image?.description}</p>
-              <div>Like và Comment của Hiếu</div>
+              <ImageComments />
             </div>
           </div>
         </div>
