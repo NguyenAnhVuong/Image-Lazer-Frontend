@@ -3,7 +3,10 @@ import { Input } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
-import { getDirectCommentHistory, sendDirectComment } from '../../realtimeCommunication/socketConnection';
+import {
+  getDirectCommentHistory,
+  sendDirectComment, sendDirectNotificationComment,
+} from '../../realtimeCommunication/socketConnection';
 
 const { TextArea } = Input;
 
@@ -25,6 +28,7 @@ const ImageComments = () => {
         content: comment,
         parentCommentId: null,
       });
+      sendDirectNotificationComment(chosenCommentDetails.id || '');
       setComment('');
     }
   };

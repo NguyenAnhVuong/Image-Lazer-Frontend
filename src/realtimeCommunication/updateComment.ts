@@ -9,7 +9,6 @@ interface UpdateCommentHistory {
 
 const updateCommentHistoryIfSameImageActive = ({ imageId, comments }:UpdateCommentHistory) => {
   if (imageId) {
-    console.log('irene');
     store.dispatch(commentActions.setComments({ comments }));
   }
 };
@@ -22,8 +21,6 @@ export const updateDirectCommentHistoryIfActive = (data:any) => {
 
   const imagePostId = chosenCommentDetails?.id;
   const userId = id;
-
-  console.log('irene');
 
   if (imagePostId && userId) {
     updateCommentHistoryIfSameImageActive({ imageId, comments });

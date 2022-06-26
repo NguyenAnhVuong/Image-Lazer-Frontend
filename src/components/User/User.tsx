@@ -44,6 +44,8 @@ const User = () => {
           following: res.following,
           createdImages: res.createdImages,
           albums: res.albums,
+          markMessageAsUnread: res.markMessageAsUnread,
+          markNotificationAsUnread: res.markNotificationAsUnread,
         });
       }
     }

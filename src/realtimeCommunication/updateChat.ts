@@ -1,3 +1,4 @@
+import { userActions } from '../features/user/userSlice';
 import { store } from '../app/store';
 import { chatActions, Message } from '../features/chat/chatSlice';
 
@@ -16,7 +17,10 @@ const updateChatHistoryIfSameConversationActive = ({
   // console.log(messages);
 
   if (result) {
+    console.log('hello');
     store.dispatch(chatActions.setMessages({ messages }));
+    const { userName } = store.getState().user.user;
+    if (userName) { store.dispatch(userActions.getUserStart(userName)); }
   }
 };
 

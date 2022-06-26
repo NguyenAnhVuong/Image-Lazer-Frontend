@@ -38,10 +38,13 @@ const Messages:React.FC = () => {
               user.add(item);
             }
           });
-          const listUser = Array.from(user);
-          const follower = Array.from(new Set([...following, ...listUser]));
-          console.log('listUser', listUser);
-          console.log('follower', follower);
+          let listUser = Array.from(user);
+          listUser = listUser.sort((a, b) => (a.fullName.toLowerCase() < b.fullName.toLowerCase() ? -1 : 1));
+          let followingUser = Array.from(following);
+          followingUser = followingUser.sort((a, b) => (a.fullName.toLowerCase() < b.fullName.toLowerCase() ? -1 : 1));
+          const follower = Array.from(new Set([...followingUser, ...listUser]));
+          // console.log('following', following);
+          // console.log('follower', follower);
           setFollowUser(follower);
         }
       }
