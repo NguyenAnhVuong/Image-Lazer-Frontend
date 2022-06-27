@@ -66,19 +66,46 @@ const HeaderPC = () => {
             />
           </div>
           <div className="flex">
-            <Notifications />
-            {user.markNotificationAsUnread
-              && (user.markNotificationAsUnread.comments.length > 0 || user.markNotificationAsUnread.likes.length > 0) && (
-                <span>{user.markNotificationAsUnread.comments.length + user.markNotificationAsUnread.likes.length}</span>
-            )}
+            <div className="relative">
+              <Notifications />
+              {user.markNotificationAsUnread
+              && (user.markNotificationAsUnread.comments.length > 0
+                || user.markNotificationAsUnread.likes.length > 0) && (
+                  <div
+                    className="bg-red-600 p-1 min-w-[20px] min-h-[20px] absolute right-0 top-0 flex
+                 justify-center items-center text-white rounded-full"
+                  >
+                    <span
+                      className=" leading-none text-xs
+                "
+                    >
+                      {user.markNotificationAsUnread.comments.length
+                    + user.markNotificationAsUnread.likes.length}
+                    </span>
+                  </div>
+              )}
+
+            </div>
             {/* <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
               <AiFillMessage className="p-3" size={48} />
             </div> */}
-            <Messages />
-            {user.markMessageAsUnread
-              && user.markMessageAsUnread.length > 0 && (
-                <span>{user.markMessageAsUnread.length}</span>
-            )}
+            <div className="relative">
+              <Messages />
+              {user.markMessageAsUnread && user.markMessageAsUnread.length > 0 && (
+                <div
+                  className="bg-red-600 p-1 min-w-[20px] min-h-[20px] absolute right-0 top-0 flex
+                 justify-center items-center text-white rounded-full"
+                >
+                  <span
+                    className=" leading-none text-xs
+                "
+                  >
+                    {user.markMessageAsUnread.length}
+                  </span>
+                </div>
+              )}
+            </div>
+
             <div className="p-3 hover:bg-[#efefef] rounded-full cursor-pointer w-12">
               <Link to={`/user/${userName}`}>
                 <img
