@@ -24,6 +24,7 @@ const Messages:React.FC = () => {
   const userId = useAppSelector(
     (state: AppState) => state.user.user.id,
   );
+  const markMessageAsUnread = useAppSelector((state: AppState) => state.user.user.markMessageAsUnread);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,14 +44,21 @@ const Messages:React.FC = () => {
           let followingUser = Array.from(following);
           followingUser = followingUser.sort((a, b) => (a.fullName.toLowerCase() < b.fullName.toLowerCase() ? -1 : 1));
           const follower = Array.from(new Set([...followingUser, ...listUser]));
+          if (markMessageAsUnread && markMessageAsUnread.length > 0) {
+            markMessageAsUnread.forEach((unreadUserId: any) => {
+              const fromIndex = follower.indexOf(unreadUserId);
+              const element = follower.splice(fromIndex, 1)[0];
+              follower.splice(0, 0, element);
+            });
+          }
           // console.log('following', following);
-          // console.log('follower', follower);
+          console.log('follower', follower);
           setFollowUser(follower);
         }
       }
     };
     fetchData();
-  }, [following, isModalVisible, userId]);
+  }, [following, isModalVisible, userId, markMessageAsUnread]);
   const showModal = () => {
     setIsModalVisible(true);
   };
