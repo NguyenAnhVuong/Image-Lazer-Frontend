@@ -20,6 +20,11 @@ export const initialState: UserState = {
     following: [],
     createdImages: [],
     albums: [],
+    markMessageAsUnread: [],
+    markNotificationAsUnread: {
+      likes: [],
+      comments: [],
+    },
   },
   success: false,
   error: false,

@@ -11,6 +11,7 @@ import albumsApi from '../api/albumsApi';
 import imageApi from '../api/imageApi';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { AppState } from '../app/store';
+import { commentActions } from '../features/comment/commentSlice';
 import { userActions } from '../features/user/userSlice';
 import { ImageInformation } from '../models';
 import ListSelectAlbumModal from './Album/ListSelectAlbumModal';
@@ -151,7 +152,13 @@ const Colection = ({
     }
   };
 
-  const renderPhoto: RenderPhoto | any = ({ imageProps: { alt, style, ...restImageProps } }: any) => (
+  const handleChooseActiveComment = () => {
+    dispatch(commentActions.setChosenCommentDetails({ id: refId.current, title: currentAlbum }));
+  };
+
+  const renderPhoto: RenderPhoto | any = ({
+    imageProps: { alt, style, ...restImageProps },
+  }: any) => (
     <div
       className="relative mb-2 rounded-2xl overflow-hidden xl:mb-4 cursor-pointer"
       style={{
@@ -167,7 +174,9 @@ const Colection = ({
           role="button"
           tabIndex={0}
           onClick={() => {
-            restImageProps.onClick(); navigate(`/image/${refId.current}`);
+            restImageProps.onClick();
+            handleChooseActiveComment();
+            navigate(`/image/${refId.current}`);
           }}
           onKeyDown={restImageProps.onClick}
         />
@@ -184,85 +193,109 @@ const Colection = ({
             <button
               className="bg-primary px-4 py-2 rounded-3xl text-base font-bold text-white"
               type="button"
-              onClick={() => { restImageProps.onClick(); handleSavePostToAlbum(refId.current, currentAlbum); }}
+              onClick={() => {
+                restImageProps.onClick();
+                handleSavePostToAlbum(refId.current, currentAlbum);
+              }}
             >
               Lưu
             </button>
           </div>
-          {
-            user.createdImages?.find((image) => image.src === restImageProps.src) ? (
+          {user.createdImages?.find(
+            (image) => image.src === restImageProps.src,
+          ) ? (
+            <div className="absolute bottom-3 right-3">
+              <button
+                className="p-2 bg-graybg rounded-full"
+                type="button"
+                onClick={() => {
+                  restImageProps.onClick();
+                  navigate(`/image/edit/${refId.current}`);
+                }}
+              >
+                <MdModeEditOutline size={20} />
+              </button>
+              <button
+                className="p-2 bg-graybg rounded-full ml-2"
+                type="button"
+                onClick={() => {
+                  restImageProps.onClick();
+                  showConfirm();
+                }}
+              >
+                <MdDelete size={20} />
+              </button>
+            </div>
+            ) : (
+              useToAlbum
+            && isUserAlbum && (
               <div className="absolute bottom-3 right-3">
-                <button
-                  className="p-2 bg-graybg rounded-full"
-                  type="button"
-                  onClick={() => { restImageProps.onClick(); navigate(`/image/edit/${refId.current}`); }}
-                >
-                  <MdModeEditOutline
-                    size={20}
-                  />
-                </button>
                 <button
                   className="p-2 bg-graybg rounded-full ml-2"
                   type="button"
-                  onClick={() => { restImageProps.onClick(); showConfirm(); }}
+                  onClick={() => {
+                    restImageProps.onClick();
+                    showConfirmToDeleteImageInAlbum();
+                  }}
                 >
                   <MdDelete size={20} />
                 </button>
               </div>
-            )
-              : useToAlbum && isUserAlbum && (
-                <div className="absolute bottom-3 right-3">
-                  <button
-                    className="p-2 bg-graybg rounded-full ml-2"
-                    type="button"
-                    onClick={() => { restImageProps.onClick(); showConfirmToDeleteImageInAlbum(); }}
-                  >
-                    <MdDelete size={20} />
-                  </button>
-                </div>
               )
-          }
+            )}
         </div>
         <div className="xl:hidden">
-          {
-            user.createdImages?.find((image) => image.src === restImageProps.src) ? (
-              <div className="absolute bottom-2 right-2 flex flex-col">
+          {user.createdImages?.find(
+            (image) => image.src === restImageProps.src,
+          ) ? (
+            <div className="absolute bottom-2 right-2 flex flex-col">
+              <button
+                className="p-2 bg-graybg rounded-full"
+                type="button"
+                onClick={() => {
+                  restImageProps.onClick();
+                  navigate(`/image/edit/${refId.current}`);
+                }}
+              >
+                <MdModeEditOutline size={16} />
+              </button>
+              <button
+                className="p-2 bg-graybg rounded-full mt-2"
+                type="button"
+                onClick={() => {
+                  restImageProps.onClick();
+                  showConfirm();
+                }}
+              >
+                <MdDelete size={16} />
+              </button>
+            </div>
+            ) : (
+              useToAlbum
+            && isUserAlbum && (
+              <div className="absolute bottom-2 right-2">
                 <button
-                  className="p-2 bg-graybg rounded-full"
+                  className="p-2 bg-graybg rounded-full ml-2"
                   type="button"
-                  onClick={() => { restImageProps.onClick(); navigate(`/image/edit/${refId.current}`); }}
-                >
-                  <MdModeEditOutline
-                    size={16}
-                  />
-                </button>
-                <button
-                  className="p-2 bg-graybg rounded-full mt-2"
-                  type="button"
-                  onClick={() => { restImageProps.onClick(); showConfirm(); }}
+                  onClick={() => {
+                    restImageProps.onClick();
+                    showConfirmToDeleteImageInAlbum();
+                  }}
                 >
                   <MdDelete size={16} />
                 </button>
               </div>
-            )
-              : useToAlbum && isUserAlbum && (
-                <div className="absolute bottom-2 right-2">
-                  <button
-                    className="p-2 bg-graybg rounded-full ml-2"
-                    type="button"
-                    onClick={() => { restImageProps.onClick(); showConfirmToDeleteImageInAlbum(); }}
-                  >
-                    <MdDelete size={16} />
-                  </button>
-                </div>
               )
-          }
+            )}
         </div>
       </div>
       <img
         alt={alt}
         style={{
-          ...style, width: '100%', padding: 0, marginBottom: 0,
+          ...style,
+          width: '100%',
+          padding: 0,
+          marginBottom: 0,
         }}
         {...restImageProps}
       />

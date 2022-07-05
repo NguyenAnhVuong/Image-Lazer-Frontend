@@ -10,6 +10,17 @@ interface FollowUser {
   email: string;
   userName: string;
 }
+
+interface NotificationInformation {
+  userName: string,
+  imageId: string,
+  date: Date,
+}
+
+interface Notification {
+  likes: NotificationInformation[];
+  comments: NotificationInformation[];
+}
 export interface UserInformation {
   id?: string;
   userName?: string;
@@ -21,4 +32,6 @@ export interface UserInformation {
   following?: FollowUser[];
   createdImages?: ImageInformation[];
   albums?: AlbumCardInformation[];
+  markMessageAsUnread?: string[];
+  markNotificationAsUnread?: Notification;
 }
