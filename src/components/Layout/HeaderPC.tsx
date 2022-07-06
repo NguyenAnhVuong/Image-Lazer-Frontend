@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input, Avatar } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { BsPinterest } from 'react-icons/bs';
 import { FaBell, FaSearch } from 'react-icons/fa';
@@ -65,10 +65,15 @@ const HeaderPC = () => {
             <Messages />
             <div className="p-3 hover:bg-[#efefef] rounded-full cursor-pointer w-12">
               <Link to={`/user/${userName}`}>
-                <img
+                {/* <img
                   className="object-cover h-6 w-6"
                   src={`/uploads/${user.avatar || 'default_avatar.png'}`}
                   alt=""
+                /> */}
+                <Avatar
+                  className="object-cover h-6 w-6"
+                  src={`/uploads/${user.avatar || 'default_avatar.png'}`}
+                  size={8}
                 />
               </Link>
             </div>
@@ -83,7 +88,7 @@ const HeaderPC = () => {
                   <li className="">
                     <Link
                       className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
-                      to="/user-information"
+                      to="/settings/user-information"
                     >
                       Thông tin cá nhân
                     </Link>

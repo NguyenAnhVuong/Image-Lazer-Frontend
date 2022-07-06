@@ -37,7 +37,7 @@ const App = () => {
           <>
             <Route path="/" element={<Home />} />
             <Route path="/create-image" element={<CreateImagePage />} />
-            <Route path="/user-information" element={<UserInformation />} />
+            <Route path="/settings/:option" element={<UserInformation />} />
             <Route path="/image/edit/:id" element={<EditImagePage />} />
           </>
         ) : (

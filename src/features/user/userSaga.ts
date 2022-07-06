@@ -11,6 +11,7 @@ function* getUserSaga(action: PayloadAction<string>): any {
         id: res.id,
         userName: res.userName,
         email: res.email,
+        age: res.age,
         avatar: res.avatar,
         topics: res.topics,
         fullName: res.fullName,
