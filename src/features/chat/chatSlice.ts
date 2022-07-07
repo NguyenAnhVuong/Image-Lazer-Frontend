@@ -10,7 +10,7 @@ export interface Message {
   content: string;
 }
 export interface SetMessages {
-  messages: Message[];
+  messages: Message[] | [];
 }
 
 interface ChosenChatDetails {

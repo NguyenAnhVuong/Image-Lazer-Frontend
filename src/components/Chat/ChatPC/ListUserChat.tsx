@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import ListUserChatItem from './ListUserChatItem';
 
 interface User {
@@ -21,15 +22,16 @@ const ListUserChat = ({
 }: Mock) => (
   <>
     {users.map(
-      (user): JSX.Element => (
+      (user, index): JSX.Element => (
         <ListUserChatItem
             // eslint-disable-next-line no-underscore-dangle
-          key={user.id}
+          key={index}
           avatar={user.avatar}
           fullName={user.fullName}
           email={user.email}
             // eslint-disable-next-line no-underscore-dangle
           id={user.id}
+          userName={user.userName}
           closeModalMessages={() => closeModalMessages()}
           openModalMessages={() => openModalMessages()}
         />

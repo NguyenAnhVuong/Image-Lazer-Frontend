@@ -4,6 +4,7 @@ import { createReduxHistoryContext, reachify } from 'redux-first-history';
 import createSagaMiddleware from 'redux-saga';
 import { authReducer } from '../features/auth/authSlice';
 import { chatReducer } from '../features/chat/chatSlice';
+import { commentReducer } from '../features/comment/commentSlice';
 import testReducer from '../features/test/testSlice';
 import { userReducer } from '../features/user/userSlice';
 import rootSaga from './rootSaga';
@@ -22,6 +23,7 @@ export const store = configureStore({
     auth: authReducer,
     chat: chatReducer,
     user: userReducer,
+    comment: commentReducer,
   },
   middleware:
     (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware),

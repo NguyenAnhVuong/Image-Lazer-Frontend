@@ -19,6 +19,8 @@ function* getUserSaga(action: PayloadAction<string>): any {
         following: res.following,
         createdImages: res.createdImages,
         albums: res.albums,
+        markMessageAsUnread: res.markMessageAsUnread,
+        markNotificationAsUnread: res.markNotificationAsUnread,
       };
       yield put(userActions.getUserSuccess(user));
     } else {

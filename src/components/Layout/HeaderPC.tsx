@@ -1,7 +1,7 @@
 import { Input, Avatar } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { BsPinterest } from 'react-icons/bs';
-import { FaBell, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import { HiChevronDown } from 'react-icons/hi';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosJWT from '../../api/axiosJWT';
@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { authActions } from '../../features/auth/authSlice';
 import Messages from '../Chat/ChatPC/Messages';
+import Notifications from '../Notifications/Notifications';
 
 const HeaderPC = () => {
   const userName = useAppSelector((state: AppState) => state.auth.userName);
@@ -40,6 +41,11 @@ const HeaderPC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log('irene');
+    // if (user.userName) { dispatch(userActions.getUserStart(user.userName)); }
+  }, [user.markMessageAsUnread, user.markMessageAsUnread?.length, user.userName]);
+
   return (
     <div className="hidden xl:block">
       <div className="h-20 py-4">
@@ -53,16 +59,53 @@ const HeaderPC = () => {
             </Link>
           </div>
           <div className="h-full px-2 w-full">
-            <Input className="h-full rounded-3xl bg-[#efefef]" prefix={<FaSearch />} placeholder="Tìm kiếm" />
+            <Input
+              className="h-full rounded-3xl bg-[#efefef]"
+              prefix={<FaSearch />}
+              placeholder="Tìm kiếm"
+            />
           </div>
           <div className="flex">
-            <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
-              <FaBell className="p-3" size={48} />
+            <div className="relative">
+              <Notifications />
+              {user.markNotificationAsUnread
+              && (user.markNotificationAsUnread.comments.length > 0
+                || user.markNotificationAsUnread.likes.length > 0) && (
+                  <div
+                    className="bg-red-600 p-1 min-w-[20px] min-h-[20px] absolute right-0 top-0 flex
+                 justify-center items-center text-white rounded-full"
+                  >
+                    <span
+                      className=" leading-none text-xs
+                "
+                    >
+                      {user.markNotificationAsUnread.comments.length
+                    + user.markNotificationAsUnread.likes.length}
+                    </span>
+                  </div>
+              )}
+
             </div>
             {/* <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
               <AiFillMessage className="p-3" size={48} />
             </div> */}
-            <Messages />
+            <div className="relative">
+              <Messages />
+              {user.markMessageAsUnread && user.markMessageAsUnread.length > 0 && (
+                <div
+                  className="bg-red-600 p-1 min-w-[20px] min-h-[20px] absolute right-0 top-0 flex
+                 justify-center items-center text-white rounded-full"
+                >
+                  <span
+                    className=" leading-none text-xs
+                "
+                  >
+                    {user.markMessageAsUnread.length}
+                  </span>
+                </div>
+              )}
+            </div>
+
             <div className="p-3 hover:bg-[#efefef] rounded-full cursor-pointer w-12">
               <Link to={`/user/${userName}`}>
                 {/* <img
@@ -78,11 +121,21 @@ const HeaderPC = () => {
               </Link>
             </div>
             <div className="relative flex items-center ">
-              <button type="button" className="group" onClick={() => setIsOpen((state) => !state)} ref={ref}>
-                <HiChevronDown className="group-hover:bg-[#efefef] rounded-full cursor-pointer" size={24} />
+              <button
+                type="button"
+                className="group"
+                onClick={() => setIsOpen((state) => !state)}
+                ref={ref}
+              >
+                <HiChevronDown
+                  className="group-hover:bg-[#efefef] rounded-full cursor-pointer"
+                  size={24}
+                />
               </button>
               <div
-                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${isOpen ? 'block' : 'hidden'}`}
+                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${
+                  isOpen ? 'block' : 'hidden'
+                }`}
               >
                 <ul className="p-2">
                   <li className="">
@@ -94,7 +147,13 @@ const HeaderPC = () => {
                     </Link>
                   </li>
                   <li className="p-2 hover:bg-graybg rounded-2xl cursor-pointer">
-                    <button className="text-base font-bold w-full text-left" type="button" onClick={handleLogout}>Đăng xuất</button>
+                    <button
+                      className="text-base font-bold w-full text-left"
+                      type="button"
+                      onClick={handleLogout}
+                    >
+                      Đăng xuất
+                    </button>
                   </li>
                 </ul>
               </div>
