@@ -1,6 +1,6 @@
 import {
   Button, Form, Typography, Input, Avatar, InputNumber, Modal,
-  Upload, message, Layout, Row, Col,
+  Upload, message, Layout,
 } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -23,14 +23,16 @@ const { Sider, Content } = Layout;
 
 const TopicCard = ({ topic, added, onClick }
 : { topic: TopicInformation, added: boolean, onClick: () => void }) => (
-  <div className="flex flex-col items-center justify-center px-4 py-2 rounded-2xl hover:bg-slate-300 -z-50">
-    <div className="relative">
-      <img
-        src={topic.image?.src}
-        className="brightness-50 rounded-2xl object-cover
-        w-[150px] h-[150px] xl:w-[250px] xl:h-[100px]"
-        alt={topic.name}
-      />
+  <div className="flex flex-col w-full items-center justify-center xl:px-4 py-2 rounded-2xl hover:bg-slate-300 -z-50">
+    <div className="relative w-full">
+      <div className="relative w-full pt-[100%] xl:pt-[56.25%]">
+        <img
+          src={topic.image?.src}
+          className="brightness-50 rounded-2xl object-cover
+          xl:w-[250px] xl:h-[100px] absolute top-0 right-0 bottom-0 left-0 w-full h-full"
+          alt={topic.name}
+        />
+      </div>
       <Title level={4} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-base">
         {topic.name}
       </Title>
@@ -240,8 +242,8 @@ const UserInformationPage = () => {
             </div>
           </div>
         </Sider>
-        <Content className="absolute xl:left-1/4 xl:w-1/3 w-full justify-center px-10 pt-20">
-          { params.option === 'user-information' && (
+        <Content className="absolute xl:left-1/4 xl:w-1/3 w-full justify-center px-5 xl:px-10 pt-20">
+          {params.option === 'user-information' && (
             <div>
               <Title level={3} className="hidden xl:block">
                 Thông tin cá nhân
@@ -309,7 +311,7 @@ const UserInformationPage = () => {
                     },
                   ]}
                 >
-                  <InputNumber name="age" className="rounded-2xl px-4 py-2 overflow-hidden" />
+                  <InputNumber name="age" className="rounded-2xl flex items-center h-10 overflow-hidden" />
                 </Form.Item>
                 <Form.Item>
                   <div className="xl:flex xl:justify-center gap-1">
@@ -359,7 +361,7 @@ const UserInformationPage = () => {
               </Form>
             </div>
           )}
-          { params.option === 'user-password' && (
+          {params.option === 'user-password' && (
             <div>
               <Title level={3} className="hidden xl:block">
                 Thay đổi mật khẩu
@@ -438,7 +440,7 @@ const UserInformationPage = () => {
               </Form>
             </div>
           )}
-          { params.option === 'user-topics' && (
+          {params.option === 'user-topics' && (
             <div>
               <Title level={3} className="hidden xl:block">
                 Thay đổi chủ đề
@@ -446,9 +448,9 @@ const UserInformationPage = () => {
               <Paragraph strong className="hidden xl:block">
                 Chọn những chủ đề mà bạn muốn hiện trên bảng tin
               </Paragraph>
-              <Row gutter={[16, 40]} className="-ml-[17%] -mr-[20%] xl:-mr-[150%] xl:mt-8 sm:ml-0">
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
                 {topics.map((topic) => (
-                  <Col key={topic.name}>
+                  <div key={topic.name} className="flex justify-center">
                     <TopicCard
                       topic={topic}
                       added={userRedux.topics?.includes(topic.name) || false}
@@ -460,9 +462,9 @@ const UserInformationPage = () => {
                         }
                       }}
                     />
-                  </Col>
+                  </div>
                 ))}
-              </Row>
+              </div>
             </div>
           )}
         </Content>
