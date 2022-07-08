@@ -1,10 +1,10 @@
 import {
   Button, Form, Typography, Input, Avatar, InputNumber, Modal,
-  Upload, message, Layout, Row, Col,
+  Upload, message, Layout,
 } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axiosJWT from '../../api/axiosJWT';
 import userAPi from '../../api/userApi';
@@ -23,14 +23,16 @@ const { Sider, Content } = Layout;
 
 const TopicCard = ({ topic, added, onClick }
 : { topic: TopicInformation, added: boolean, onClick: () => void }) => (
-  <div className="flex flex-col items-center justify-center px-4 py-2 rounded-2xl hover:bg-slate-300 -z-50">
-    <div className="relative">
-      <img
-        src={topic.image?.src}
-        className="brightness-50 rounded-2xl object-cover
-        w-[150px] h-[150px] xl:w-[250px] xl:h-[100px]"
-        alt={topic.name}
-      />
+  <div className="flex flex-col w-full items-center justify-center xl:px-4 py-2 rounded-2xl hover:bg-slate-300 -z-50">
+    <div className="relative w-full">
+      <div className="relative w-full pt-[100%] xl:pt-[56.25%]">
+        <img
+          src={topic.image?.src}
+          className="brightness-50 rounded-2xl object-cover
+          xl:w-[250px] xl:h-[100px] absolute top-0 right-0 bottom-0 left-0 w-full h-full"
+          alt={topic.name}
+        />
+      </div>
       <Title level={4} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-base">
         {topic.name}
       </Title>
@@ -48,18 +50,260 @@ const TopicCard = ({ topic, added, onClick }
   </div>
 );
 
+const SideMenu = ({
+  option, navigate,
+} : any) => (
+  <Sider
+    theme="light"
+    breakpoint="lg"
+  >
+    <div
+      style={
+        {
+          position: 'absolute', height: '100vh', width: '20vw',
+        }
+      }
+      className="m-10 hidden xl:block max-w-[250px]"
+    >
+      <div className="columns-1">
+        <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-information')}>
+          <div
+            className={`pb-1 text-base font-bold border-b-[3px]
+              ${(option === 'user-information') ? 'border-black' : 'border-transparent'}`}
+          >
+            Thông tin cá nhân
+          </div>
+        </button>
+        <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-password')}>
+          <div
+            className={`pb-1 text-base font-bold border-b-[3px]
+              ${(option === 'user-password') ? 'border-black' : 'border-transparent'}`}
+          >
+            Thay đổi mật khẩu
+          </div>
+        </button>
+        <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-topics')}>
+          <div
+            className={`pb-1 text-base font-bold border-b-[3px]
+              ${(option === 'user-topics') ? 'border-black' : 'border-transparent'}`}
+          >
+            Chọn chủ đề
+          </div>
+        </button>
+      </div>
+    </div>
+  </Sider>
+);
+
+const InformationForm = ({
+  form, userRedux, handleSubmit, handleLogout, showModal, changed, setChanged,
+} : any) => (
+  <div>
+    <Title level={3} className="hidden xl:block">
+      Thông tin cá nhân
+    </Title>
+    <Paragraph strong className="hidden xl:block">
+      Thay đổi thông tin cá nhân của bạn
+    </Paragraph>
+    <Paragraph className="hidden xl:block mt-5">
+      Ảnh
+    </Paragraph>
+    <div className="flex flex-col xl:flex-row items-center">
+      <Avatar
+        size={100}
+        src={`/uploads/${userRedux.avatar || 'default_avatar.png'}`}
+        className="xl:-mt-3 w-[120px] h-[120px]"
+      />
+      <Button
+        type="primary"
+        shape="round"
+        className="mt-5 xl:ml-5 bg-slate-200 border-transparent text-black font-medium max-w-[100px]"
+        onClick={showModal}
+      >
+        Thay đổi
+      </Button>
+    </div>
+    <Form
+      name="normal_info"
+      className="mt-5"
+      layout="vertical"
+      requiredMark={false}
+      onValuesChange={() => {
+        // Check if form's content changed from userRedux
+        if (userRedux) {
+          const { fullName, age } = form.getFieldsValue();
+          if (fullName !== userRedux.fullName || age !== userRedux.age) {
+            setChanged(true);
+          } else {
+            setChanged(false);
+          }
+        }
+      }}
+      form={form}
+    >
+      <Form.Item
+        name="fullName"
+        label="Họ và Tên"
+        colon={false}
+        rules={[
+          {
+            required: true,
+            message: 'Họ và Tên không được để trống',
+          },
+        ]}
+      >
+        <Input name="fullName" className="rounded-2xl px-4 py-2" />
+      </Form.Item>
+      <Form.Item
+        name="age"
+        label="Tuổi"
+        colon={false}
+        rules={[
+          {
+            required: true,
+            message: 'Tuổi không được để trống',
+          },
+        ]}
+      >
+        <InputNumber name="age" className="rounded-2xl flex items-center h-10 overflow-hidden" />
+      </Form.Item>
+      <Form.Item>
+        <div className="xl:flex xl:justify-center gap-1">
+          <Button
+            type="primary"
+            shape="round"
+            className={`hidden xl:inline-block border-transparent font-medium bg-slate-200
+              ${changed ? ' text-black' : 'text-slate-500'}`}
+            onClick={() => {
+              form.setFieldsValue({
+                fullName: userRedux.fullName,
+                age: userRedux.age,
+              });
+              setChanged(false);
+            }}
+            disabled={!changed}
+          >
+            Thiết lập lại
+          </Button>
+          <Button
+            type="primary"
+            shape="round"
+            className={`fixed top-[11px] right-2 flex items-center px-4 py-1 h-auto border-transparent font-medium
+              xl:static xl:text-center z-[999] ${changed ? 'bg-red-500 text-white' : 'bg-slate-200 text-slate-500'}`}
+            onClick={() => {
+              form.validateFields().then((values : any) => {
+                handleSubmit(values as UpdateUserInformation);
+              }).catch((info : any) => {
+                console.log('Validate Failed:', info);
+              });
+            }}
+            disabled={!changed}
+          >
+            Lưu
+          </Button>
+          <Button
+            type="primary"
+            shape="round"
+            className="hidden xl:inline-block bg-slate-200 border-transparent text-black font-medium"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </div>
+      </Form.Item>
+    </Form>
+  </div>
+);
+
+const ChangePasswordForm = ({
+  handleChangePassword, wrongPassword,
+} : any) => (
+  <div>
+    <Title level={3} className="hidden xl:block">
+      Thay đổi mật khẩu
+    </Title>
+    <Paragraph strong className="hidden xl:block">
+      Thay đổi mật khẩu của bạn
+    </Paragraph>
+    <Form
+      name="normal_password"
+      className="mt-5"
+      layout="vertical"
+      onFinish={handleChangePassword}
+      requiredMark={false}
+    >
+      <Form.Item
+        name="oldPassword"
+        label="Mật khẩu cũ"
+        colon={false}
+        validateStatus={wrongPassword ? 'error' : ''}
+        help={wrongPassword ? 'Mật khẩu cũ không đúng' : ''}
+        rules={[
+          {
+            required: true,
+            message: 'Mật khẩu cũ không được để trống',
+          },
+        ]}
+      >
+        <Input.Password name="oldPassword" className="rounded-2xl px-4 py-2" />
+      </Form.Item>
+      <Form.Item
+        name="newPassword"
+        label="Mật khẩu mới"
+        colon={false}
+        rules={[
+          {
+            required: true,
+            message: 'Mật khẩu mới không được để trống',
+          },
+        ]}
+      >
+        <Input.Password name="newPassword" className="rounded-2xl px-4 py-2" />
+      </Form.Item>
+      <Form.Item
+        name="confirmPassword"
+        label="Xác nhận mật khẩu"
+        colon={false}
+        rules={[
+          {
+            required: true,
+            message: 'Xác nhận mật khẩu không được để trống',
+          },
+          ({ getFieldValue }) => ({
+            validator(rule, value) {
+              if (!value || getFieldValue('newPassword') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error('Mật khẩu mới và xác nhận mật khẩu không trùng khớp'));
+            },
+          }),
+        ]}
+      >
+        <Input.Password name="confirmPassword" className="rounded-2xl px-4 py-2" />
+      </Form.Item>
+      <Form.Item>
+        <div className="flex justify-center">
+          <Button
+            className="fixed top-[11px] right-2 flex items-center px-4 py-1 h-auto z-[999]
+            bg-slate-200 border-transparent text-black font-medium xl:static xl:text-center"
+            shape="round"
+            htmlType="submit"
+          >
+            Thay đổi
+          </Button>
+        </div>
+      </Form.Item>
+    </Form>
+  </div>
+);
+
 const UserInformationPage = () => {
   const userRedux = useAppSelector((state: AppState) => state.user.user);
-  const [changed, setChanged] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [wrongPassword, setWrongPassword] = useState(false);
+  const [changed, setChanged] = useState(false);
   const navigate = useNavigate();
   const params = useParams();
-  const resetRef = useRef<any>();
-  const saveRef = useRef<any>();
-  const infoRef = useRef<any>();
-  const topicsRef = useRef<any>();
-  const passwordRef = useRef<any>();
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
@@ -148,42 +392,12 @@ const UserInformationPage = () => {
   };
 
   useEffect(() => {
-    if (changed && resetRef.current) {
-      resetRef.current.style.color = 'black';
-      resetRef.current.style.backgroundColor = 'rgb(226 232 240)';
-      saveRef.current.style.backgroundColor = 'red';
-      saveRef.current.style.color = 'white';
-    } else if (resetRef.current) {
-      // Change the reset button's text color to white and background color to black
-      resetRef.current.style.color = 'rgb(100 116 139)';
-      resetRef.current.style.backgroundColor = 'rgb(226 232 240)';
-      saveRef.current.style.color = 'rgb(100 116 139)';
-      saveRef.current.style.backgroundColor = 'rgb(226 232 240)';
-    }
-  }, [changed]);
-
-  useEffect(() => {
+    // If fullname and age are not set, set them to default value
     if (!changed && params.option === 'user-information') {
       form.setFieldsValue({
         fullName: userRedux.fullName,
         age: userRedux.age,
       });
-      infoRef.current.style.borderColor = '#111';
-      passwordRef.current.style.borderColor = 'transparent';
-      topicsRef.current.style.borderColor = 'transparent';
-    } else if (!changed && params.option === 'user-password') {
-      form.setFieldsValue({
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-      });
-      infoRef.current.style.borderColor = 'transparent';
-      passwordRef.current.style.borderColor = '#111';
-      topicsRef.current.style.borderColor = 'transparent';
-    } else if (!changed && params.option === 'user-topics') {
-      infoRef.current.style.borderColor = 'transparent';
-      passwordRef.current.style.borderColor = 'transparent';
-      topicsRef.current.style.borderColor = '#111';
     }
   }, [form, changed, userRedux, params.option]);
 
@@ -200,245 +414,30 @@ const UserInformationPage = () => {
         </span>
       </div>
       <Layout className="bg-transparent">
-        <Sider
-          theme="light"
-          breakpoint="lg"
-        >
-          <div
-            style={
-              {
-                position: 'absolute', height: '100vh', width: '20vw',
-              }
-            }
-            className="m-10 hidden xl:block max-w-[250px]"
-          >
-            <div className="columns-1">
-              <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-information')}>
-                <div
-                  ref={infoRef}
-                  className="pb-1 text-base font-bold border-b-[3px]"
-                >
-                  Thông tin cá nhân
-                </div>
-              </button>
-              <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-password')}>
-                <div
-                  ref={passwordRef}
-                  className="pb-1 text-base font-bold border-b-[3px]"
-                >
-                  Thay đổi mật khẩu
-                </div>
-              </button>
-              <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-topics')}>
-                <div
-                  ref={topicsRef}
-                  className="pb-1 text-base font-bold border-b-[3px]"
-                >
-                  Chọn chủ đề
-                </div>
-              </button>
-            </div>
-          </div>
-        </Sider>
-        <Content className="absolute xl:left-1/4 xl:w-1/3 w-full justify-center px-10 pt-20">
-          { params.option === 'user-information' && (
-            <div>
-              <Title level={3} className="hidden xl:block">
-                Thông tin cá nhân
-              </Title>
-              <Paragraph strong className="hidden xl:block">
-                Thay đổi thông tin cá nhân của bạn
-              </Paragraph>
-              <Paragraph className="hidden xl:block mt-5">
-                Ảnh
-              </Paragraph>
-              <div className="flex flex-col xl:flex-row items-center">
-                <Avatar
-                  size={100}
-                  src={`/uploads/${userRedux.avatar || 'default_avatar.png'}`}
-                  className="xl:-mt-3 w-[120px] h-[120px]"
-                />
-                <Button
-                  type="primary"
-                  shape="round"
-                  className="mt-5 xl:ml-5 bg-slate-200 border-transparent text-black font-medium max-w-[100px]"
-                  onClick={showModal}
-                >
-                  Thay đổi
-                </Button>
-              </div>
-              <Form
-                name="normal_info"
-                className="mt-5"
-                layout="vertical"
-                requiredMark={false}
-                onValuesChange={() => {
-                  // Check if form's content changed from userRedux
-                  if (userRedux) {
-                    const { fullName, age } = form.getFieldsValue();
-                    if (fullName !== userRedux.fullName || age !== userRedux.age) {
-                      setChanged(true);
-                    } else {
-                      setChanged(false);
-                    }
-                  }
-                }}
-                form={form}
-              >
-                <Form.Item
-                  name="fullName"
-                  label="Họ và Tên"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Họ và Tên không được để trống',
-                    },
-                  ]}
-                >
-                  <Input name="fullName" className="rounded-2xl px-4 py-2" />
-                </Form.Item>
-                <Form.Item
-                  name="age"
-                  label="Tuổi"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Tuổi không được để trống',
-                    },
-                  ]}
-                >
-                  <InputNumber name="age" className="rounded-2xl px-4 py-2 overflow-hidden" />
-                </Form.Item>
-                <Form.Item>
-                  <div className="xl:flex xl:justify-center gap-1">
-                    <Button
-                      ref={resetRef}
-                      type="primary"
-                      shape="round"
-                      className="hidden xl:inline-block border-transparent font-medium"
-                      onClick={() => {
-                        form.setFieldsValue({
-                          fullName: userRedux.fullName,
-                          age: userRedux.age,
-                        });
-                        setChanged(false);
-                      }}
-                      disabled={!changed}
-                    >
-                      Thiết lập lại
-                    </Button>
-                    <Button
-                      ref={saveRef}
-                      type="primary"
-                      shape="round"
-                      className="fixed top-[11px] right-2 flex items-center px-4 py-1 h-auto
-                        border-transparent font-medium xl:static xl:text-center z-[999]"
-                      onClick={() => {
-                        form.validateFields().then((values) => {
-                          handleSubmit(values as UpdateUserInformation);
-                        }).catch((info) => {
-                          console.log('Validate Failed:', info);
-                        });
-                      }}
-                      disabled={!changed}
-                    >
-                      Lưu
-                    </Button>
-                    <Button
-                      type="primary"
-                      shape="round"
-                      className="hidden xl:inline-block bg-slate-200 border-transparent text-black font-medium"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </Button>
-                  </div>
-                </Form.Item>
-              </Form>
-            </div>
+        <SideMenu
+          option={params.option || 'user-information'}
+          navigate={navigate}
+        />
+        <Content className="absolute xl:left-1/4 xl:w-1/3 w-full justify-center px-5 xl:px-10 pt-20">
+          {params.option === 'user-information' && (
+            <InformationForm
+              form={form}
+              userRedux={userRedux}
+              handleSubmit={handleSubmit}
+              handleLogout={handleLogout}
+              showModal={showModal}
+              changed={changed}
+              setChanged={setChanged}
+            />
           )}
-          { params.option === 'user-password' && (
-            <div>
-              <Title level={3} className="hidden xl:block">
-                Thay đổi mật khẩu
-              </Title>
-              <Paragraph strong className="hidden xl:block">
-                Thay đổi mật khẩu của bạn
-              </Paragraph>
-              <Form
-                name="normal_password"
-                className="mt-5"
-                layout="vertical"
-                onFinish={handleChangePassword}
-                requiredMark={false}
-              >
-                <Form.Item
-                  name="oldPassword"
-                  label="Mật khẩu cũ"
-                  colon={false}
-                  validateStatus={wrongPassword ? 'error' : ''}
-                  help={wrongPassword ? 'Mật khẩu cũ không đúng' : ''}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Mật khẩu cũ không được để trống',
-                    },
-                  ]}
-                >
-                  <Input.Password name="oldPassword" className="rounded-2xl px-4 py-2" />
-                </Form.Item>
-                <Form.Item
-                  name="newPassword"
-                  label="Mật khẩu mới"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Mật khẩu mới không được để trống',
-                    },
-                  ]}
-                >
-                  <Input.Password name="newPassword" className="rounded-2xl px-4 py-2" />
-                </Form.Item>
-                <Form.Item
-                  name="confirmPassword"
-                  label="Xác nhận mật khẩu"
-                  colon={false}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Xác nhận mật khẩu không được để trống',
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(rule, value) {
-                        if (!value || getFieldValue('newPassword') === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(new Error('Mật khẩu mới và xác nhận mật khẩu không trùng khớp'));
-                      },
-                    }),
-                  ]}
-                >
-                  <Input.Password name="confirmPassword" className="rounded-2xl px-4 py-2" />
-                </Form.Item>
-                <Form.Item>
-                  <div className="flex justify-center">
-                    <Button
-                      className="fixed top-[11px] right-2 flex items-center px-4 py-1 h-auto z-[999]
-                      bg-slate-200 border-transparent text-black font-medium xl:static xl:text-center"
-                      shape="round"
-                      htmlType="submit"
-                    >
-                      Thay đổi
-                    </Button>
-                  </div>
-                </Form.Item>
-              </Form>
-            </div>
+          {params.option === 'user-password' && (
+            <ChangePasswordForm
+              form={form}
+              handleChangePassword={handleChangePassword}
+              wrongPassword={wrongPassword}
+            />
           )}
-          { params.option === 'user-topics' && (
+          {params.option === 'user-topics' && (
             <div>
               <Title level={3} className="hidden xl:block">
                 Thay đổi chủ đề
@@ -446,9 +445,9 @@ const UserInformationPage = () => {
               <Paragraph strong className="hidden xl:block">
                 Chọn những chủ đề mà bạn muốn hiện trên bảng tin
               </Paragraph>
-              <Row gutter={[16, 40]} className="-ml-[17%] -mr-[20%] xl:-mr-[150%] xl:mt-8 sm:ml-0">
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
                 {topics.map((topic) => (
-                  <Col key={topic.name}>
+                  <div key={topic.name} className="flex justify-center">
                     <TopicCard
                       topic={topic}
                       added={userRedux.topics?.includes(topic.name) || false}
@@ -460,9 +459,9 @@ const UserInformationPage = () => {
                         }
                       }}
                     />
-                  </Col>
+                  </div>
                 ))}
-              </Row>
+              </div>
             </div>
           )}
         </Content>
