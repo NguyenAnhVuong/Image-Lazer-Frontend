@@ -33,9 +33,11 @@ const TopicCard = ({ topic, added, onClick }
           alt={topic.name}
         />
       </div>
-      <Title level={4} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-base">
-        {topic.name}
-      </Title>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+        <Title level={4} className="text-white text-base">
+          {topic.name}
+        </Title>
+      </div>
     </div>
     <Button
       className={`mt-2 xl:w-full ${added ? 'bg-slate-100 text-black' : 'bg-black text-white'}`}
@@ -66,7 +68,7 @@ const SideMenu = ({
       className="m-10 hidden xl:block max-w-[250px]"
     >
       <div className="columns-1">
-        <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-information')}>
+        <button className="mr-5 p-1 my-1" type="button" onClick={() => navigate('/settings/user-information')}>
           <div
             className={`pb-1 text-base font-bold border-b-[3px]
               ${(option === 'user-information') ? 'border-black' : 'border-transparent'}`}
@@ -74,7 +76,7 @@ const SideMenu = ({
             Thông tin cá nhân
           </div>
         </button>
-        <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-password')}>
+        <button className="mr-5 p-1 my-1" type="button" onClick={() => navigate('/settings/user-password')}>
           <div
             className={`pb-1 text-base font-bold border-b-[3px]
               ${(option === 'user-password') ? 'border-black' : 'border-transparent'}`}
@@ -82,7 +84,7 @@ const SideMenu = ({
             Thay đổi mật khẩu
           </div>
         </button>
-        <button className="mr-5 p-1" type="button" onClick={() => navigate('/settings/user-topics')}>
+        <button className="mr-5 p-1 my-1" type="button" onClick={() => navigate('/settings/user-topics')}>
           <div
             className={`pb-1 text-base font-bold border-b-[3px]
               ${(option === 'user-topics') ? 'border-black' : 'border-transparent'}`}
@@ -98,7 +100,7 @@ const SideMenu = ({
 const InformationForm = ({
   form, userRedux, handleSubmit, handleLogout, showModal, changed, setChanged,
 } : any) => (
-  <div>
+  <div className="xl:w-1/3">
     <Title level={3} className="hidden xl:block">
       Thông tin cá nhân
     </Title>
@@ -218,7 +220,7 @@ const InformationForm = ({
 const ChangePasswordForm = ({
   handleChangePassword, wrongPassword,
 } : any) => (
-  <div>
+  <div className="xl:w-1/3">
     <Title level={3} className="hidden xl:block">
       Thay đổi mật khẩu
     </Title>
@@ -414,11 +416,13 @@ const UserInformationPage = () => {
         </span>
       </div>
       <Layout className="bg-transparent">
-        <SideMenu
-          option={params.option || 'user-information'}
-          navigate={navigate}
-        />
-        <Content className="absolute xl:left-1/4 xl:w-1/3 w-full justify-center px-5 xl:px-10 pt-20">
+        <div className="hidden xl:block xl:mr-10">
+          <SideMenu
+            option={params.option || 'user-information'}
+            navigate={navigate}
+          />
+        </div>
+        <Content className="w-full justify-center px-5 xl:px-10 pt-20 xl:pt-10">
           {params.option === 'user-information' && (
             <InformationForm
               form={form}
@@ -438,14 +442,14 @@ const UserInformationPage = () => {
             />
           )}
           {params.option === 'user-topics' && (
-            <div>
+            <div className="xl:w-[1000px] 2xl:w-[1280px]">
               <Title level={3} className="hidden xl:block">
                 Thay đổi chủ đề
               </Title>
               <Paragraph strong className="hidden xl:block">
                 Chọn những chủ đề mà bạn muốn hiện trên bảng tin
               </Paragraph>
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                 {topics.map((topic) => (
                   <div key={topic.name} className="flex justify-center">
                     <TopicCard
