@@ -117,3 +117,16 @@ img {
   position: absolute;
   right: 20px;
 }
+
+.form-search .ant-form-item-control-input {
+  height: 100%;
+}
+
+.form-search .ant-form-item-control-input-content {
+  height: 100%;
+}
+
+.ant-dropdown-menu {
+  max-height: 50vh;
+  overflow: auto;
+}

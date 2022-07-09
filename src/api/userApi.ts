@@ -65,5 +65,17 @@ const userAPi = {
     }
     return 0;
   },
+  searchUser: async (keyWord: string) => {
+    try {
+      const res = await axios.post('/users/search', { user: keyWord });
+      if (res && res.data && res.data.errorCode === 0) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+
+    return 0;
+  },
 };
 export default userAPi;

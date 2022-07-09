@@ -5,6 +5,7 @@ import createSagaMiddleware from 'redux-saga';
 import { authReducer } from '../features/auth/authSlice';
 import { chatReducer } from '../features/chat/chatSlice';
 import { commentReducer } from '../features/comment/commentSlice';
+import { searchReducer } from '../features/search/searchSlice';
 import testReducer from '../features/test/testSlice';
 import { userReducer } from '../features/user/userSlice';
 import rootSaga from './rootSaga';
@@ -24,6 +25,7 @@ export const store = configureStore({
     chat: chatReducer,
     user: userReducer,
     comment: commentReducer,
+    search: searchReducer,
   },
   middleware:
     (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware),
