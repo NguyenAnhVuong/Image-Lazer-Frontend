@@ -1,4 +1,6 @@
-import { Input, Avatar } from 'antd';
+import {
+  Avatar, Dropdown, Input, Menu,
+} from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { BsPinterest } from 'react-icons/bs';
 import { FaSearch } from 'react-icons/fa';
@@ -8,6 +10,7 @@ import axiosJWT from '../../api/axiosJWT';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { authActions } from '../../features/auth/authSlice';
+import { searchActions } from '../../features/search/searchSlice';
 import Messages from '../Chat/ChatPC/Messages';
 import Notifications from '../Notifications/Notifications';
 
@@ -18,6 +21,36 @@ const HeaderPC = () => {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
+  const [search, setSearch] = useState('');
+  const suggestions = useAppSelector((state: AppState) => state.search.suggestions);
+  const handleSearchTopics = (value: string) => {
+    dispatch(searchActions.setTopic(value));
+  };
+  const menu = (
+    <Menu
+      items={suggestions.map((suggestion, key) => (
+        {
+          key,
+          label: (
+            suggestion.subTitle ? (
+              <Link to={`/user/${suggestion.subTitle}`} className="flex items-center">
+                <img className="w-12 h-12 rounded-xl object-cover" src={suggestion.avatarSrc} alt="" />
+                <div className="flex flex-col items-start ml-2">
+                  <span className="font-bold text-base">{suggestion.title}</span>
+                  <span className="font-medium text-sm">{suggestion.subTitle}</span>
+                </div>
+              </Link>
+            ) : (
+              <button className="flex items-center" type="button" onClick={() => handleSearchTopics(suggestion.title)}>
+                <img className="w-12 h-12 rounded-xl object-cover" src={suggestion.avatarSrc} alt="" />
+                <span className="font-bold text-base ml-2">{suggestion.title}</span>
+              </button>
+            )
+          ),
+        }
+      ))}
+    />
+  );
 
   const handleLogout = async () => {
     const res = await axiosJWT.post('/users/auth/logout');
@@ -28,6 +61,13 @@ const HeaderPC = () => {
       navigate('/');
     }
   };
+
+  useEffect(() => {
+    const handleSearch = () => {
+      dispatch(searchActions.setSearchWithDebounce(search));
+    };
+    handleSearch();
+  }, [dispatch, search]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -42,7 +82,7 @@ const HeaderPC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('irene');
+    // console.log('irene');
     // if (user.userName) { dispatch(userActions.getUserStart(user.userName)); }
   }, [user.markMessageAsUnread, user.markMessageAsUnread?.length, user.userName]);
 
@@ -59,18 +99,21 @@ const HeaderPC = () => {
             </Link>
           </div>
           <div className="h-full px-2 w-full">
-            <Input
-              className="h-full rounded-3xl bg-[#efefef]"
-              prefix={<FaSearch />}
-              placeholder="Tìm kiếm"
-            />
+            <Dropdown overlay={menu} trigger={['click']}>
+              <Input
+                className="h-full rounded-3xl bg-[#efefef]"
+                prefix={<FaSearch />}
+                placeholder="Tìm kiếm"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </Dropdown>
           </div>
           <div className="flex">
             <div className="relative">
               <Notifications />
               {user.markNotificationAsUnread
-              && (user.markNotificationAsUnread.comments.length > 0
-                || user.markNotificationAsUnread.likes.length > 0) && (
+                && (user.markNotificationAsUnread.comments.length > 0
+                  || user.markNotificationAsUnread.likes.length > 0) && (
                   <div
                     className="bg-red-600 p-1 min-w-[20px] min-h-[20px] absolute right-0 top-0 flex
                  justify-center items-center text-white rounded-full"
@@ -80,7 +123,7 @@ const HeaderPC = () => {
                 "
                     >
                       {user.markNotificationAsUnread.comments.length
-                    + user.markNotificationAsUnread.likes.length}
+                        + user.markNotificationAsUnread.likes.length}
                     </span>
                   </div>
               )}
@@ -133,8 +176,7 @@ const HeaderPC = () => {
                 />
               </button>
               <div
-                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${
-                  isOpen ? 'block' : 'hidden'
+                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${isOpen ? 'block' : 'hidden'
                 }`}
               >
                 <ul className="p-2">
