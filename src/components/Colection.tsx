@@ -38,7 +38,6 @@ const Colection = ({
   const userName = useAppSelector((state: AppState) => state.auth.userName);
   const { confirm } = Modal;
   const user = useAppSelector((state: AppState) => state.user.user);
-
   const photos: any = images.map((image: ImageInformation) => ({
     id: image.id,
     src: image.src,
@@ -159,75 +158,76 @@ const Colection = ({
   const renderPhoto: RenderPhoto | any = ({
     imageProps: { alt, style, ...restImageProps },
   }: any) => (
-    <div
-      className="relative mb-2 rounded-2xl overflow-hidden xl:mb-4 cursor-pointer"
-      style={{
-        boxSizing: 'content-box',
-        alignItems: 'center',
-        width: style?.width,
-        paddingBottom: 0,
-      }}
-    >
-      <div className="absolute left-0 top-0 right-0 bottom-0 group">
-        <div
-          className="absolute left-0 top-0 right-0 bottom-0 hidden group-hover:block group-hover:bg-[#0a0a0a49]"
-          role="button"
-          tabIndex={0}
-          onClick={() => {
-            restImageProps.onClick();
-            handleChooseActiveComment();
-            navigate(`/image/${refId.current}`);
-          }}
-          onKeyDown={restImageProps.onClick}
-        />
-        <div className="hidden group-hover:xl:block ">
-          <div className="absolute top-4 flex px-3 justify-between w-full">
-            <button
-              className="text-white flex items-center text-base font-bold max-w-[40%]"
-              type="button"
-              onClick={() => setSelectAlbumModal(true)}
-            >
-              <span className="mr-1 truncate">{currentAlbum}</span>
-              <FaAngleDown size={20} />
-            </button>
-            <button
-              className="bg-primary px-4 py-2 rounded-3xl text-base font-bold text-white"
-              type="button"
-              onClick={() => {
-                restImageProps.onClick();
-                handleSavePostToAlbum(refId.current, currentAlbum);
-              }}
-            >
-              アルバムに保存
-            </button>
-          </div>
-          {user.createdImages?.find(
-            (image) => image.src === restImageProps.src,
-          ) ? (
-            <div className="absolute bottom-3 right-3">
+    <div>
+      <div
+        className="relative mb-2 rounded-2xl overflow-hidden xl:mb-4 cursor-pointer"
+        style={{
+          boxSizing: 'content-box',
+          alignItems: 'center',
+          width: style?.width,
+          paddingBottom: 0,
+        }}
+      >
+        <div className="absolute left-0 top-0 right-0 bottom-0 group">
+          <div
+            className="absolute left-0 top-0 right-0 bottom-0 hidden group-hover:block group-hover:bg-[#0a0a0a49]"
+            role="button"
+            tabIndex={0}
+            onClick={() => {
+              restImageProps.onClick();
+              handleChooseActiveComment();
+              navigate(`/image/${refId.current}`);
+            }}
+            onKeyDown={restImageProps.onClick}
+          />
+          <div className="hidden group-hover:xl:block ">
+            <div className="absolute top-4 flex px-3 justify-between w-full">
               <button
-                className="p-2 bg-graybg rounded-full"
+                className="text-white flex items-center text-base font-bold max-w-[40%]"
                 type="button"
-                onClick={() => {
-                  restImageProps.onClick();
-                  navigate(`/image/edit/${refId.current}`);
-                }}
+                onClick={() => setSelectAlbumModal(true)}
               >
-                <MdModeEditOutline size={20} />
+                <span className="mr-1 truncate">{currentAlbum}</span>
+                <FaAngleDown size={20} />
               </button>
               <button
-                className="p-2 bg-graybg rounded-full ml-2"
+                className="bg-primary px-4 py-2 rounded-3xl text-base font-bold text-white"
                 type="button"
                 onClick={() => {
                   restImageProps.onClick();
-                  showConfirm();
+                  handleSavePostToAlbum(refId.current, currentAlbum);
                 }}
               >
-                <MdDelete size={20} />
+                アルバムに保存
               </button>
             </div>
-            ) : (
-              useToAlbum
+            {user.createdImages?.find(
+              (image) => image.src === restImageProps.src,
+            ) ? (
+              <div className="absolute bottom-3 right-3">
+                <button
+                  className="p-2 bg-graybg rounded-full"
+                  type="button"
+                  onClick={() => {
+                    restImageProps.onClick();
+                    navigate(`/image/edit/${refId.current}`);
+                  }}
+                >
+                  <MdModeEditOutline size={20} />
+                </button>
+                <button
+                  className="p-2 bg-graybg rounded-full ml-2"
+                  type="button"
+                  onClick={() => {
+                    restImageProps.onClick();
+                    showConfirm();
+                  }}
+                >
+                  <MdDelete size={20} />
+                </button>
+              </div>
+              ) : (
+                useToAlbum
             && isUserAlbum && (
               <div className="absolute bottom-3 right-3">
                 <button
@@ -241,37 +241,37 @@ const Colection = ({
                   <MdDelete size={20} />
                 </button>
               </div>
-              )
-            )}
-        </div>
-        <div className="xl:hidden">
-          {user.createdImages?.find(
-            (image) => image.src === restImageProps.src,
-          ) ? (
-            <div className="absolute bottom-2 right-2 flex flex-col">
-              <button
-                className="p-2 bg-graybg rounded-full"
-                type="button"
-                onClick={() => {
-                  restImageProps.onClick();
-                  navigate(`/image/edit/${refId.current}`);
-                }}
-              >
-                <MdModeEditOutline size={16} />
-              </button>
-              <button
-                className="p-2 bg-graybg rounded-full mt-2"
-                type="button"
-                onClick={() => {
-                  restImageProps.onClick();
-                  showConfirm();
-                }}
-              >
-                <MdDelete size={16} />
-              </button>
-            </div>
-            ) : (
-              useToAlbum
+                )
+              )}
+          </div>
+          <div className="xl:hidden">
+            {user.createdImages?.find(
+              (image) => image.src === restImageProps.src,
+            ) ? (
+              <div className="absolute bottom-2 right-2 flex flex-col">
+                <button
+                  className="p-2 bg-graybg rounded-full"
+                  type="button"
+                  onClick={() => {
+                    restImageProps.onClick();
+                    navigate(`/image/edit/${refId.current}`);
+                  }}
+                >
+                  <MdModeEditOutline size={16} />
+                </button>
+                <button
+                  className="p-2 bg-graybg rounded-full mt-2"
+                  type="button"
+                  onClick={() => {
+                    restImageProps.onClick();
+                    showConfirm();
+                  }}
+                >
+                  <MdDelete size={16} />
+                </button>
+              </div>
+              ) : (
+                useToAlbum
             && isUserAlbum && (
               <div className="absolute bottom-2 right-2">
                 <button
@@ -285,26 +285,28 @@ const Colection = ({
                   <MdDelete size={16} />
                 </button>
               </div>
-              )
-            )}
+                )
+              )}
+          </div>
         </div>
+        <img
+          alt={alt}
+          style={{
+            ...style,
+            width: '100%',
+            padding: 0,
+            marginBottom: 0,
+          }}
+          {...restImageProps}
+        />
       </div>
-      <img
-        alt={alt}
-        style={{
-          ...style,
-          width: '100%',
-          padding: 0,
-          marginBottom: 0,
-        }}
-        {...restImageProps}
-      />
     </div>
+
   );
 
   return (
     <div className="p-2 xl:px-16">
-      <div className="hidden xl:block">
+      <div className="">
         <PhotoAlbum
           photos={photos}
           layout="columns"
@@ -325,7 +327,7 @@ const Colection = ({
         />
       </div>
 
-      <div className="xl:hidden">
+      {/* <div className="xl:hidden">
         <PhotoAlbum
           photos={photos}
           layout="columns"
@@ -344,7 +346,7 @@ const Colection = ({
             refId.current = photo.id;
           }}
         />
-      </div>
+      </div> */}
       <ListSelectAlbumModal
         selectAlbumModal={selectAlbumModal}
         setSelectAlbumModal={setSelectAlbumModal}

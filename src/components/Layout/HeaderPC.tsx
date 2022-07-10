@@ -2,7 +2,6 @@ import {
   Avatar, Dropdown, Input, Menu,
 } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import { BsPinterest } from 'react-icons/bs';
 import { FaSearch } from 'react-icons/fa';
 import { HiChevronDown } from 'react-icons/hi';
 import { Link, useNavigate } from 'react-router-dom';
@@ -41,7 +40,11 @@ const HeaderPC = () => {
                 </div>
               </Link>
             ) : (
-              <button className="flex items-center" type="button" onClick={() => handleSearchTopics(suggestion.title)}>
+              <button
+                className="flex items-center w-full"
+                type="button"
+                onClick={() => { handleSearchTopics(suggestion.title); navigate('/'); }}
+              >
                 <img className="w-12 h-12 rounded-xl object-cover" src={suggestion.avatarSrc} alt="" />
                 <span className="font-bold text-base ml-2">{suggestion.title}</span>
               </button>
@@ -89,12 +92,20 @@ const HeaderPC = () => {
   return (
     <div className="hidden xl:block">
       <div className="h-20 py-4">
-        <div className="flex h-12 items-center px-4 header-pc">
-          <div className="text-red-600 mx-3 hover:bg-[#efefef] rounded-full cursor-pointer">
-            <BsPinterest className="p-3" size={48} />
-          </div>
+        <div
+          className="flex h-12 items-center px-4 header-pc"
+        >
+          <button
+            type="button"
+            className="text-red-600 m-3 hover:bg-[#efefef]
+          min-w-[48px] flex items-center justify-center h-12 rounded-full cursor-pointer"
+            onClick={() => { dispatch(searchActions.setTopic('all')); navigate('/'); }}
+          >
+            {/* <BsPinterest className="p-3" size={48} /> */}
+            <img src="./logo.png" className="w-8 h-8 object-fit block" alt="" />
+          </button>
           <div className="bg-black px-4 h-full rounded-3xl flex items-center">
-            <Link className="text-white text-lg font-bold w-max" to="/">
+            <Link className="text-white text-lg font-bold w-max" to="/" onClick={() => dispatch(searchActions.setTopic('all'))}>
               ホームページ
             </Link>
           </div>
@@ -182,13 +193,29 @@ const HeaderPC = () => {
                 <ul className="p-2">
                   <li className="">
                     <Link
-                      className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                      className="text-black p-2 px-4 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                       to="/settings/user-information"
                     >
                       個人情報
                     </Link>
                   </li>
-                  <li className="p-2 hover:bg-graybg rounded-2xl cursor-pointer">
+                  <li className="">
+                    <Link
+                      className="text-black p-2 px-4 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                      to="/settings/user-password"
+                    >
+                      Đổi mật khẩu
+                    </Link>
+                  </li>
+                  <li className="">
+                    <Link
+                      className="text-black p-2 px-4 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                      to="/settings/user-topics"
+                    >
+                      Chủ đề
+                    </Link>
+                  </li>
+                  <li className="p-2 px-4 hover:bg-graybg rounded-2xl cursor-pointer">
                     <button
                       className="text-base font-bold w-full text-left"
                       type="button"

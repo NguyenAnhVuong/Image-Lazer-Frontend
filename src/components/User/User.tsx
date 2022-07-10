@@ -5,10 +5,12 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { RiSettingsFill } from 'react-icons/ri';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axiosJWT from '../../api/axiosJWT';
+import followApi from '../../api/followApi';
 import userAPi from '../../api/userApi';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { authActions } from '../../features/auth/authSlice';
+import { userActions } from '../../features/user/userSlice';
 import { UserInformation } from '../../models';
 import CreateAlbumModal from '../Album/CreateAlbumModal';
 import Colection from '../Colection';
@@ -27,14 +29,15 @@ const User = () => {
   const ref = useRef<any>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [reRender, setReRender] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const userRedux = useAppSelector((state: AppState) => state.user);
+  const userRedux = useAppSelector((state: AppState) => state.user.user);
 
   const getUser = async () => {
     if (params && params.userName) {
       const res = await userAPi.getUserByUserName(params?.userName);
+      console.log('res', res);
       if (res) {
         setUser({
+          id: res.id,
           userName: res.userName,
           email: res.email,
           avatar: res.avatar,
@@ -88,6 +91,17 @@ const User = () => {
     };
   }, []);
 
+  const handleFollowUser = async (userId: string) => {
+    try {
+      const res = await followApi.followUser(userId);
+      if (res.status === 200) {
+        dispatch(userActions.getUserStart(userName));
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <div className="pb-20">
       <div
@@ -110,6 +124,22 @@ const User = () => {
                 to="/settings/user-information"
               >
                 個人情報
+              </Link>
+            </li>
+            <li className="">
+              <Link
+                className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                to="/settings/user-password"
+              >
+                Đổi mật khẩu
+              </Link>
+            </li>
+            <li className="">
+              <Link
+                className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                to="/settings/user-topics"
+              >
+                Chủ đề
               </Link>
             </li>
             <li className="">
@@ -158,21 +188,40 @@ const User = () => {
           {' '}
           フォロワー
         </p>
-        <button
-          className="bg-[#efefef] px-4 py-2 rounded-3xl text-base font-bold mb-4 xl:hidden"
-          type="button"
-        >
-          <Link className="text-black" to="/create-image">
-            画像追加
-          </Link>
-        </button>
-        <button
-          className="bg-[#efefef] px-4 py-2 rounded-3xl text-base font-bold xl:hidden"
-          type="button"
-          onClick={() => setCreateAlbumModalOpen(true)}
-        >
-          アルバム追加
-        </button>
+        {
+          params.userName === userName
+            ? (
+              <>
+                <button
+                  className="bg-[#efefef] px-4 py-2 rounded-3xl text-base font-bold mb-4 xl:hidden"
+                  type="button"
+                >
+                  <Link className="text-black" to="/create-image">
+                    画像追加
+                  </Link>
+                </button>
+                <button
+                  className="bg-[#efefef] px-4 py-2 rounded-3xl text-base font-bold xl:hidden"
+                  type="button"
+                  onClick={() => setCreateAlbumModalOpen(true)}
+                >
+                  アルバム追加
+                </button>
+              </>
+            )
+            : (
+
+              <button
+                className="bg-[#efefef] px-4 py-2 rounded-3xl text-base font-bold mb-4"
+                type="button"
+                onClick={() => { if (user?.id) handleFollowUser(user.id); }}
+              >
+                {
+                  userRedux?.following?.find((item) => item.userName === params.userName) ? 'Bỏ theo dõi' : 'Theo dõi'
+                }
+              </button>
+            )
+        }
       </div>
 
       <div>

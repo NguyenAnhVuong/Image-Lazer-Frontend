@@ -12,6 +12,7 @@ import CreateImagePage from './components/Image/CreateImagePage';
 import EditImagePage from './components/Image/EditImagePage';
 import ImageDetail from './components/Image/ImageDetail';
 import Header from './components/Layout/Header';
+import SearchMobile from './components/Search/SearchMobile';
 import User from './components/User/User';
 import UserInformation from './components/User/UserInformation';
 import { authActions } from './features/auth/authSlice';
@@ -36,6 +37,7 @@ const App = () => {
         {userName ? (
           <>
             <Route path="/" element={<Home />} />
+            <Route path="/search" element={<SearchMobile />} />
             <Route path="/create-image" element={<CreateImagePage />} />
             <Route path="/settings/:option" element={<UserInformation />} />
             <Route path="/image/edit/:id" element={<EditImagePage />} />

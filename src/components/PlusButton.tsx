@@ -30,7 +30,7 @@ const PlusButton = () => {
           size={56}
         />
       </button>
-      <div className={`fixed bg-white bottom-20 right-24 min-w-[200px] p-2 rounded-2xl ${isOpen ? 'block' : 'hidden'}`}>
+      <div className={`fixed bg-white bottom-20 right-24 min-w-[200px] header-shadow p-2 rounded-2xl ${isOpen ? 'block' : 'hidden'}`}>
         <Link
           className="flex items-center text-base font-bold p-2 hover:bg-graybg rounded-xl w-full text-black"
           to="/create-image"

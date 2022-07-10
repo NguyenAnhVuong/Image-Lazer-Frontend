@@ -21,9 +21,11 @@ const { Title, Paragraph } = Typography;
 const { Dragger } = Upload;
 const { Sider, Content } = Layout;
 
-const TopicCard = ({ topic, added, onClick }
+export const TopicCard = ({ topic, added, onClick }
 : { topic: TopicInformation, added: boolean, onClick: () => void }) => (
-  <div className="flex flex-col w-full items-center justify-center xl:px-4 py-2 rounded-2xl hover:bg-slate-300 -z-50">
+  <div className="flex flex-col w-full items-center justify-center
+  xl:px-4 py-2 rounded-2xl xl:hover:bg-slate-300 xl:cursor-pointer"
+  >
     <div className="relative w-full">
       <div className="relative w-full pt-[100%] xl:pt-[56.25%]">
         <img
@@ -40,12 +42,12 @@ const TopicCard = ({ topic, added, onClick }
       </div>
     </div>
     <Button
-      className={`mt-2 xl:w-full ${added ? 'bg-slate-100 text-black' : 'bg-black text-white'}`}
+      className={`mt-2 xl:mt-0 xl:w-full ${added ? 'bg-graybg text-black' : 'bg-black text-white'} max-w-[160px]`}
       shape="round"
       type="text"
       onClick={onClick}
     >
-      <div className="font-semibold text-sm">
+      <div className="font-semibold text-sm min-w-[72px]">
         {added ? 'Xóa' : 'Thêm'}
       </div>
     </Button>
@@ -119,7 +121,7 @@ const InformationForm = ({
       <Button
         type="primary"
         shape="round"
-        className="mt-5 xl:ml-5 bg-slate-200 border-transparent text-black font-medium max-w-[100px]"
+        className="mt-5 xl:ml-5 bg-graybg border-transparent text-black font-medium max-w-[100px]"
         onClick={showModal}
       >
         Thay đổi
@@ -174,7 +176,7 @@ const InformationForm = ({
           <Button
             type="primary"
             shape="round"
-            className={`hidden xl:inline-block border-transparent font-medium bg-slate-200
+            className={`hidden xl:inline-block border-transparent font-medium bg-graybg
               ${changed ? ' text-black' : 'text-slate-500'}`}
             onClick={() => {
               form.setFieldsValue({
@@ -191,7 +193,7 @@ const InformationForm = ({
             type="primary"
             shape="round"
             className={`fixed top-[11px] right-2 flex items-center px-4 py-1 h-auto border-transparent font-medium
-              xl:static xl:text-center z-[999] ${changed ? 'bg-red-500 text-white' : 'bg-slate-200 text-slate-500'}`}
+              xl:static xl:text-center z-[999] ${changed ? 'bg-primary text-white' : 'bg-graybg text-slate-500'}`}
             onClick={() => {
               form.validateFields().then((values : any) => {
                 handleSubmit(values as UpdateUserInformation);
@@ -206,7 +208,7 @@ const InformationForm = ({
           <Button
             type="primary"
             shape="round"
-            className="hidden xl:inline-block bg-slate-200 border-transparent text-black font-medium"
+            className="hidden xl:inline-block bg-graybg border-transparent text-black font-medium"
             onClick={handleLogout}
           >
             Logout
@@ -287,7 +289,7 @@ const ChangePasswordForm = ({
         <div className="flex justify-center">
           <Button
             className="fixed top-[11px] right-2 flex items-center px-4 py-1 h-auto z-[999]
-            bg-slate-200 border-transparent text-black font-medium xl:static xl:text-center"
+            bg-graybg border-transparent text-black font-medium xl:static xl:text-center"
             shape="round"
             htmlType="submit"
           >

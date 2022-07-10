@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { BsPinterest } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
@@ -21,7 +20,7 @@ function Auth() {
       <div className="bg-[#00000080] h-screen flex justify-center items-center">
         <div className="bg-white rounded-3xl px-12 py-8 lg:w-[480px]">
           <div className="flex justify-center">
-            <BsPinterest className="text-red-600" size={38} />
+            <img src="./logo.png" className="w-9 h-9 object-fit block" alt="" />
           </div>
           <div className="flex justify-center">
             {

@@ -11,7 +11,7 @@ const initialState: SearchState = {
   open: false,
   search: '',
   suggestions: [],
-  topic: '',
+  topic: 'all',
 };
 
 const searchSlice = createSlice({
