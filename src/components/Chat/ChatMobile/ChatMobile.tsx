@@ -8,7 +8,7 @@ const ChatMobile = () => {
   );
   return (
     <div>
-      <h3 className="text-lg text-center font-bold mt-5 mb-10">Tin nhắn</h3>
+      <h3 className="text-lg text-center font-bold mt-5 mb-10">メッセージ</h3>
       <ListUserChatMobile
         followedUsers={following || []}
       />

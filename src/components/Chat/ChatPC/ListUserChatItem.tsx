@@ -102,9 +102,9 @@ const ListUserChatItem = (props: User) => {
         />
         <h3 className="text-lg col-span-1">{fullName}</h3>
         {following && following.find((f) => f.id === id) ? (
-          <p className="col-span-1">Đang theo dõi</p>
+          <p className="col-span-1">フォロー</p>
         ) : (
-          <p className="col-span-1">Đề xuất</p>
+          <p className="col-span-1">おすすめ</p>
         )}
       </Button>
       <Modal
@@ -171,7 +171,7 @@ const ListUserChatItem = (props: User) => {
                       && messages[index - 1]
                       && email === messages[index - 1].author.email)
                       || (index === 0 && email !== message.author.email)) && (
-                      <span className="text-right mx-4">Bạn</span>
+                      <span className="text-right mx-4">あなた</span>
                     )}
                     <div key={message._id} className="mx-4">
                       <p
@@ -190,7 +190,7 @@ const ListUserChatItem = (props: User) => {
           </div>
           <div className="flex absolute space-x-2 bottom-0 inset-x-0">
             <Input
-              placeholder="Nhập tin nhắn"
+              placeholder="メッセージを入力してください。"
               className="rounded-3xl "
               value={message}
               onChange={handleMessageValueChange}

@@ -37,19 +37,19 @@ const EditAlbumModal = ({
       form.resetFields();
       setReRender(true);
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: 'Cập nhật thông tin Album thành công!',
+          content: 'アルバムを更新しました!',
           key,
           duration: 2,
         });
       }, 1000);
       dispatch(userActions.getUserStart(userName));
     } else {
-      setErrorMessage('Album này đã tồn tại!');
+      setErrorMessage('アルバム名が重複しています');
     }
   };
 
@@ -78,13 +78,13 @@ const EditAlbumModal = ({
           layout="vertical"
         >
           <div>
-            <span className="text-sm mb-2 ml-1 block">Tên Album</span>
+            <span className="text-sm mb-2 ml-1 block">アルバム名</span>
             <Form.Item
               name="name"
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập tên album!',
+                  message: 'アルバム名を入力してください',
                 },
               ]}
               validateStatus={errorMessage ? 'error' : 'validating'}
@@ -94,7 +94,7 @@ const EditAlbumModal = ({
             </Form.Item>
           </div>
           <div>
-            <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+            <span className="text-sm mb-2 ml-1 block">説明</span>
             <Form.Item
               name="description"
             >
@@ -103,7 +103,7 @@ const EditAlbumModal = ({
           </div>
 
           <div className="flex items-center">
-            <span className="text-sm mb-6 ml-1 block mr-4">Giữ bí mật bảng</span>
+            <span className="text-sm mb-6 ml-1 block mr-4">ボードを秘密にする</span>
             <Form.Item name="secret" valuePropName="checked">
               <Switch />
             </Form.Item>
@@ -114,13 +114,13 @@ const EditAlbumModal = ({
                 className="font-semibold rounded-3xl h-auto px-4 py-2 mr-8"
                 onClick={() => setIsOpen(false)}
               >
-                Hủy
+                キャンセル
               </Button>
               <Button
                 className="bg-primary text-white font-semibold rounded-3xl h-auto px-5 py-2"
                 htmlType="submit"
               >
-                Lưu
+                更新
               </Button>
             </Form.Item>
           </div>

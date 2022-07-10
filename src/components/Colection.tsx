@@ -28,7 +28,7 @@ const Colection = ({
   images, useToAlbum, isUserAlbum, reRender, setReRender, albumName,
 }: ImageAlbumProps) => {
   // const userAlbums = useAppSelector((state: AppState) => state.albums.albums);
-  const [currentAlbum, setCurrentAlbum] = useState('Album mặc định');
+  const [currentAlbum, setCurrentAlbum] = useState('デフォルトのアルバム');
   const [selectAlbumModal, setSelectAlbumModal] = useState(false);
   const navigate = useNavigate();
   const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48];
@@ -65,12 +65,12 @@ const Colection = ({
     const res = await imageApi.deleteImage(id);
     if (res) {
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: 'Xóa ảnh thành công!',
+          content: '画像を削除しました',
           key,
           duration: 2,
         });
@@ -82,11 +82,11 @@ const Colection = ({
 
   const showConfirm = async () => {
     confirm({
-      title: 'Bạn có chắc là muốn xóa ảnh này?',
+      title: '画像を削除しますか？',
       icon: <ExclamationCircleOutlined />,
-      content: 'Bạn sẽ không thể khôi phục lại ảnh này',
-      okText: 'Xóa',
-      cancelText: 'Hủy',
+      content: 'この画像を復元することはできません',
+      okText: '削除',
+      cancelText: 'キャンセル',
       okType: 'danger',
       onOk() {
         handleDeleteImage(refId.current);
@@ -101,12 +101,12 @@ const Colection = ({
     const res = await albumsApi.deleteImageInAlbum(imageId, album);
     if (res) {
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: `Xóa ảnh khỏi Album ${album} thành công!`,
+          content: `${album}アルバムから画像を削除することに成功しました`,
           key,
           duration: 2,
         });
@@ -118,11 +118,11 @@ const Colection = ({
 
   const showConfirmToDeleteImageInAlbum = async () => {
     confirm({
-      title: 'Bạn có chắc là muốn xóa ảnh này khỏi Album?',
+      title: '本当にアルバムからこの画像を削除しますか？',
       icon: <ExclamationCircleOutlined />,
       content: '',
-      okText: 'Xóa',
-      cancelText: 'Hủy',
+      okText: '削除',
+      cancelText: 'キャンセル',
       okType: 'danger',
       onOk() {
         handleDeleteImageInAlbum(refId.current, albumName);
@@ -137,12 +137,12 @@ const Colection = ({
     const res = await albumsApi.saveImageToAlbum(imageId, album);
     if (res) {
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: `Đã lưu ảnh vào Album ${album} !`,
+          content: `${album} アルバムに保存された画像`,
           key,
           duration: 2,
         });
@@ -186,7 +186,7 @@ const Colection = ({
               type="button"
               onClick={() => { restImageProps.onClick(); handleSavePostToAlbum(refId.current, currentAlbum); }}
             >
-              Lưu
+              アルバムに保存
             </button>
           </div>
           {

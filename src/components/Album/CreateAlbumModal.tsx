@@ -32,18 +32,18 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
       form.resetFields();
       dispatch(userActions.getUserStart(userName));
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: 'Tạo Album thành công!',
+          content: 'アルバムを作成しました!',
           key,
           duration: 2,
         });
       }, 1000);
     } else {
-      setErrorMessage('Album này đã tồn tại!');
+      setErrorMessage('アルバム名が重複しています');
     }
   };
 
@@ -70,7 +70,7 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập tên album!',
+                  message: 'アルバム名を入力してください',
                 },
               ]}
               validateStatus={errorMessage ? 'error' : 'validating'}
@@ -83,12 +83,12 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
             name="description"
           >
             <div>
-              <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+              <span className="text-sm mb-2 ml-1 block">説明</span>
               <Input.TextArea className="rounded-2xl px-4 py-2 h-24 resize-none" />
             </div>
           </Form.Item>
           <div className="flex items-center">
-            <span className="text-sm mb-6 ml-1 block mr-4">Giữ bí mật bảng</span>
+            <span className="text-sm mb-6 ml-1 block mr-4">ボードを秘密にする</span>
             <Form.Item name="secret" valuePropName="checked">
               <Switch />
             </Form.Item>
@@ -99,13 +99,13 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
                 className="font-semibold rounded-3xl h-auto px-4 py-2 mr-8"
                 onClick={() => setIsOpen(false)}
               >
-                Hủy
+                キャンセル
               </Button>
               <Button
                 className="bg-primary text-white font-semibold rounded-3xl h-auto px-5 py-2"
                 htmlType="submit"
               >
-                Lưu
+                セーブ
               </Button>
             </Form.Item>
           </div>

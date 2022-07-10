@@ -33,12 +33,12 @@ const EditImagePage = () => {
     const res = await imageApi.updateImage(params.id || '', newImage);
     if (res) {
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: 'Lưu thông tin Ảnh thành công!',
+          content: '画像情報の保存に成功しました',
           key,
           duration: 2,
         });
@@ -91,7 +91,7 @@ const EditImagePage = () => {
         <button type="button" className="absolute left-0" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="p-3 text-black" size={48} />
         </button>
-        <span className="text-base font-bold">Thay đổi thông tin Ảnh</span>
+        <span className="text-base font-bold">画像情報の変更</span>
       </div>
       <div className="flex flex-col items-center p-4 mt-14 xl:flex-row  xl:w-[1200px]">
         <div className="xl:w-[40%] xl:flex xl:justify-center">
@@ -118,7 +118,7 @@ const EditImagePage = () => {
                   <Space direction="vertical" align="center">
                     <div className="flex items-center">
                       <ZoomInOutlined />
-                      <span className="ml-1">Phóng to</span>
+                      <span className="ml-1">拡大する</span>
                     </div>
                   </Space>
                 ),
@@ -135,13 +135,13 @@ const EditImagePage = () => {
             layout="vertical"
           >
             <div>
-              <span className="text-sm mb-2 ml-1 block">Tiêu đề ảnh</span>
+              <span className="text-sm mb-2 ml-1 block">画像タイトル</span>
               <Form.Item
                 name="title"
                 rules={[
                   {
                     required: true,
-                    message: 'Vui lòng nhập tiêu đề ảnh!',
+                    message: '画像タイトルを入力してください',
                   },
                 ]}
               >
@@ -150,20 +150,20 @@ const EditImagePage = () => {
             </div>
 
             <div>
-              <span className="text-sm mb-2 ml-1 block">Chủ đề ảnh</span>
+              <span className="text-sm mb-2 ml-1 block">イメージテーマ</span>
               <Form.Item
                 name="topic"
                 rules={[
                   {
                     required: true,
-                    message: 'Vui lòng chọn topic!',
+                    message: 'イメージテーマを入力してください',
                   },
                 ]}
                 noStyle={false}
               >
 
                 <Select
-                  placeholder="Chọn chủ đề ảnh"
+                  placeholder="イメージテーマを選択してください"
                   allowClear
                 >
                   {
@@ -179,7 +179,7 @@ const EditImagePage = () => {
               </Form.Item>
             </div>
             <div>
-              <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+              <span className="text-sm mb-2 ml-1 block">説明</span>
               <Form.Item
                 name="description"
               >
@@ -188,25 +188,25 @@ const EditImagePage = () => {
             </div>
 
             <div>
-              <span className="text-sm mb-2 ml-1 block">Liên kết</span>
+              <span className="text-sm mb-2 ml-1 block">リンク</span>
               <Form.Item name="link">
                 <Input className="rounded-2xl px-4 py-2" />
               </Form.Item>
             </div>
 
             <div>
-              <span className="text-sm mb-2 ml-1 block">Album ảnh</span>
+              <span className="text-sm mb-2 ml-1 block">アルバム</span>
               <Form.Item
                 name="album"
                 rules={[
                   {
                     required: true,
-                    message: 'Vui lòng chọn album!',
+                    message: 'アルバムを選択してください',
                   },
                 ]}
               >
                 <Select
-                  placeholder="Chọn Album ảnh"
+                  placeholder="アルバムを選ぶ"
                   allowClear
                 >
                   {
@@ -227,7 +227,7 @@ const EditImagePage = () => {
                   type="button"
                   onClick={() => navigate(-1)}
                 >
-                  Hủy
+                  キャンセル
                 </button>
                 <Button
                   className="
@@ -237,7 +237,7 @@ const EditImagePage = () => {
                 "
                   htmlType="submit"
                 >
-                  Lưu
+                  更新
                 </Button>
               </div>
             </Form.Item>

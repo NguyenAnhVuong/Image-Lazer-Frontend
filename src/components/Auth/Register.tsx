@@ -16,12 +16,12 @@ const Register = ({ setLogin }: RegisterProps) => {
       const success = await authAPi.register(newRegisterUser);
       if (success) {
         setLogin(true);
-        console.log('Đăng ký thành công');
+        console.log('サインアップに成功しました');
       } else {
-        setErrorMessage('Tài khoản đã tồn tại!');
+        setErrorMessage('アカウントはすでに存在しています');
       }
     } catch (error) {
-      setErrorMessage('Tài khoản đã tồn tại!');
+      setErrorMessage('アカウントはすでに存在しています');
     }
   };
   return (
@@ -38,11 +38,11 @@ const Register = ({ setLogin }: RegisterProps) => {
         rules={[
           {
             required: true,
-            message: 'Vui lòng nhập Họ và tên!',
+            message: 'お名前と苗字を入力してください',
           },
         ]}
       >
-        <Input className="h-9 rounded-2xl" placeholder="Họ và tên" />
+        <Input className="h-9 rounded-2xl" placeholder="名前と苗字" />
       </Form.Item>
 
       <Form.Item
@@ -50,11 +50,11 @@ const Register = ({ setLogin }: RegisterProps) => {
         rules={[
           {
             required: true,
-            message: 'Vui lòng nhập email!',
+            message: '電子メールを入力してください',
           },
         ]}
       >
-        <Input className="h-9 rounded-2xl" placeholder="Email" />
+        <Input className="h-9 rounded-2xl" placeholder="電子メール" />
       </Form.Item>
 
       <Form.Item
@@ -62,11 +62,11 @@ const Register = ({ setLogin }: RegisterProps) => {
         rules={[
           {
             required: true,
-            message: 'Vui lòng nhập tuổi!',
+            message: '年齢を入力してください',
           },
         ]}
       >
-        <InputNumber className="h-9 rounded-2xl w-full" min={1} max={100} placeholder="Tuổi" />
+        <InputNumber className="h-9 rounded-2xl w-full" min={1} max={100} placeholder="年齢" />
       </Form.Item>
 
       <Form.Item
@@ -74,11 +74,11 @@ const Register = ({ setLogin }: RegisterProps) => {
         rules={[
           {
             required: true,
-            message: 'Vui lòng nhập mật khẩu!',
+            message: 'パスワードを入力してください',
           },
         ]}
       >
-        <Input.Password className="h-9 rounded-2xl" placeholder="Password" />
+        <Input.Password className="h-9 rounded-2xl" placeholder="パスワード" />
       </Form.Item>
       <div className="flex justify-center">
         <p className="text-[#ff4d4f]">{errorMesage}</p>
@@ -90,7 +90,7 @@ const Register = ({ setLogin }: RegisterProps) => {
             className="bg-red-600 rounded-2xl text-white flex items-center py-4 px-8 justify-center font-semibold text-sm"
             htmlType="submit"
           >
-            Đăng Ký
+            サインアップ
           </Button>
         </div>
       </Form.Item>

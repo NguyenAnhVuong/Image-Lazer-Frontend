@@ -51,12 +51,12 @@ const CreateImagePage = () => {
         name: '', src: '', height: 0, width: 0,
       });
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: 'Tạo ảnh thành công!',
+          content: '画像作成に成功しました！',
           key,
           duration: 2,
         });
@@ -72,7 +72,7 @@ const CreateImagePage = () => {
         <button type="button" className="absolute left-0" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="p-3 text-black" size={48} />
         </button>
-        <span className="text-base font-bold">Thêm Ảnh</span>
+        <span className="text-base font-bold">画像を追加する</span>
       </div>
       <div className="flex flex-col items-center p-4 mt-14 xl:flex-row  xl:w-[1200px]">
         <div className="xl:w-[40%] xl:flex xl:justify-center">
@@ -117,7 +117,7 @@ const CreateImagePage = () => {
                   htmlFor="image"
                 >
                   <BsFillCloudUploadFill size={28} />
-                  <span className="p-3">Chọn một ảnh</span>
+                  <span className="p-3">画像を選ぶ</span>
                 </label>
               )
           }
@@ -133,13 +133,13 @@ const CreateImagePage = () => {
             layout="vertical"
           >
             <div>
-              <span className="text-sm mb-2 ml-1 block">Tiêu đề ảnh</span>
+              <span className="text-sm mb-2 ml-1 block">画像タイトル</span>
               <Form.Item
                 name="title"
                 rules={[
                   {
                     required: true,
-                    message: 'Vui lòng nhập tiêu đề ảnh!',
+                    message: '画像のタイトルを入力してください',
                   },
                 ]}
               >
@@ -148,20 +148,20 @@ const CreateImagePage = () => {
             </div>
 
             <div>
-              <span className="text-sm mb-2 ml-1 block">Chủ đề ảnh</span>
+              <span className="text-sm mb-2 ml-1 block">イメージテーマ</span>
               <Form.Item
                 name="topic"
                 rules={[
                   {
                     required: true,
-                    message: 'Vui lòng chọn topic!',
+                    message: 'イメージテーマを入力してください',
                   },
                 ]}
                 noStyle={false}
               >
 
                 <Select
-                  placeholder="Chọn chủ đề ảnh"
+                  placeholder="イメージテーマを選ぶ"
                   allowClear
                 >
                   {
@@ -181,29 +181,29 @@ const CreateImagePage = () => {
               name="description"
             >
               <div>
-                <span className="text-sm mb-2 ml-1 block">Mô tả</span>
+                <span className="text-sm mb-2 ml-1 block">説明</span>
                 <Input.TextArea className="rounded-2xl px-4 py-2 h-24 resize-none" />
               </div>
             </Form.Item>
             <Form.Item name="link">
               <div>
-                <span className="text-sm mb-2 ml-1 block">Liên kết</span>
+                <span className="text-sm mb-2 ml-1 block">リンク</span>
                 <Input className="rounded-2xl px-4 py-2" />
               </div>
             </Form.Item>
             <div>
-              <span className="text-sm mb-2 ml-1 block">Album ảnh</span>
+              <span className="text-sm mb-2 ml-1 block">アルバム</span>
               <Form.Item
                 name="album"
                 rules={[
                   {
                     required: true,
-                    message: 'Vui lòng chọn album!',
+                    message: 'アルバムを選んでください',
                   },
                 ]}
               >
                 <Select
-                  placeholder="Chọn Album ảnh"
+                  placeholder="アルバムを選ぶ"
                   allowClear
                 >
                   {
@@ -224,7 +224,7 @@ const CreateImagePage = () => {
                   type="button"
                   onClick={() => navigate(-1)}
                 >
-                  Hủy
+                  キャンセル
                 </button>
                 <Button
                   className="
@@ -234,7 +234,7 @@ const CreateImagePage = () => {
                 "
                   htmlType="submit"
                 >
-                  Lưu
+                  追加
                 </Button>
               </div>
             </Form.Item>

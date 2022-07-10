@@ -37,7 +37,7 @@ const PlusButton = () => {
           type="button"
         >
           <FaPlus className="" size={20} />
-          <span className="ml-2">Tạo ảnh</span>
+          <span className="ml-2">画像作成</span>
         </Link>
         <button
           className="flex items-center text-base font-bold p-2 hover:bg-graybg rounded-xl w-full"
@@ -45,7 +45,7 @@ const PlusButton = () => {
           onClick={() => setCreateAlbumModalOpen(true)}
         >
           <IoMdAlbums className="" size={20} />
-          <span className="ml-2">Tạo Album</span>
+          <span className="ml-2">アルバム作成</span>
         </button>
       </div>
       <CreateAlbumModal isOpen={createAlbumModalOpen} setIsOpen={setCreateAlbumModalOpen} />

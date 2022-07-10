@@ -26,8 +26,8 @@ function Auth() {
           <div className="flex justify-center">
             {
               login
-                ? <h1 className="text-2xl my-4 font-bold">Đăng nhập để xem thêm</h1>
-                : <h1 className="text-2xl my-4 font-bold">Đăng ký để xem thêm</h1>
+                ? <h1 className="text-2xl my-4 font-bold">Image Lazerへようこそ</h1>
+                : <h1 className="text-2xl my-4 font-bold">Image Lazerへようこそ</h1>
             }
           </div>
 
@@ -37,12 +37,12 @@ function Auth() {
           <div className="flex justify-center">
             {
               login
-                ? <span className="mr-1 font-bold">Chưa tham gia Image Lazer? </span>
-                : <span className="mr-1 font-bold">Bạn đã là thành viên? </span>
+                ? <span className="mr-1 font-bold"> Image Lazerは初めてですか？ </span>
+                : <span className="mr-1 font-bold">すでに会員の方はこちら? </span>
             }
             <button className="font-bold" type="button" onClick={() => setLogin(!login)}>
               {
-                login ? 'Đăng ký' : 'Đăng nhập'
+                login ? 'サインアップ' : 'ログイン'
               }
             </button>
           </div>

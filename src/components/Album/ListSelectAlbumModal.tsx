@@ -18,13 +18,13 @@ const ListSelectAlbumModal = ({
     <div>
       <Modal
         visible={selectAlbumModal}
-        title="Chọn Album"
+        title="アルバム選択"
         footer={null}
         onCancel={() => setSelectAlbumModal(false)}
       >
         <Select
           className="w-full"
-          placeholder="Chọn Album ảnh"
+          placeholder="アルバムを選択"
           allowClear
           onChange={(value) => { setCurrentAlbum(value); setSelectAlbumModal(false); }}
           value={currentAlbum}

@@ -34,7 +34,7 @@ const ListFollowedUserItem = ({
         className="rounded-full h-8 w-8 row-span-2 m-[10px]"
       />
       <h3 className="text-lg col-span-1 font-bold">{fullName}</h3>
-      <p className="col-span-1 font-medium">Đang theo dõi</p>
+      <p className="col-span-1 font-medium">フォロー</p>
     </Button>
   );
 };

@@ -94,7 +94,7 @@ const User = () => {
         <button className="" type="button" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="p-3 text-black" size={48} />
         </button>
-        <span className="font-bold text-base">Trang cá nhân</span>
+        <span className="font-bold text-base">個人ページ</span>
         <button ref={ref} onClick={() => setIsOpen((state) => !state)} type="button">
           <RiSettingsFill className="p-3" size={48} />
         </button>
@@ -107,11 +107,11 @@ const User = () => {
                 className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                 to="/user-information"
               >
-                Thông tin cá nhân
+                個人情報
               </Link>
             </li>
             <li className="p-2 hover:bg-graybg rounded-2xl cursor-pointer">
-              <button className="text-base font-bold w-full text-left" type="button" onClick={handleLogout}>Đăng xuất</button>
+              <button className="text-base font-bold w-full text-left" type="button" onClick={handleLogout}>ログアウト</button>
             </li>
           </ul>
         </div>
@@ -133,19 +133,19 @@ const User = () => {
         <p className="text-base font-bold">
           {user?.followers?.length}
           {' '}
-          người đang theo dõi
+          フォロー中
         </p>
         <p className="text-base font-bold">
           {user?.following?.length}
           {' '}
-          người bạn đang theo dõi
+          フォロワー
         </p>
         <button
           className="bg-[#efefef] px-4 py-2 rounded-3xl text-base font-bold mb-4 xl:hidden"
           type="button"
         >
           <Link className="text-black" to="/create-image">
-            Thêm ảnh
+            画像追加
           </Link>
         </button>
         <button
@@ -153,7 +153,7 @@ const User = () => {
           type="button"
           onClick={() => setCreateAlbumModalOpen(true)}
         >
-          Thêm album
+          アルバム追加
         </button>
       </div>
 
@@ -164,7 +164,7 @@ const User = () => {
               ref={createRef}
               className="pb-1 text-base font-bold border-b-[3px]"
             >
-              Đã thêm
+              追加されました
             </div>
           </button>
           <button className="p-2" type="button" onClick={() => setAdded(false)}>
@@ -172,7 +172,7 @@ const User = () => {
               ref={saveRef}
               className="pb-1 text-base font-bold border-b-[3px]"
             >
-              Đã lưu
+              保存しました
             </div>
           </button>
 
@@ -198,7 +198,7 @@ const User = () => {
                         <Empty
                           description={(
                             <span>
-                              Chưa có Ảnh nào
+                              画像はまだありません
                             </span>
                           )}
                         />

@@ -71,11 +71,11 @@ const ImageDetail = () => {
 
   const showConfirm = async () => {
     confirm({
-      title: 'Bạn có chắc là muốn xóa ảnh này?',
+      title: '本当にこの画像を削除してよいのですか？',
       icon: <ExclamationCircleOutlined />,
-      content: 'Bạn sẽ không thể khôi phục lại ảnh này',
-      okText: 'Xóa',
-      cancelText: 'Hủy',
+      content: 'この画像を削除すると、その画像を持つアルバムには削除されます。',  
+      okText: 'はい',
+      cancelText: 'いいえ',
       okType: 'danger',
       onOk() {
         handleDeleteImage(image?.id || '');
@@ -91,12 +91,12 @@ const ImageDetail = () => {
     const res = await albumsApi.saveImageToAlbum(imageId, album);
     if (res) {
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: `Đã lưu ảnh vào Album ${album} !`,
+          content: `アルバムに保存された画像 ${album} !`,
           key,
           duration: 2,
         });
@@ -150,7 +150,7 @@ const ImageDetail = () => {
                 flex items-center text-base font-semibold px-4 p-1 ml-2"
                 type="button"
               >
-                Đã lưu
+                保存しました
               </button>
             </div>
           ) : (
@@ -171,7 +171,7 @@ const ImageDetail = () => {
                   handleSavePostToAlbum(image?.id || '', currentAlbum);
                 }}
               >
-                Lưu
+                セーブ
               </button>
             </>
           )}
@@ -189,7 +189,7 @@ const ImageDetail = () => {
                     <Space direction="vertical" align="center">
                       <div className="flex items-center">
                         <ZoomInOutlined />
-                        <span className="ml-1">Phóng to</span>
+                        <span className="ml-1">拡大する</span>
                       </div>
                     </Space>
                   ),
@@ -231,7 +231,7 @@ const ImageDetail = () => {
                   <span className="font-medium">
                     {image?.user?.followers?.length}
                     {' '}
-                    người theo dõi
+                    フォロワー
                   </span>
                 </div>
               </div>
@@ -241,7 +241,7 @@ const ImageDetail = () => {
                   type="button"
                   disabled
                 >
-                  Chính là bạn
+                  それはあなたです
                 </button>
               ) : following?.find((f) => f.id === image?.user?.id) ? (
                 <button
@@ -251,7 +251,7 @@ const ImageDetail = () => {
                     if (image?.user?.id) { handleFollowUser(image.user.id.toString()); }
                   }}
                 >
-                  Bỏ theo dõi
+                  アンフォロー
                 </button>
               ) : (
                 <button
@@ -261,13 +261,13 @@ const ImageDetail = () => {
                     if (image?.user?.id) { handleFollowUser(image.user.id.toString()); }
                   }}
                 >
-                  Theo dõi
+                  フォロー
                 </button>
               )}
             </div>
             {!!image && !!image.link && (
               <div className="flex items-center justify-center">
-                <span className="text-base">Bài viết chia sẻ từ</span>
+                <span className="text-base">からのシェア記事</span>
                 <a
                   className="text-black font-bold"
                   href={image?.link}
@@ -283,7 +283,7 @@ const ImageDetail = () => {
             <div className="text-center p-4">
               <h1 className="font-bold text-3xl">{image?.title}</h1>
               <p className="text-base">{image?.description}</p>
-              <div>Like và Comment của Hiếu</div>
+              <div>による「いいね！」とコメント</div>
             </div>
           </div>
         </div>

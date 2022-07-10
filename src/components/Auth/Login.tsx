@@ -15,7 +15,7 @@ function Login() {
 
   useEffect(() => {
     if (loginError) {
-      setErrorMessage('Sai tài khoản hoặc mật khẩu!');
+      setErrorMessage('アカウントまたはパスワードが間違っている');
     }
   }, [loginError]);
 
@@ -33,11 +33,11 @@ function Login() {
         rules={[
           {
             required: true,
-            message: 'Vui lòng nhập email!',
+            message: '電子メールを入力してください',
           },
         ]}
       >
-        <Input className="h-9 rounded-2xl" placeholder="Email" />
+        <Input className="h-9 rounded-2xl" placeholder="電子メール" />
       </Form.Item>
 
       <Form.Item
@@ -45,13 +45,13 @@ function Login() {
         rules={[
           {
             required: true,
-            message: 'Vui lòng nhập mật khẩu!',
+            message: 'パスワードを入力してください',
           },
         ]}
         validateStatus={errorMessage ? 'error' : 'validating'}
         help={errorMessage}
       >
-        <Input.Password className="h-9 rounded-2xl" placeholder="Password" />
+        <Input.Password className="h-9 rounded-2xl" placeholder="パスワード" />
       </Form.Item>
 
       <Form.Item>
@@ -60,7 +60,7 @@ function Login() {
             className="bg-red-600 rounded-2xl text-white flex items-center py-4 px-8 justify-center font-semibold text-sm"
             htmlType="submit"
           >
-            Đăng nhập
+            ログイン
           </Button>
         </div>
       </Form.Item>

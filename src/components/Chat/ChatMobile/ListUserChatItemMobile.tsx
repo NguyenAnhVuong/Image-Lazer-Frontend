@@ -170,7 +170,7 @@ const ListUserChatItemMobile = () => {
         </div>
         <div className="flex absolute space-x-2 bottom-0 inset-x-0">
           <Input
-            placeholder="Nhập tin nhắn"
+            placeholder="メッセージを入力する"
             className="rounded-3xl "
             value={message}
             onChange={handleMessageValueChange}

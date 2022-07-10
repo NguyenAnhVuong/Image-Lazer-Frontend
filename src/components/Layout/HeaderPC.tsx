@@ -49,11 +49,11 @@ const HeaderPC = () => {
           </div>
           <div className="bg-black px-4 h-full rounded-3xl flex items-center">
             <Link className="text-white text-lg font-bold w-max" to="/">
-              Trang chủ
+            ホームページ
             </Link>
           </div>
           <div className="h-full px-2 w-full">
-            <Input className="h-full rounded-3xl bg-[#efefef]" prefix={<FaSearch />} placeholder="Tìm kiếm" />
+            <Input className="h-full rounded-3xl bg-[#efefef]" prefix={<FaSearch />} placeholder="検索" />
           </div>
           <div className="flex">
             <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
@@ -85,11 +85,11 @@ const HeaderPC = () => {
                       className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                       to="/user-information"
                     >
-                      Thông tin cá nhân
+                      個人情報
                     </Link>
                   </li>
                   <li className="p-2 hover:bg-graybg rounded-2xl cursor-pointer">
-                    <button className="text-base font-bold w-full text-left" type="button" onClick={handleLogout}>Đăng xuất</button>
+                    <button className="text-base font-bold w-full text-left" type="button" onClick={handleLogout}>ログアウト</button>
                   </li>
                 </ul>
               </div>

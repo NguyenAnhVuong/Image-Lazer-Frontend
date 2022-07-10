@@ -31,12 +31,12 @@ const Album = () => {
     const res = await albumsApi.deleteAlbum(id);
     if (res) {
       message.loading({
-        content: 'Đang tải...',
+        content: 'ローディング...',
         key,
       });
       setTimeout(() => {
         message.success({
-          content: `Đã xóa Album ${album.name}!`,
+          content: `削除されたアルバム ${album.name}!`,
           key,
           duration: 2,
         });
@@ -47,11 +47,11 @@ const Album = () => {
   };
   const showConfirm = async () => {
     confirm({
-      title: 'Bạn có chắc là muốn xóa Abum này?',
+      title: '本当にこのアルバムを削除しますか？',
       icon: <ExclamationCircleOutlined />,
-      content: 'Khi xóa Album, tất cả các ảnh trong Album sẽ bị xóa',
-      okText: 'Xóa',
-      cancelText: 'Hủy',
+      content: 'アルバムを削除すると、アルバム内のすべての写真が削除されます。',
+      okText: '削除',
+      cancelText: 'キャンセル',
       okType: 'danger',
       onOk() {
         handleDeleteAlbum(params?.id);
@@ -133,7 +133,7 @@ const Album = () => {
                       onClick={() => setIsOpenEditModal(true)}
                       type="button"
                     >
-                      Chỉnh sửa album
+                      アルバムの編集
                     </button>
                   </li>
                   <li>
@@ -142,7 +142,7 @@ const Album = () => {
                       onClick={showConfirm}
                       type="button"
                     >
-                      Xóa Album
+                      アルバムの削除
                     </button>
                   </li>
                 </ul>
@@ -152,18 +152,18 @@ const Album = () => {
           <p>
             {album?.images?.length}
             {' '}
-            Ảnh
+            写真
           </p>
           <p>{album?.description}</p>
           <div>
-            <span>Bộ sưu tập của </span>
             <Link className="font-bold text-black" to={`/user/${album?.userName}`}>{album?.fullName}</Link>
+            <span> のコレクション </span>
           </div>
           {
             !!album?.secret && (
               <div className="flex items-center m-3">
                 <HiLockClosed className="m-1" size={16} />
-                <span>Bảng bí mật</span>
+                <span>シークレットボード</span>
               </div>
             )
           }
