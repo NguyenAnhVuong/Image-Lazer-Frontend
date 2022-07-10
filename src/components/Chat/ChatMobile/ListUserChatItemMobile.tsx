@@ -6,8 +6,9 @@ import { BiSend } from 'react-icons/bi';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
 import userAPi from '../../../api/userApi';
-import { useAppSelector } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { AppState } from '../../../app/store';
+import { chatActions } from '../../../features/chat/chatSlice';
 import {
   getDirectChatHistory,
   sendDirectMessage,
@@ -37,6 +38,8 @@ const ListUserChatItemMobile = () => {
   const chosenChatDetails = useAppSelector(
     (state: AppState) => state.chat.chosenChatDetails,
   );
+  const dispatch = useAppDispatch();
+
   const messages = useAppSelector((state: AppState) => state.chat.messages);
 
   const handleMessageValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,13 +103,24 @@ const ListUserChatItemMobile = () => {
             navigate(-1);
           }}
         >
-          <IoIosArrowBack className="text-2xl cursor-pointer p-3" size={48} />
+          <IoIosArrowBack
+            className="text-2xl cursor-pointer p-3"
+            size={48}
+            onClick={() => {
+              dispatch(chatActions.setMessages({ messages: [] }));
+              dispatch(
+                chatActions.setChosenChatDetails({ id: '', fullName: '' }),
+              );
+            }}
+          />
         </button>
         <div className="absolute top-0 left-0 h-14 w-full flex items-center justify-center">
           <button
             type="button"
             className="text-base font-bold grow text-center mt-3"
-            onClick={() => { if (user) navigate(`/user/${user.userName}`); }}
+            onClick={() => {
+              if (user) navigate(`/user/${user.userName}`);
+            }}
           >
             {user?.fullName}
           </button>

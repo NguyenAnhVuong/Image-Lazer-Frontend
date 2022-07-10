@@ -105,3 +105,28 @@ img {
   position: absolute;
   right: 10px;
 }
+
+.customPositionModalNotification .ant-modal{
+  top: 90; 
+  margin: 0; 
+  padding: 0;
+  width: auto !important;
+}
+
+.customPositionModalNotification .ant-modal-content {
+  position: absolute;
+  right: 20px;
+}
+
+.form-search .ant-form-item-control-input {
+  height: 100%;
+}
+
+.form-search .ant-form-item-control-input-content {
+  height: 100%;
+}
+
+.ant-dropdown-menu {
+  max-height: 50vh;
+  overflow: auto;
+}

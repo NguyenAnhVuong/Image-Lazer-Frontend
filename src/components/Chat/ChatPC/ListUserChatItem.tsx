@@ -5,10 +5,13 @@ import { useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BiSend } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { getDirectChatHistory, sendDirectMessage } from '../../../realtimeCommunication/socketConnection';
+import {
+  deleteNotificationMessage, getDirectChatHistory, sendDirectMessage, sendDirectNotificationMessage,
+} from '../../../realtimeCommunication/socketConnection';
 import { AppState } from '../../../app/store';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { chatActions } from '../../../features/chat/chatSlice';
+import { userActions } from '../../../features/user/userSlice';
 
 interface User {
   avatar: string;
@@ -32,6 +35,7 @@ const ListUserChatItem = (props: User) => {
   const divElement = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const following = useAppSelector((state: AppState) => state.user.user.following);
+  const userNameClient = useAppSelector((state: AppState) => state.user.user.userName);
 
   const {
     id, fullName, avatar, email, userName, closeModalMessages, openModalMessages,
@@ -42,15 +46,17 @@ const ListUserChatItem = (props: User) => {
     setIsModalVisible(true);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
   const chosenChatDetails = useAppSelector(
     (state: AppState) => state.chat.chosenChatDetails,
   );
   const messages = useAppSelector((state: AppState) => state.chat.messages);
   const dispatch = useAppDispatch();
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    dispatch(chatActions.setChosenChatDetails({ id: '', fullName: '' }));
+    dispatch(chatActions.setMessages({ messages: [] }));
+  };
 
   const handleChooseActiveConversation = () => {
     showModal();
@@ -67,7 +73,18 @@ const ListUserChatItem = (props: User) => {
         receiverUserId: chosenChatDetails.id,
         content: message,
       });
+      sendDirectNotificationMessage(chosenChatDetails.id || '');
+      if (userNameClient) {
+        dispatch(userActions.getUserStart(userNameClient));
+      }
       setMessage('');
+    }
+  };
+
+  const handleNotificationMessage = () => {
+    if (chosenChatDetails.id && userNameClient) {
+      deleteNotificationMessage(chosenChatDetails.id);
+      dispatch(userActions.getUserStart(userNameClient));
     }
   };
 
@@ -79,6 +96,7 @@ const ListUserChatItem = (props: User) => {
 
   useEffect(() => {
     getDirectChatHistory(chosenChatDetails.id || '');
+    if (chosenChatDetails.id !== '' && chosenChatDetails.id !== undefined) { deleteNotificationMessage(chosenChatDetails.id); }
   }, [chosenChatDetails]);
 
   useEffect(() => {
@@ -122,6 +140,9 @@ const ListUserChatItem = (props: User) => {
               onClick={() => {
                 dispatch(chatActions.setMessages({ messages: [] }));
                 setIsModalVisible(false);
+                dispatch(
+                  chatActions.setChosenChatDetails({ id: '', fullName: '' }),
+                );
                 openModalMessages();
               }}
             />
@@ -195,6 +216,7 @@ const ListUserChatItem = (props: User) => {
               value={message}
               onChange={handleMessageValueChange}
               onKeyDown={handleKeyPressed}
+              onFocus={handleNotificationMessage}
             />
             <BiSend
               className="rounded-full min-w-fit bg-red-600 p-2 text-white cursor-pointer"

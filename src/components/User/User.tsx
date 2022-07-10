@@ -1,4 +1,4 @@
-import { Empty } from 'antd';
+import { Empty, Avatar } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { HiLockClosed } from 'react-icons/hi';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -44,6 +44,8 @@ const User = () => {
           following: res.following,
           createdImages: res.createdImages,
           albums: res.albums,
+          markMessageAsUnread: res.markMessageAsUnread,
+          markNotificationAsUnread: res.markNotificationAsUnread,
         });
       }
     }
@@ -105,9 +107,25 @@ const User = () => {
             <li className="">
               <Link
                 className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
-                to="/user-information"
+                to="/settings/user-information"
               >
                 個人情報
+              </Link>
+            </li>
+            <li className="">
+              <Link
+                className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                to="/settings/user-password"
+              >
+                Đổi mật khẩu
+              </Link>
+            </li>
+            <li className="">
+              <Link
+                className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
+                to="/settings/user-topics"
+              >
+                Chủ đề
               </Link>
             </li>
             <li className="p-2 hover:bg-graybg rounded-2xl cursor-pointer">
@@ -118,10 +136,10 @@ const User = () => {
       </div>
       <div className="flex items-center mt-20 flex-col">
         <div className="w-32 h-32">
-          <img
-            className="object-cover"
+          <Avatar
+            className="w-[128px] h-[128px]"
+            size={120}
             src={`/uploads/${user?.avatar || 'default_avatar.png'}`}
-            alt=""
           />
         </div>
         <h1 className="text-4xl font-semibold mt-2 mb-1">
