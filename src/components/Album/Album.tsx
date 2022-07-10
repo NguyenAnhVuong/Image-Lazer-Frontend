@@ -112,6 +112,19 @@ const Album = () => {
           </button>
         </div>
       </div>
+      <button
+        type="button"
+        className="block"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <IoIosArrowBack
+          className="rounded-full bg-white cursor-pointer p-4 font-bold hidden
+        xl:inline-block fixed left-4 top-24 hover:bg-[#efefef]"
+          size={56}
+        />
+      </button>
       <div className="mt-20">
         <div className="flex flex-col items-center text-sm lg:text-base font-medium mb-5">
           <div className="flex items-center mb-5">
