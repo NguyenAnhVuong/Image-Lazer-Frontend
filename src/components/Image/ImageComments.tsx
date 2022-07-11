@@ -95,13 +95,13 @@ const ImageComments = () => {
       </div>
       <div className="flex justify-end mt-5">
         <button
-          className="bg-graybg px-3 py-4 rounded-3xl font-bold text-base"
+          className="bg-graybg px-3 py-2 rounded-3xl font-bold text-base"
           type="button"
         >
           Hủy
         </button>
         <button
-          className="bg-primary px-3 py-4 rounded-3xl text-base font-bold text-white ml-4"
+          className="bg-primary px-3 py-2 rounded-3xl text-base font-bold text-white ml-4"
           type="button"
           onClick={handleComment}
         >
