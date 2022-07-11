@@ -75,7 +75,7 @@ const SideMenu = ({
             className={`pb-1 text-base font-bold border-b-[3px]
               ${(option === 'user-information') ? 'border-black' : 'border-transparent'}`}
           >
-            個人情報 
+            個人情報
           </div>
         </button>
         <button className="mr-5 p-1 my-1" type="button" onClick={() => navigate('/settings/user-password')}>
@@ -104,7 +104,7 @@ const InformationForm = ({
 } : any) => (
   <div className="xl:w-1/3">
     <Title level={3} className="hidden xl:block">
-      個人情報 
+      個人情報
     </Title>
     <Paragraph strong className="hidden xl:block">
       個人情報の変更
@@ -124,7 +124,7 @@ const InformationForm = ({
         className="mt-5 xl:ml-5 bg-graybg border-transparent text-black font-medium max-w-[100px]"
         onClick={showModal}
       >
-        変更 
+        変更
       </Button>
     </div>
     <Form

@@ -204,7 +204,7 @@ const HeaderPC = () => {
                       className="text-black p-2 px-4 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                       to="/settings/user-password"
                     >
-                      Đổi mật khẩu
+                      パスワード変更
                     </Link>
                   </li>
                   <li className="">
@@ -212,7 +212,7 @@ const HeaderPC = () => {
                       className="text-black p-2 px-4 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                       to="/settings/user-topics"
                     >
-                      Chủ đề
+                      トピック
                     </Link>
                   </li>
                   <li className="p-2 px-4 hover:bg-graybg rounded-2xl cursor-pointer">

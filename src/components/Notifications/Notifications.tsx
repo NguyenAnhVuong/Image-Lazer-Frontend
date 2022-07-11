@@ -62,7 +62,7 @@ const Notifications = () => {
         wrapClassName="customBorderRadiusAntModal customPositionAntModal"
       >
         <div className="flex mb-6">
-          <h1 className="text-base font-bold grow text-center">Thông báo</h1>
+          <h1 className="text-base font-bold grow text-center">通知</h1>
         </div>
         <NotificationList notifications={allNotification || []} />
       </Modal>
