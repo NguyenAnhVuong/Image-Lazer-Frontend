@@ -67,7 +67,7 @@ const SideMenu = ({
           position: 'absolute', height: '100vh', width: '20vw',
         }
       }
-      className="m-10 hidden xl:block max-w-[250px]"
+      className="m-10 hidden xl:block max-w-[200px]"
     >
       <div className="columns-1">
         <button className="mr-5 p-1 my-1" type="button" onClick={() => navigate('/settings/user-information')}>
@@ -110,7 +110,7 @@ const InformationForm = ({
       個人情報の変更
     </Paragraph>
     <Paragraph className="hidden xl:block mt-5">
-      画像
+      アバター
     </Paragraph>
     <div className="flex flex-col xl:flex-row items-center">
       <Avatar

@@ -46,7 +46,7 @@ const ImageComments = () => {
   return (
     <div>
       <h1 className="text-xl">
-        {comments ? `${comments.length} Nhận xét` : 'Nhận xét'}
+        {comments ? `${comments.length} コメント` : 'コメント'}
       </h1>
       <div
         className="w-full max-h-[432px] overflow-y-auto overflow-x-hidden custom-scroll"
@@ -98,14 +98,14 @@ const ImageComments = () => {
           className="bg-graybg px-3 py-2 rounded-3xl font-bold text-base"
           type="button"
         >
-          Hủy
+          キャンセル
         </button>
         <button
           className="bg-primary px-3 py-2 rounded-3xl text-base font-bold text-white ml-4"
           type="button"
           onClick={handleComment}
         >
-          Đã xong
+          コメント
         </button>
       </div>
     </div>

@@ -238,7 +238,7 @@ const ImageDetail = () => {
                   handleSavePostToAlbum(image?.id || '', currentAlbum);
                 }}
               >
-                Lưu
+                セーブ
               </button>
             </div>
             <div className="flex h-12 justify-between px-5 my-4">
@@ -265,7 +265,7 @@ const ImageDetail = () => {
                   type="button"
                   disabled
                 >
-                  それはあなたです
+                  あなた
                 </button>
               ) : following?.find((f) => f.id === image?.user?.id) ? (
                 <button
