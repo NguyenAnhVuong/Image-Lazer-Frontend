@@ -148,20 +148,20 @@ const CreateImagePage = () => {
             </div>
 
             <div>
-              <span className="text-sm mb-2 ml-1 block">イメージテーマ</span>
+              <span className="text-sm mb-2 ml-1 block">イメージトピック</span>
               <Form.Item
                 name="topic"
                 rules={[
                   {
                     required: true,
-                    message: 'イメージテーマを入力してください',
+                    message: 'イメージトピックを入力してください',
                   },
                 ]}
                 noStyle={false}
               >
 
                 <Select
-                  placeholder="イメージテーマを選ぶ"
+                  placeholder="イメージトピックを選ぶ"
                   allowClear
                 >
                   {

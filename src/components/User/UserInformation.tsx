@@ -48,7 +48,7 @@ export const TopicCard = ({ topic, added, onClick }
       onClick={onClick}
     >
       <div className="font-semibold text-sm min-w-[72px]">
-        {added ? 'Xóa' : 'Thêm'}
+        {added ? '削除' : '追加'}
       </div>
     </Button>
   </div>
@@ -75,7 +75,7 @@ const SideMenu = ({
             className={`pb-1 text-base font-bold border-b-[3px]
               ${(option === 'user-information') ? 'border-black' : 'border-transparent'}`}
           >
-            Thông tin cá nhân
+            個人情報 
           </div>
         </button>
         <button className="mr-5 p-1 my-1" type="button" onClick={() => navigate('/settings/user-password')}>
@@ -83,7 +83,7 @@ const SideMenu = ({
             className={`pb-1 text-base font-bold border-b-[3px]
               ${(option === 'user-password') ? 'border-black' : 'border-transparent'}`}
           >
-            Thay đổi mật khẩu
+            パスワードの変更
           </div>
         </button>
         <button className="mr-5 p-1 my-1" type="button" onClick={() => navigate('/settings/user-topics')}>
@@ -91,7 +91,7 @@ const SideMenu = ({
             className={`pb-1 text-base font-bold border-b-[3px]
               ${(option === 'user-topics') ? 'border-black' : 'border-transparent'}`}
           >
-            Chọn chủ đề
+            トピックを選ぶ
           </div>
         </button>
       </div>
@@ -104,13 +104,13 @@ const InformationForm = ({
 } : any) => (
   <div className="xl:w-1/3">
     <Title level={3} className="hidden xl:block">
-      Thông tin cá nhân
+      個人情報 
     </Title>
     <Paragraph strong className="hidden xl:block">
-      Thay đổi thông tin cá nhân của bạn
+      個人情報の変更
     </Paragraph>
     <Paragraph className="hidden xl:block mt-5">
-      Ảnh
+      画像
     </Paragraph>
     <div className="flex flex-col xl:flex-row items-center">
       <Avatar
@@ -124,7 +124,7 @@ const InformationForm = ({
         className="mt-5 xl:ml-5 bg-graybg border-transparent text-black font-medium max-w-[100px]"
         onClick={showModal}
       >
-        Thay đổi
+        変更 
       </Button>
     </div>
     <Form
@@ -147,12 +147,12 @@ const InformationForm = ({
     >
       <Form.Item
         name="fullName"
-        label="Họ và Tên"
+        label="名前と苗字"
         colon={false}
         rules={[
           {
             required: true,
-            message: 'Họ và Tên không được để trống',
+            message: 'お名前と苗字を入力してください',
           },
         ]}
       >
@@ -165,7 +165,7 @@ const InformationForm = ({
         rules={[
           {
             required: true,
-            message: 'Tuổi không được để trống',
+            message: '年齢を入力してください',
           },
         ]}
       >
@@ -187,7 +187,7 @@ const InformationForm = ({
             }}
             disabled={!changed}
           >
-            Thiết lập lại
+            リセット
           </Button>
           <Button
             type="primary"
@@ -203,7 +203,7 @@ const InformationForm = ({
             }}
             disabled={!changed}
           >
-            Lưu
+            更新
           </Button>
           <Button
             type="primary"
@@ -211,7 +211,7 @@ const InformationForm = ({
             className="hidden xl:inline-block bg-graybg border-transparent text-black font-medium"
             onClick={handleLogout}
           >
-            Logout
+            ログアウト
           </Button>
         </div>
       </Form.Item>
@@ -224,10 +224,10 @@ const ChangePasswordForm = ({
 } : any) => (
   <div className="xl:w-1/3">
     <Title level={3} className="hidden xl:block">
-      Thay đổi mật khẩu
+      パスワードの変更
     </Title>
     <Paragraph strong className="hidden xl:block">
-      Thay đổi mật khẩu của bạn
+      パスワードの変更
     </Paragraph>
     <Form
       name="normal_password"
@@ -238,14 +238,14 @@ const ChangePasswordForm = ({
     >
       <Form.Item
         name="oldPassword"
-        label="Mật khẩu cũ"
+        label="現在のパスワード"
         colon={false}
         validateStatus={wrongPassword ? 'error' : ''}
-        help={wrongPassword ? 'Mật khẩu cũ không đúng' : ''}
+        help={wrongPassword ? '現在のパスワードが正しくない' : ''}
         rules={[
           {
             required: true,
-            message: 'Mật khẩu cũ không được để trống',
+            message: '現在のパスワードを入力してください',
           },
         ]}
       >
@@ -253,12 +253,12 @@ const ChangePasswordForm = ({
       </Form.Item>
       <Form.Item
         name="newPassword"
-        label="Mật khẩu mới"
+        label="新しいパスワード"
         colon={false}
         rules={[
           {
             required: true,
-            message: 'Mật khẩu mới không được để trống',
+            message: '新しいパスワードを入力してください',
           },
         ]}
       >
@@ -266,19 +266,19 @@ const ChangePasswordForm = ({
       </Form.Item>
       <Form.Item
         name="confirmPassword"
-        label="Xác nhận mật khẩu"
+        label="新しいパスワードの確認"
         colon={false}
         rules={[
           {
             required: true,
-            message: 'Xác nhận mật khẩu không được để trống',
+            message: '新しいパスワードを入力してください',
           },
           ({ getFieldValue }) => ({
             validator(rule, value) {
               if (!value || getFieldValue('newPassword') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(new Error('Mật khẩu mới và xác nhận mật khẩu không trùng khớp'));
+              return Promise.reject(new Error('新しいパスワードが一致しません'));
             },
           }),
         ]}
@@ -293,7 +293,7 @@ const ChangePasswordForm = ({
             shape="round"
             htmlType="submit"
           >
-            Thay đổi
+            更新
           </Button>
         </div>
       </Form.Item>
@@ -354,20 +354,20 @@ const UserInformationPage = () => {
     if (res) {
       dispatch(userActions.getUserStart(userRedux.userName || ''));
       setChanged(false);
-      message.success('Cập nhật thành công');
+      message.success('更新しました');
     } else {
       setChanged(true);
-      message.error('Cập nhật thất bại');
+      message.error('更新に失敗しました');
     }
   };
 
   const handleChangePassword = async (values: ChangePassword) => {
     const res = await userAPi.changePassword(userRedux.id || '', values);
     if (res) {
-      message.success('Đổi mật khẩu thành công');
+      message.success('更新しました');
       setWrongPassword(false);
     } else {
-      message.error('Đổi mật khẩu thất bại');
+      message.error('更新に失敗しました');
       setWrongPassword(true);
     }
   };
@@ -412,9 +412,9 @@ const UserInformationPage = () => {
           <IoIosArrowBack className="p-3 text-black" size={48} />
         </button>
         <span className="text-base font-bold">
-          {(params.option === 'user-information') ? 'Thông tin cá nhân' : null}
-          {(params.option === 'user-password') ? 'Đổi mật khẩu' : null}
-          {(params.option === 'user-topics') ? 'Chủ đề' : null}
+          {(params.option === 'user-information') ? '個人情報 ' : null}
+          {(params.option === 'user-password') ? 'パスワードを変更する' : null}
+          {(params.option === 'user-topics') ? 'トピック' : null}
         </span>
       </div>
       <Layout className="bg-transparent">
@@ -446,10 +446,10 @@ const UserInformationPage = () => {
           {params.option === 'user-topics' && (
             <div className="xl:w-[1000px] 2xl:w-[1200px]">
               <Title level={3} className="hidden xl:block">
-                Thay đổi chủ đề
+                トピックを変更する
               </Title>
               <Paragraph strong className="hidden xl:block">
-                Chọn những chủ đề mà bạn muốn hiện trên bảng tin
+                メッセージボードに表示するトピックを選択する
               </Paragraph>
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                 {topics.map((topic) => (

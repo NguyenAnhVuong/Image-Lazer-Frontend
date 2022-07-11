@@ -65,7 +65,7 @@ const Home = () => {
             albumName=""
           />
         ) : (
-          <Empty description={<span>Chưa có Ảnh nào!</span>} />
+          <Empty description={<span>画像はまだありません</span>} />
         )
       }
 
@@ -74,14 +74,14 @@ const Home = () => {
         className="xl:w-[1000px] 2xl:w-[1280px]"
         title={(
           <div className="flex justify-between">
-            <span className="text-xl">Chọn chủ đề Ảnh</span>
+            <span className="text-xl">画像トピックの選択</span>
             <Button
               className={`text-white font-semibold rounded-3xl
               h-auto px-4 py-1 ${selectedTopics.length > 0 ? 'bg-primary cursor-pointer' : 'bg-graybg text-slate-500'}`}
               onClick={handleSaveTopics}
               disabled={!selectedTopics.length}
             >
-              Lưu
+              保存
             </Button>
           </div>
         )}

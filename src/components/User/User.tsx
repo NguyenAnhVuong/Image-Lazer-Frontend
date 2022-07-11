@@ -131,7 +131,7 @@ const User = () => {
                 className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                 to="/settings/user-password"
               >
-                Đổi mật khẩu
+                パスワードの変更
               </Link>
             </li>
             <li className="">
@@ -139,7 +139,7 @@ const User = () => {
                 className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                 to="/settings/user-topics"
               >
-                Chủ đề
+                トピック
               </Link>
             </li>
             <li className="">
@@ -147,7 +147,7 @@ const User = () => {
                 className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                 to="/settings/user-password"
               >
-                Đổi mật khẩu
+                パスワードの変更
               </Link>
             </li>
             <li className="">
@@ -155,7 +155,7 @@ const User = () => {
                 className="text-black p-2 hover:bg-graybg text-base font-bold rounded-2xl w-full block"
                 to="/settings/user-topics"
               >
-                Chủ đề
+                トピック
               </Link>
             </li>
             <li className="p-2 hover:bg-graybg rounded-2xl cursor-pointer">
@@ -217,7 +217,7 @@ const User = () => {
                 onClick={() => { if (user?.id) handleFollowUser(user.id); }}
               >
                 {
-                  userRedux?.following?.find((item) => item.userName === params.userName) ? 'Bỏ theo dõi' : 'Theo dõi'
+                  userRedux?.following?.find((item) => item.userName === params.userName) ? 'フォロー解除' : 'フォロー'
                 }
               </button>
             )
