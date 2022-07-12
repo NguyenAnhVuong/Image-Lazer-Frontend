@@ -37,7 +37,7 @@ function Auth() {
             {
               login
                 ? <span className="mr-1 font-bold"> Image Lazerは初めてですか？ </span>
-                : <span className="mr-1 font-bold">すでに会員の方はこちら? </span>
+                : <span className="mr-1 font-bold">すでに登録済みですか？</span>
             }
             <button className="font-bold" type="button" onClick={() => setLogin(!login)}>
               {

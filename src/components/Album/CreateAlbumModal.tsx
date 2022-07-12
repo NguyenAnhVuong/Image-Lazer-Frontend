@@ -64,7 +64,7 @@ const CreateAlbumModal = ({ isOpen, setIsOpen }: CreateAlbumModalProps) => {
           layout="vertical"
         >
           <div>
-            <span className="text-sm mb-2 ml-1 block">Tên Album</span>
+            <span className="text-sm mb-2 ml-1 block">アルバム名</span>
             <Form.Item
               name="name"
               rules={[
