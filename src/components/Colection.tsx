@@ -315,7 +315,7 @@ const Colection = ({
       <div className="">
         <PhotoAlbum
           photos={photos}
-          layout="columns"
+          layout="masonry"
           // columns={(containerWidth) => {
           //   if (containerWidth < 768) return 2;
           //   if (containerWidth < 1024) return 3;
