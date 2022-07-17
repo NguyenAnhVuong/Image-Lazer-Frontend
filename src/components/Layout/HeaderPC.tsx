@@ -9,6 +9,7 @@ import axiosJWT from '../../api/axiosJWT';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AppState } from '../../app/store';
 import { authActions } from '../../features/auth/authSlice';
+import { commentActions } from '../../features/comment/commentSlice';
 import { searchActions } from '../../features/search/searchSlice';
 import Messages from '../Chat/ChatPC/Messages';
 import Notifications from '../Notifications/Notifications';
@@ -21,37 +22,49 @@ const HeaderPC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
   const [search, setSearch] = useState('');
-  const suggestions = useAppSelector((state: AppState) => state.search.suggestions);
+  const suggestions = useAppSelector(
+    (state: AppState) => state.search.suggestions,
+  );
   const handleSearchTopics = (value: string) => {
     dispatch(searchActions.setTopic(value));
   };
   const menu = (
     <Menu
-      items={suggestions.map((suggestion, key) => (
-        {
-          key,
-          label: (
-            suggestion.subTitle ? (
-              <Link to={`/user/${suggestion.subTitle}`} className="flex items-center">
-                <img className="w-12 h-12 rounded-xl object-cover" src={suggestion.avatarSrc} alt="" />
-                <div className="flex flex-col items-start ml-2">
-                  <span className="font-bold text-base">{suggestion.title}</span>
-                  <span className="font-medium text-sm">{suggestion.subTitle}</span>
-                </div>
-              </Link>
-            ) : (
-              <button
-                className="flex items-center w-full"
-                type="button"
-                onClick={() => { handleSearchTopics(suggestion.title); navigate('/'); }}
-              >
-                <img className="w-12 h-12 rounded-xl object-cover" src={suggestion.avatarSrc} alt="" />
-                <span className="font-bold text-base ml-2">{suggestion.title}</span>
-              </button>
-            )
-          ),
-        }
-      ))}
+      items={suggestions.map((suggestion, key) => ({
+        key,
+        label: suggestion.subTitle ? (
+          <Link
+            to={`/user/${suggestion.subTitle}`}
+            className="flex items-center"
+          >
+            <img
+              className="w-12 h-12 rounded-xl object-cover"
+              src={suggestion.avatarSrc}
+              alt=""
+            />
+            <div className="flex flex-col items-start ml-2">
+              <span className="font-bold text-base">{suggestion.title}</span>
+              <span className="font-medium text-sm">{suggestion.subTitle}</span>
+            </div>
+          </Link>
+        ) : (
+          <button
+            className="flex items-center w-full"
+            type="button"
+            onClick={() => {
+              handleSearchTopics(suggestion.title);
+              navigate('/');
+            }}
+          >
+            <img
+              className="w-12 h-12 rounded-xl object-cover"
+              src={suggestion.avatarSrc}
+              alt=""
+            />
+            <span className="font-bold text-base ml-2">{suggestion.title}</span>
+          </button>
+        ),
+      }))}
     />
   );
 
@@ -87,25 +100,50 @@ const HeaderPC = () => {
   useEffect(() => {
     // console.log('irene');
     // if (user.userName) { dispatch(userActions.getUserStart(user.userName)); }
-  }, [user.markMessageAsUnread, user.markMessageAsUnread?.length, user.userName]);
+  }, [
+    user.markMessageAsUnread,
+    user.markMessageAsUnread?.length,
+    user.userName,
+  ]);
 
   return (
     <div className="hidden xl:block">
       <div className="h-20 py-4">
-        <div
-          className="flex h-12 items-center px-4 header-pc"
-        >
+        <div className="flex h-12 items-center px-4 header-pc">
           <button
             type="button"
             className="text-red-600 m-3 hover:bg-[#efefef]
           min-w-[48px] flex items-center justify-center h-12 rounded-full cursor-pointer"
-            onClick={() => { dispatch(searchActions.setTopic('all')); navigate('/'); }}
+            onClick={() => {
+              dispatch(searchActions.setTopic('all'));
+              navigate('/');
+              dispatch(
+                commentActions.setChosenCommentDetails({
+                  id: '',
+                  title: '',
+                }),
+              );
+              dispatch(commentActions.setComments({ comments: [] }));
+            }}
           >
             {/* <BsPinterest className="p-3" size={48} /> */}
             <img src="./logo.png" className="w-8 h-8 object-fit block" alt="" />
           </button>
           <div className="bg-black px-4 h-full rounded-3xl flex items-center">
-            <Link className="text-white text-lg font-bold w-max" to="/" onClick={() => dispatch(searchActions.setTopic('all'))}>
+            <Link
+              className="text-white text-lg font-bold w-max"
+              to="/"
+              onClick={() => {
+                dispatch(searchActions.setTopic('all'));
+                dispatch(
+                  commentActions.setChosenCommentDetails({
+                    id: '',
+                    title: '',
+                  }),
+                );
+                dispatch(commentActions.setComments({ comments: [] }));
+              }}
+            >
               Trang chủ
             </Link>
           </div>
@@ -138,7 +176,6 @@ const HeaderPC = () => {
                     </span>
                   </div>
               )}
-
             </div>
             {/* <div className="hover:bg-[#efefef] rounded-full cursor-pointer">
               <AiFillMessage className="p-3" size={48} />
@@ -161,7 +198,20 @@ const HeaderPC = () => {
             </div>
 
             <div className="p-3 hover:bg-[#efefef] rounded-full cursor-pointer w-12">
-              <Link to={`/user/${userName}`}>
+              <Link
+                to={`/user/${userName}`}
+                onClick={
+                () => {
+                  dispatch(
+                    commentActions.setChosenCommentDetails({
+                      id: '',
+                      title: '',
+                    }),
+                  );
+                  dispatch(commentActions.setComments({ comments: [] }));
+                }
+              }
+              >
                 {/* <img
                   className="object-cover h-6 w-6"
                   src={`/uploads/${user.avatar || 'default_avatar.png'}`}
@@ -187,7 +237,8 @@ const HeaderPC = () => {
                 />
               </button>
               <div
-                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${isOpen ? 'block' : 'hidden'
+                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${
+                  isOpen ? 'block' : 'hidden'
                 }`}
               >
                 <ul className="p-2">
