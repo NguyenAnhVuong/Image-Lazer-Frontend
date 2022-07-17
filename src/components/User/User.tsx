@@ -305,7 +305,17 @@ const User = () => {
               </Link>
             ))
             : (
-              <Empty description={<span>Chưa có ai theo dõi bạn!</span>} />
+              <Empty description={
+                userName === params.userName
+                  ? <span>Chưa có ai theo dõi bạn!</span> : (
+                    <span>
+                      {user?.fullName}
+                      {' '}
+                      chưa có ai theo dõi
+                    </span>
+                  )
+}
+              />
             )
         }
       </Modal>
@@ -331,7 +341,19 @@ const User = () => {
                 </div>
               </Link>
             ))
-            : <Empty description={<span>Bạn chưa theo dõi ai!</span>} />
+            : (
+              <Empty description={
+              userName === params.userName
+                ? <span>Bạn chưa theo dõi ai!</span> : (
+                  <span>
+                    {user?.fullName}
+                    {' '}
+                    chưa theo dõi ai!
+                  </span>
+                )
+}
+              />
+            )
         }
       </Modal>
     </div>
