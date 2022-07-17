@@ -107,7 +107,7 @@ const HeaderPC = () => {
   ]);
 
   return (
-    <div className="hidden xl:block">
+    <div className="hidden xl:block fixed top-0 left-0 right-0 bg-white header-shadow z-50">
       <div className="h-20 py-4">
         <div className="flex h-12 items-center px-4 header-pc">
           <button

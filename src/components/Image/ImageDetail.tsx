@@ -128,7 +128,7 @@ const ImageDetail = () => {
   };
 
   return (
-    <div className="flex justify-center xl:items-center">
+    <div className="flex justify-center xl:items-center xl:mt-28">
       <button
         type="button"
         className="block"

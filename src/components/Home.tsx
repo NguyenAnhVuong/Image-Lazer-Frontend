@@ -52,7 +52,7 @@ const Home = () => {
   };
 
   return (
-    <div className="">
+    <div className="xl:mt-20">
       {
         images.length > 0 ? (
           <Colection

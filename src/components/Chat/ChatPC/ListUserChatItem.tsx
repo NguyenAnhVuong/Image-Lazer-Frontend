@@ -1,17 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-shadow */
-import { Button, Input, Modal } from 'antd';
+import { Input, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import { IoIosArrowBack } from 'react-icons/io';
 import { BiSend } from 'react-icons/bi';
+import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { AppState } from '../../../app/store';
+import { chatActions } from '../../../features/chat/chatSlice';
+import { userActions } from '../../../features/user/userSlice';
 import {
   deleteNotificationMessage, getDirectChatHistory, sendDirectMessage, sendDirectNotificationMessage,
 } from '../../../realtimeCommunication/socketConnection';
-import { AppState } from '../../../app/store';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { chatActions } from '../../../features/chat/chatSlice';
-import { userActions } from '../../../features/user/userSlice';
 
 interface User {
   avatar: string;
@@ -107,24 +107,25 @@ const ListUserChatItem = (props: User) => {
 
   return (
     <>
-      <Button
-        type="link"
+      <button
+        type="button"
         onClick={handleChooseActiveConversation}
-        size="large"
-        className="grid grid-rows-2 gap-3 grid-flow-col mt-5 text-left"
+        className="flex"
       >
         <img
           src={avatar}
           alt="avatar"
-          className="rounded-full h-8 w-8 row-span-2 m-[10px]"
+          className="rounded-full h-12 w-12 mr-2"
         />
-        <h3 className="text-lg col-span-1">{fullName}</h3>
-        {following && following.find((f) => f.id === id) ? (
-          <p className="col-span-1">Đang theo dõi</p>
-        ) : (
-          <p className="col-span-1">Đề xuất</p>
-        )}
-      </Button>
+        <div className="flex flex-col">
+          <h3 className="text-base mb-0">{fullName}</h3>
+          {following && following.find((f) => f.id === id) ? (
+            <p className="w-fit">Đang theo dõi</p>
+          ) : (
+            <p className="">Đề xuất</p>
+          )}
+        </div>
+      </button>
       <Modal
         visible={isModalVisible}
         mask={false}

@@ -105,7 +105,7 @@ const User = () => {
   };
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 xl:mt-32">
       <div
         className="fixed top-0 left-0 h-14 flex items-center xl:hidden header-shadow w-full bg-white justify-between p-2 z-10"
       >
