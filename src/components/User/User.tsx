@@ -1,4 +1,4 @@
-import { Empty, Avatar } from 'antd';
+import { Empty, Avatar, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { HiLockClosed } from 'react-icons/hi';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -30,6 +30,8 @@ const User = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [reRender, setReRender] = useState(false);
   const userRedux = useAppSelector((state: AppState) => state.user.user);
+  const [modalFollowers, setModalFollowers] = useState(false);
+  const [modalFollowing, setModalFollowing] = useState(false);
 
   const getUser = async () => {
     if (params && params.userName) {
@@ -162,16 +164,16 @@ const User = () => {
         <p className="text-base font-medium">
           {user?.userName}
         </p>
-        <p className="text-base font-bold">
+        <button type="button" className="text-base font-bold cursor-pointer mb-4" onClick={() => setModalFollowers(true)}>
           {user?.followers?.length}
           {' '}
           người theo dõi
-        </p>
-        <p className="text-base font-bold">
+        </button>
+        <button type="button" className="text-base font-bold cursor-pointer mb-4" onClick={() => setModalFollowing(true)}>
           {user?.following?.length}
           {' '}
           người đang theo dõi
-        </p>
+        </button>
         {
           params.userName === userName
             ? (
@@ -280,6 +282,58 @@ const User = () => {
       </div>
       <CreateAlbumModal isOpen={createAlbumModalOpen} setIsOpen={setCreateAlbumModalOpen} />
       <PlusButton />
+      <Modal title="Người theo dõi" visible={modalFollowers} onCancel={() => setModalFollowers(false)} footer={null}>
+        {
+          user && user?.followers && user?.followers?.length > 0
+            ? user?.followers.map((follower) => (
+              <Link to={`/user/${follower.userName}`} className="flex text-black" onClick={() => setModalFollowers(false)}>
+                <img
+                  className="h-12 w-12 rounded-full"
+                  src={`/uploads/${
+                    follower?.avatar || 'default_avatar.png'
+                  }`}
+                  alt=""
+                />
+                <div className="flex flex-col justify-center ml-2">
+                  <span className="font-bold">{follower?.fullName}</span>
+                  <span className="font-medium">
+                    {follower?.follower_count}
+                    {' '}
+                    người theo dõi
+                  </span>
+                </div>
+              </Link>
+            ))
+            : (
+              <Empty description={<span>Chưa có ai theo dõi bạn!</span>} />
+            )
+        }
+      </Modal>
+      <Modal title="Người đang theo dõi" visible={modalFollowing} onCancel={() => setModalFollowing(false)} footer={null}>
+        {
+          user && user?.following && user?.following?.length > 0
+            ? user?.following.map((following1) => (
+              <Link to={`/user/${following1.userName}`} className="flex text-black" onClick={() => setModalFollowing(false)}>
+                <img
+                  className="h-12 w-12 rounded-full"
+                  src={`/uploads/${
+                    following1?.avatar || 'default_avatar.png'
+                  }`}
+                  alt=""
+                />
+                <div className="flex flex-col justify-center ml-2">
+                  <span className="font-bold">{following1?.fullName}</span>
+                  <span className="font-medium">
+                    {following1?.follower_count}
+                    {' '}
+                    người theo dõi
+                  </span>
+                </div>
+              </Link>
+            ))
+            : <Empty description={<span>Bạn chưa theo dõi ai!</span>} />
+        }
+      </Modal>
     </div>
   );
 };

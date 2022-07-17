@@ -22,7 +22,6 @@ const Home = () => {
     const getImagesFromApi = async () => {
       const res = await homeApi.getHomeImage(searchTopic);
       if (res) {
-        console.log('res', res);
         setImages(res.posts);
       }
     };
