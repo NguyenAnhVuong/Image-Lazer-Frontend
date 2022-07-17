@@ -198,7 +198,20 @@ const HeaderPC = () => {
             </div>
 
             <div className="p-3 hover:bg-[#efefef] rounded-full cursor-pointer w-12">
-              <Link to={`/user/${userName}`}>
+              <Link
+                to={`/user/${userName}`}
+                onClick={
+                () => {
+                  dispatch(
+                    commentActions.setChosenCommentDetails({
+                      id: '',
+                      title: '',
+                    }),
+                  );
+                  dispatch(commentActions.setComments({ comments: [] }));
+                }
+              }
+              >
                 {/* <img
                   className="object-cover h-6 w-6"
                   src={`/uploads/${user.avatar || 'default_avatar.png'}`}
