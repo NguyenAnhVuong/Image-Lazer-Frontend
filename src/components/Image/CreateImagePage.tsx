@@ -67,7 +67,7 @@ const CreateImagePage = () => {
   };
 
   return (
-    <div className="xl:flex xl:justify-center">
+    <div className="xl:flex xl:justify-center xl:mt-20">
       <div className="fixed top-0 flex justify-center w-full h-14 items-center bg-white header-shadow xl:hidden">
         <button type="button" className="absolute left-0" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="p-3 text-black" size={48} />

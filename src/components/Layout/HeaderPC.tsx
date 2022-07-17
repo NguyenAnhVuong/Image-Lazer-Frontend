@@ -127,7 +127,7 @@ const HeaderPC = () => {
             }}
           >
             {/* <BsPinterest className="p-3" size={48} /> */}
-            <img src="./logo.png" className="w-8 h-8 object-fit block" alt="" />
+            <img src="/uploads/logo.png" className="w-8 h-8 object-fit block" alt="" />
           </button>
           <div className="bg-black px-4 h-full rounded-3xl flex items-center">
             <Link

@@ -155,7 +155,7 @@ const User = () => {
           <Avatar
             className="w-[128px] h-[128px]"
             size={120}
-            src={`/uploads/${user?.avatar || 'default_avatar.png'}`}
+            src={user && user.avatar ? `/uploads/${user.avatar}` : 'default_avatar.png'}
           />
         </div>
         <h1 className="text-4xl font-semibold mt-2 mb-1">
@@ -289,9 +289,9 @@ const User = () => {
               <Link to={`/user/${follower.userName}`} className="flex text-black" onClick={() => setModalFollowers(false)}>
                 <img
                   className="h-12 w-12 rounded-full"
-                  src={`/uploads/${
-                    follower?.avatar || 'default_avatar.png'
-                  }`}
+                  src={follower && follower.avatar ? `/uploads/${
+                    follower?.avatar
+                  }` : 'default_avatar.png'}
                   alt=""
                 />
                 <div className="flex flex-col justify-center ml-2">
@@ -326,9 +326,9 @@ const User = () => {
               <Link to={`/user/${following1.userName}`} className="flex text-black" onClick={() => setModalFollowing(false)}>
                 <img
                   className="h-12 w-12 rounded-full"
-                  src={`/uploads/${
-                    following1?.avatar || 'default_avatar.png'
-                  }`}
+                  src={following1 && following1.avatar ? `/uploads/${
+                    following1?.avatar
+                  }` : 'default_avatar.png'}
                   alt=""
                 />
                 <div className="flex flex-col justify-center ml-2">
