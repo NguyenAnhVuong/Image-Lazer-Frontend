@@ -65,7 +65,7 @@ const Home = () => {
             albumName=""
           />
         ) : (
-          <Empty description={<span>Chưa có Ảnh nào!</span>} />
+          <Empty className="mt-20" description={<span>Chưa có Ảnh nào!</span>} />
         )
       }
 
