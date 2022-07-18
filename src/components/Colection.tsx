@@ -173,18 +173,18 @@ const Colection = ({
           width: style?.width,
           paddingBottom: 0,
         }}
+        role="button"
+        tabIndex={0}
+        onClick={() => {
+          restImageProps.onClick();
+          handleChooseActiveComment();
+          navigate(`/image/${refId.current}`);
+        }}
+        onKeyDown={restImageProps.onClick}
       >
         <div className="absolute left-0 top-0 right-0 bottom-0 group">
           <div
             className="absolute left-0 top-0 right-0 bottom-0 hidden group-hover:block group-hover:bg-[#0a0a0a49]"
-            role="button"
-            tabIndex={0}
-            onClick={() => {
-              restImageProps.onClick();
-              handleChooseActiveComment();
-              navigate(`/image/${refId.current}`);
-            }}
-            onKeyDown={restImageProps.onClick}
           />
           <div className="hidden group-hover:xl:block ">
             <div className="absolute top-4 flex px-3 justify-between w-full">
