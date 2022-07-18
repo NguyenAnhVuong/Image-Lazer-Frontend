@@ -113,7 +113,7 @@ const ListUserChatItem = (props: User) => {
         className="flex"
       >
         <img
-          src={avatar}
+          src={`/uploads/${avatar}`}
           alt="avatar"
           className="rounded-full h-12 w-12 mr-2"
         />
@@ -174,9 +174,9 @@ const ListUserChatItem = (props: User) => {
                   || (index + 1 === messages.length
                     && email === message.author.email) ? (
                       <img
-                        src={avatar}
+                        src={`/uploads/${avatar}`}
                         alt="avatar"
-                        className="rounded-full w-6 h-6"
+                        className="rounded-full w-12 h-12"
                       />
                     ) : (
                       <div className="w-6 h-6" />
@@ -186,7 +186,7 @@ const ListUserChatItem = (props: User) => {
                       && messages[index - 1]
                       && email !== messages[index - 1].author.email)
                       || (index === 0 && email === message.author.email)) && (
-                      <span className="text-left mx-4">{fullName}</span>
+                      <span className="text-left mx-4 mb-1">{fullName}</span>
                     )}
 
                     {((email !== message.author.email
