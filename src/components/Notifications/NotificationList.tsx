@@ -2,8 +2,10 @@
 import NotificationListItem from './NotificationListItem';
 
 interface NotificationInformation {
-  userName: string;
+  image: string;
+  userName?: string;
   imageId: string;
+  fullName: string;
   date: Date;
 }
 
@@ -13,11 +15,13 @@ interface Notification {
 
 const NotificationList = ({ notifications }: Notification) => (
   <>
+    {console.log('notifications: ', notifications)}
     {notifications.map(
       (notification, index): JSX.Element => (
         <NotificationListItem
           key={index}
-          userName={notification.userName}
+          image={notification.image}
+          fullName={notification.fullName}
           imageId={notification.imageId}
           date={notification.date}
         />

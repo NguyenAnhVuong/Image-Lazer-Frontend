@@ -176,7 +176,7 @@ const Colection = ({
       >
         <div className="absolute left-0 top-0 right-0 bottom-0 group">
           <div
-            className="absolute left-0 top-0 right-0 bottom-0 hidden group-hover:block group-hover:bg-[#0a0a0a49]"
+            className="absolute left-0 top-0 right-0 bottom-0 bg-transparent group-hover:bg-[#0a0a0a49]"
             role="button"
             tabIndex={0}
             onClick={() => {

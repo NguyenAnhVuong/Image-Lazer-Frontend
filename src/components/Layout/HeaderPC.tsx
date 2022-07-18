@@ -237,7 +237,7 @@ const HeaderPC = () => {
                 />
               </button>
               <div
-                className={`absolute bg-white header-shadow top-12 right-[-12px] rounded-2xl w-48 z-20 ${
+                className={`absolute bg-white header-shadow top-16 right-[-12px] rounded-2xl w-48 z-20 ${
                   isOpen ? 'block' : 'hidden'
                 }`}
               >

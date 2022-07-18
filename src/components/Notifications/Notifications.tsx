@@ -8,8 +8,10 @@ import { deleteNotification } from '../../realtimeCommunication/socketConnection
 import NotificationList from './NotificationList';
 
 interface NotificationInformation {
-  userName: string;
+  userName?: string;
   imageId: string;
+  image: string;
+  fullName: string;
   date: Date;
 }
 
@@ -29,7 +31,7 @@ const Notifications = () => {
       newNotificationsComment.sort((a, b) => (a.date.toString() > b.date.toString() ? -1 : 1));
       const newNotificationsLike = Array.from(notificationsLike);
       newNotificationsLike.sort((a, b) => (a.date.toString() > b.date.toString() ? -1 : 1));
-      const notifications = [...newNotificationsComment, ...newNotificationsLike];
+      const notifications: any = [...newNotificationsComment, ...newNotificationsLike];
       setNotification(notifications);
     }
   }, [notificationsComment, notificationsLike]);
