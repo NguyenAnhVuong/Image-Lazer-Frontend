@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline, MdDelete } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import albumsApi from '../../api/albumsApi';
 import followApi from '../../api/followApi';
 import imageApi from '../../api/imageApi';
@@ -128,7 +128,7 @@ const ImageDetail = () => {
   };
 
   return (
-    <div className="flex justify-center xl:items-center">
+    <div className="flex justify-center xl:items-center xl:mt-28">
       <button
         type="button"
         className="block"
@@ -242,9 +242,9 @@ const ImageDetail = () => {
               </button>
             </div>
             <div className="flex h-12 justify-between px-5 my-4">
-              <div className="flex">
+              <Link to={`/user/${image?.user?.userName}`} className="flex text-black">
                 <img
-                  className="h-12 w-12"
+                  className="h-12 w-12 rounded-full"
                   src={`/uploads/${
                     image?.user?.avatar || 'default_avatar.png'
                   }`}
@@ -258,7 +258,7 @@ const ImageDetail = () => {
                     フォロワー
                   </span>
                 </div>
-              </div>
+              </Link>
               {userName === image?.user?.userName ? (
                 <button
                   className="bg-graybg px-3 text-[#767676] py-4 rounded-3xl flex justify-center items-center font-bold text-base"

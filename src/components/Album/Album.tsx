@@ -98,7 +98,7 @@ const Album = () => {
   }, [navigate, params, params.id, reRender]);
 
   return (
-    <div>
+    <div className="xl:mt-20">
       <div className="fixed top-0 left-0 flex justify-between px-2 w-full h-14 items-center bg-white header-shadow xl:hidden z-20">
         <button className="" type="button" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="p-3 text-black" size={48} />

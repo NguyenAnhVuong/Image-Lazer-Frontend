@@ -2,7 +2,7 @@
 // import { Modal, Select } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { message, Modal } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { MdDelete, MdModeEditOutline } from 'react-icons/md';
 import PhotoAlbum, { RenderPhoto } from 'react-photo-album';
@@ -32,34 +32,40 @@ const Colection = ({
   const [currentAlbum, setCurrentAlbum] = useState('デフォルトのアルバム');
   const [selectAlbumModal, setSelectAlbumModal] = useState(false);
   const navigate = useNavigate();
-  const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48];
   const refId = useRef('');
   const dispatch = useAppDispatch();
   const userName = useAppSelector((state: AppState) => state.auth.userName);
   const { confirm } = Modal;
   const user = useAppSelector((state: AppState) => state.user.user);
-  const photos: any = images.map((image: ImageInformation) => ({
-    id: image.id,
-    src: image.src,
-    width: image.width,
-    height: image.height,
-    images: breakpoints.map((breakpoint) => {
-      if (image.height && image.width) {
-        // eslint-disable-next-line no-unsafe-optional-chaining
-        const height = Math.round((image?.height / image?.width) * breakpoint);
+  const [photos, setPhotos] = useState<any[]>([]);
+
+  useEffect(() => {
+    const breakpoints = [1080, 640, 384, 256, 128, 96, 64, 48];
+    const photos1: any = images.map((image: ImageInformation) => ({
+      id: image.id,
+      src: image.src,
+      width: image.width,
+      height: image.height,
+      images: breakpoints.map((breakpoint) => {
+        if (image.height && image.width) {
+          // eslint-disable-next-line no-unsafe-optional-chaining
+          const height = Math.round((image?.height / image?.width) * breakpoint);
+          return {
+            src: image.src,
+            width: breakpoint,
+            height,
+          };
+        }
         return {
           src: image.src,
-          width: breakpoint,
-          height,
+          width: 0,
+          height: 0,
         };
-      }
-      return {
-        src: image.src,
-        width: 0,
-        height: 0,
-      };
-    }),
-  }));
+      }),
+    }));
+
+    setPhotos(photos1);
+  }, [images]);
 
   const handleDeleteImage = async (id: string) => {
     const res = await imageApi.deleteImage(id);
@@ -309,7 +315,7 @@ const Colection = ({
       <div className="">
         <PhotoAlbum
           photos={photos}
-          layout="columns"
+          layout="masonry"
           // columns={(containerWidth) => {
           //   if (containerWidth < 768) return 2;
           //   if (containerWidth < 1024) return 3;

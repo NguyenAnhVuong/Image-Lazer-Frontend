@@ -1,4 +1,4 @@
-import { Empty, Avatar } from 'antd';
+import { Empty, Avatar, Modal } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { HiLockClosed } from 'react-icons/hi';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -30,6 +30,8 @@ const User = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [reRender, setReRender] = useState(false);
   const userRedux = useAppSelector((state: AppState) => state.user.user);
+  const [modalFollowers, setModalFollowers] = useState(false);
+  const [modalFollowing, setModalFollowing] = useState(false);
 
   const getUser = async () => {
     if (params && params.userName) {
@@ -103,7 +105,7 @@ const User = () => {
   };
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 xl:mt-32">
       <div
         className="fixed top-0 left-0 h-14 flex items-center xl:hidden header-shadow w-full bg-white justify-between p-2 z-10"
       >
@@ -169,7 +171,7 @@ const User = () => {
           <Avatar
             className="w-[128px] h-[128px]"
             size={120}
-            src={`/uploads/${user?.avatar || 'default_avatar.png'}`}
+            src={user && user.avatar ? `/uploads/${user.avatar}` : '/uploads/default_avatar.png'}
           />
         </div>
         <h1 className="text-4xl font-semibold mt-2 mb-1">
@@ -178,16 +180,16 @@ const User = () => {
         <p className="text-base font-medium">
           {user?.userName}
         </p>
-        <p className="text-base font-bold">
+        <button type="button" className="text-base font-bold cursor-pointer mb-4" onClick={() => setModalFollowers(true)}>
           {user?.followers?.length}
           {' '}
           フォロー中
-        </p>
-        <p className="text-base font-bold">
+        </button>
+        <button type="button" className="text-base font-bold cursor-pointer mb-4" onClick={() => setModalFollowing(true)}>
           {user?.following?.length}
           {' '}
           フォロワー
-        </p>
+        </button>
         {
           params.userName === userName
             ? (
@@ -296,6 +298,90 @@ const User = () => {
       </div>
       <CreateAlbumModal isOpen={createAlbumModalOpen} setIsOpen={setCreateAlbumModalOpen} />
       <PlusButton />
+      <Modal title="Người theo dõi" visible={modalFollowers} onCancel={() => setModalFollowers(false)} footer={null}>
+        {
+          user && user?.followers && user?.followers?.length > 0
+            ? user?.followers.map((follower) => (
+              <Link
+                to={`/user/${follower.userName}`}
+                key={`1${follower.id}`}
+                className="flex text-black"
+                onClick={() => setModalFollowers(false)}
+              >
+                <img
+                  className="h-12 w-12 rounded-full"
+                  src={follower && follower.avatar ? `/uploads/${
+                    follower?.avatar
+                  }` : '/uploads/default_avatar.png'}
+                  alt=""
+                />
+                <div className="flex flex-col justify-center ml-2">
+                  <span className="font-bold">{follower?.fullName}</span>
+                  <span className="font-medium">
+                    {follower?.follower_count}
+                    {' '}
+                    フォロワー
+                  </span>
+                </div>
+              </Link>
+            ))
+            : (
+              <Empty description={
+                userName === params.userName
+                  ? <span>フォロワーはいない</span> : (
+                    <span>
+                      {user?.fullName}
+                      {' '}
+                      のフォロワーはいない
+                    </span>
+                  )
+}
+              />
+            )
+        }
+      </Modal>
+      <Modal title="Người đang theo dõi" visible={modalFollowing} onCancel={() => setModalFollowing(false)} footer={null}>
+        {
+          user && user?.following && user?.following?.length > 0
+            ? user?.following.map((following1) => (
+              <Link
+                to={`/user/${following1.userName}`}
+                key={`2${following1.id}`}
+                className="flex text-black"
+                onClick={() => setModalFollowing(false)}
+              >
+                <img
+                  className="h-12 w-12 rounded-full"
+                  src={following1 && following1.avatar ? `/uploads/${
+                    following1?.avatar
+                  }` : '/uploads/default_avatar.png'}
+                  alt=""
+                />
+                <div className="flex flex-col justify-center ml-2">
+                  <span className="font-bold">{following1?.fullName}</span>
+                  <span className="font-medium">
+                    {following1?.follower_count}
+                    {' '}
+                    フォロー中
+                  </span>
+                </div>
+              </Link>
+            ))
+            : (
+              <Empty description={
+              userName === params.userName
+                ? <span>誰にもフォローしていない</span> : (
+                  <span>
+                    {user?.fullName}
+                    {' '}
+                    は誰にもフォローしていない
+                  </span>
+                )
+}
+              />
+            )
+        }
+      </Modal>
     </div>
   );
 };

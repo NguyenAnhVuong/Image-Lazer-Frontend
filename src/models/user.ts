@@ -9,6 +9,7 @@ interface FollowUser {
   avatar: string;
   email: string;
   userName: string;
+  follower_count: number;
 }
 
 interface NotificationInformation {

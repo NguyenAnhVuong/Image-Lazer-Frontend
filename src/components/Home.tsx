@@ -22,7 +22,6 @@ const Home = () => {
     const getImagesFromApi = async () => {
       const res = await homeApi.getHomeImage(searchTopic);
       if (res) {
-        console.log('res', res);
         setImages(res.posts);
       }
     };
@@ -53,7 +52,7 @@ const Home = () => {
   };
 
   return (
-    <div className="">
+    <div className="xl:mt-20">
       {
         images.length > 0 ? (
           <Colection
@@ -65,7 +64,7 @@ const Home = () => {
             albumName=""
           />
         ) : (
-          <Empty description={<span>画像はまだありません</span>} />
+          <Empty className="mt-20 xl:mt-40" description={<span>画像はまだありません</span>} />
         )
       }
 
