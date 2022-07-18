@@ -18,6 +18,8 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const searchTopic = useAppSelector((state: AppState) => state.search.topic);
+  const [refresh, setRefresh] = useState(false);
+
   useEffect((): void => {
     const getImagesFromApi = async () => {
       const res = await homeApi.getHomeImage(searchTopic);
@@ -26,7 +28,7 @@ const Home = () => {
       }
     };
     getImagesFromApi();
-  }, [searchTopic]);
+  }, [searchTopic, refresh]);
 
   useEffect(() => {
     if (userRedux.id && userRedux.topics) {
@@ -48,6 +50,7 @@ const Home = () => {
     const res = await userAPi.updateTopics({ topic: selectedTopics });
     if (res) {
       dispatch(userActions.getUserStart(userRedux.userName || ''));
+      setRefresh(!refresh);
     }
   };
 

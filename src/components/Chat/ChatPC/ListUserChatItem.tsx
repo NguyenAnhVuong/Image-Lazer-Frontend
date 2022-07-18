@@ -110,7 +110,7 @@ const ListUserChatItem = (props: User) => {
       <button
         type="button"
         onClick={handleChooseActiveConversation}
-        className="flex"
+        className="flex w-full"
       >
         <img
           src={`/uploads/${avatar}`}
@@ -122,7 +122,7 @@ const ListUserChatItem = (props: User) => {
           {following && following.find((f) => f.id === id) ? (
             <p className="w-fit">Đang theo dõi</p>
           ) : (
-            <p className="">Đề xuất</p>
+            <p className="text-left">Tin nhắn mới</p>
           )}
         </div>
       </button>
@@ -148,13 +148,15 @@ const ListUserChatItem = (props: User) => {
               }}
             />
           </span>
-          <button
-            type="button"
-            className="text-base font-bold grow text-center"
-            onClick={() => navigate(`/user/${userName}`)}
-          >
-            {fullName}
-          </button>
+          <div className="grow flex justify-center">
+            <button
+              type="button"
+              className="text-base font-bold"
+              onClick={() => navigate(`/user/${userName}`)}
+            >
+              {fullName}
+            </button>
+          </div>
         </div>
         <div className="relative h-[90%]">
           <div className="custom-scroll overflow-auto h-[85%]" ref={divElement}>
@@ -179,7 +181,7 @@ const ListUserChatItem = (props: User) => {
                         className="rounded-full w-12 h-12"
                       />
                     ) : (
-                      <div className="w-6 h-6" />
+                      <div className="w-12 h-12" />
                     )}
                   <div className="flex flex-col w-[calc(100% - 2rem)]">
                     {((email === message.author.email
