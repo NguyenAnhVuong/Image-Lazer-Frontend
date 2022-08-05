@@ -9,9 +9,12 @@ import userAPi from '../../../api/userApi';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { AppState } from '../../../app/store';
 import { chatActions } from '../../../features/chat/chatSlice';
+import { userActions } from '../../../features/user/userSlice';
 import {
+  deleteNotificationMessage,
   getDirectChatHistory,
   sendDirectMessage,
+  sendDirectNotificationMessage,
 } from '../../../realtimeCommunication/socketConnection';
 
 interface FollowedUser {
@@ -34,6 +37,9 @@ const ListUserChatItemMobile = () => {
   const divElement = useRef<HTMLDivElement>(null);
   const { userName } = useParams();
   const navigate = useNavigate();
+  const userNameClient = useAppSelector(
+    (state: AppState) => state.user.user.userName,
+  );
 
   const chosenChatDetails = useAppSelector(
     (state: AppState) => state.chat.chosenChatDetails,
@@ -53,6 +59,18 @@ const ListUserChatItemMobile = () => {
         content: message,
       });
       setMessage('');
+      sendDirectNotificationMessage(chosenChatDetails.id || '');
+      if (userNameClient) {
+        dispatch(userActions.getUserStart(userNameClient));
+      }
+      setMessage('');
+    }
+  };
+
+  const handleNotificationMessage = () => {
+    if (chosenChatDetails.id && userNameClient) {
+      deleteNotificationMessage(chosenChatDetails.id);
+      dispatch(userActions.getUserStart(userNameClient));
     }
   };
 
@@ -94,104 +112,95 @@ const ListUserChatItemMobile = () => {
 
   return (
     <>
-      {/* <div className="flex mb-6 mt-5"> */}
-      <div className="fixed top-0 flex px-2 w-full h-14 items-center bg-white header-shadow xl:hidden z-10">
-        <button
-          type="button"
-          className="flex-none z-10"
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
+      <div className="flex mb-6 mt-4">
+        <span className="flex-none">
           <IoIosArrowBack
-            className="text-2xl cursor-pointer p-3"
-            size={48}
+            className="text-2xl cursor-pointer"
             onClick={() => {
               dispatch(chatActions.setMessages({ messages: [] }));
               dispatch(
                 chatActions.setChosenChatDetails({ id: '', fullName: '' }),
               );
+              navigate(-1);
             }}
           />
-        </button>
-        <div className="absolute top-0 left-0 h-14 w-full flex items-center justify-center">
+        </span>
+        <div className="grow flex justify-center">
           <button
             type="button"
-            className="text-base font-bold grow text-center mt-3"
-            onClick={() => {
-              if (user) navigate(`/user/${user.userName}`);
-            }}
+            className="text-base font-bold"
+            onClick={() => navigate(`/user/${userName}`)}
           >
             {user?.fullName}
           </button>
         </div>
       </div>
-      <div className="relative h-[90%]">
+      <div className="relative h-[91vh] z-10">
         <div className="custom-scroll overflow-auto h-[85%]" ref={divElement}>
           {messages
             && messages.map((message: Message, index) => (
               // <div className={(email !== message.author.email) ? 'flex justify-end' : 'flex justify-start'}>
               <div
-                key={message._id}
-                className={`grid items-center ${
+                className={`flex items-center ${
                   user?.email !== message.author.email
                     ? 'justify-end'
-                    : 'justify-start grid-cols-[24px]'
+                    : 'justify-start'
                 }`}
+                key={message._id}
               >
-                {((user?.email === message.author.email
+                {(user?.email === message.author.email
                   && messages[index + 1]
                   && user?.email !== messages[index + 1].author.email)
-                  || (index + 1 === messages.length
-                    && user?.email === message.author.email)) && (
+                || (index + 1 === messages.length
+                  && user?.email === message.author.email) ? (
                     <img
                       src={`/uploads/${user?.avatar}`}
                       alt="avatar"
-                      className="rounded-full w-6 h-6"
+                      className="rounded-full w-12 h-12"
                     />
-                )}
-                <div
-                  key={message._id}
-                  className={`flex flex-col mx-4 ${
-                    user?.email === message.author.email && 'col-start-2'
-                  }`}
-                >
+                  ) : (
+                    <div className="w-12 h-12" />
+                  )}
+                <div className="flex flex-col w-[calc(100% - 2rem)]">
                   {((user?.email === message.author.email
                     && messages[index - 1]
                     && user?.email !== messages[index - 1].author.email)
                     || (index === 0 && user?.email === message.author.email)) && (
-                    <span className="text-left">{user?.fullName}</span>
+                    <span className="text-left mx-4 mb-1">{user?.fullName}</span>
                   )}
 
                   {((user?.email !== message.author.email
                     && messages[index - 1]
                     && user?.email === messages[index - 1].author.email)
                     || (index === 0 && user?.email !== message.author.email)) && (
-                    <span className="text-right">Bạn</span>
+                    <span className="text-right mx-4">Bạn</span>
                   )}
-                  <p
-                    className={`font-medium text-sm ${
-                      user?.email === message.author.email
-                        ? 'rounded-2xl bg-[#efefef] p-3'
-                        : 'rounded-2xl bg-[#fff] p-3 shadow-md'
-                    }`}
-                  >
-                    {message.content}
-                  </p>
+                  <div key={message._id} className="mx-4">
+                    <p
+                      className={`font-medium text-sm w-fit ${
+                        user?.email === message.author.email
+                          ? 'rounded-2xl bg-[#efefef] p-3 shadow-md'
+                          : 'rounded-2xl bg-[#fff] p-3 shadow-md'
+                      }`}
+                    >
+                      {message.content}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
         </div>
-        <div className="flex absolute space-x-2 bottom-0 inset-x-0">
+        <div className="flex absolute space-x-2 h-[9%] bottom-[15px] inset-x-0">
           <Input
             placeholder="Nhập tin nhắn"
             className="rounded-3xl "
             value={message}
             onChange={handleMessageValueChange}
             onKeyDown={handleKeyPressed}
+            onFocus={handleNotificationMessage}
           />
           <BiSend
-            className="rounded-full min-w-fit bg-red-600 p-2 text-white cursor-pointer"
+            className="rounded-full min-w-fit h-auto bg-red-600 p-2 text-white cursor-pointer"
             size={48}
             onClick={handleSendMessage}
           />

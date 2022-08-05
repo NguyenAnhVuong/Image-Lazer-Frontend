@@ -50,9 +50,9 @@ const App = () => {
           <Route path="/user/:userName" element={<User />} />
           <Route path="/image/:id" element={<ImageDetail />} />
           <Route path="/album/:id" element={<Album />} />
-          <Route path="/notifications" element={<ChatMobile />} />
+          <Route path="/messages" element={<ChatMobile />} />
           <Route
-            path="/notifications/:userName"
+            path="/messages/:userName"
             element={<ListUserChatItemMobile />}
           />
         </Routes>
