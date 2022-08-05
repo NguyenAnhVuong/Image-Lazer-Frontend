@@ -41,7 +41,7 @@ function HeaderMobile() {
           <Link to="/search" className="col-span-1 flex justify-center text-[#767676]">
             <FaSearch className="p-2" size={40} />
           </Link>
-          <Link to="/notifications" className="col-span-1 flex justify-center text-[#767676]">
+          <Link to="/messages" className="col-span-1 flex justify-center text-[#767676]">
             <AiFillMessage className="p-2" size={40} />
           </Link>
           <Link to={`/user/${userName}`} className="col-span-1 flex justify-center text-[#767676]">

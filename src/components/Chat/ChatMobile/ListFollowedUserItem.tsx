@@ -18,7 +18,7 @@ const ListFollowedUserItem = ({
 
   const handleChooseActiveConversation = () => {
     dispatch(chatActions.setChosenChatDetails({ id, fullName }));
-    navigate(`/notifications/${userName}`);
+    navigate(`/messages/${userName}`);
   };
 
   return (
