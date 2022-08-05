@@ -242,7 +242,19 @@ const ImageDetail = () => {
               </button>
             </div>
             <div className="flex h-12 justify-between px-5 my-4">
-              <Link to={`/user/${image?.user?.userName}`} className="flex text-black">
+              <Link
+                to={`/user/${image?.user?.userName}`}
+                className="flex text-black"
+                onClick={() => {
+                  dispatch(
+                    commentActions.setChosenCommentDetails({
+                      id: '',
+                      title: '',
+                    }),
+                  );
+                  dispatch(commentActions.setComments({ comments: [] }));
+                }}
+              >
                 <img
                   className="h-12 w-12 rounded-full"
                   src={`/uploads/${
