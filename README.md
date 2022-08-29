@@ -1,28 +1,76 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# Image Lazer Front End
+![ImageLazer!](https://user-images.githubusercontent.com/87324008/187229765-8fb0333b-81e9-4d94-8f05-bf3b7d848ce4.png)
 
-## Available Scripts
+> This is the front end for the image sharing social networking site "Image Lazer".
 
-In the project directory, you can run:
+### Image Lazer Back End
+If you want to check out our Back End code base, click here [ImageLazer-BackEnd](https://github.com/ngocban284/Image-Lazer-Backend)
+### Features
+This is a photo sharing social networking site. Users need to register to experience Image Lazer.
+- **User**
+    - *Sign in*
+    - *Log in*
+    - *Find other user*
+    - *Change password*
+    - *Change personal information* 
+- **Post**
+    - *Create post*
+    - *Get post*
+    - *Update post*
+    - *Shows whether the post belongs to the user or not*
+- **Album**
+    - *Create albums*
+    - *Add image into the album*
+    - *Remove image from the album*
+    - *Update album*
+- **Save post**
+    - *Add post to album*
+    - *Save post*
+- **Follow**
+- **Chat**
+- **Comment**
 
-### `npm start`
+### Build With
+* [![Typescript][Typescriptlang.org]][Typescript-url]
+* [![ReactJS][Reactjs.org]][Reactjs-url]
+* [![Redux][Reduxjs.org]][Redux-url]
+* [![TailwindCSS][TailwindCSS.com]][Taiwindcss-url]
+* [![Ant Design][Ant.design]][AntDesign-url]
+* [![React Router][Reactrouter.com]][Reactrouter-url]
+* [![Eslint][Eslint.org]][Eslint-url]
+* [![Git][Gitscm.com]][Git-url]
+* [![Github][Github.com]][Github-url]
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Installation
+1. Clone the repo
+    ```sh
+        git clone https://github.com/NguyenAnhVuong/Image-Lazer-Frontend.git
+    ```
+2. Install NPM packages
+    ```sh
+        npm install
+    ```
+3. Run
+    ```sh
+        npm start
+    ```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[Typescriptlang.org]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
+[Typescript-url]: https://www.typescriptlang.org/
+[Reactjs.org]: https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
+[Reactjs-url]: https://reactjs.org/
+[Reduxjs.org]: https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white
+[Redux-url]: https://redux.js.org/
+[TailwindCSS.com]: https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
+[Taiwindcss-url]: https://tailwindcss.com/
+[Ant.design]: https://img.shields.io/badge/-AntDesign-%230170FE?style=for-the-badge&logo=ant-design&logoColor=white
+[AntDesign-url]: https://ant.design/
+[Reactrouter.com]: https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white
+[Reactrouter-url]: https://reactrouter.com/en/main
+[Eslint.org]: https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white
+[Eslint-url]: https://eslint.org/
+[Gitscm.com]: https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white
+[Git-url]: https://git-scm.com/
+[Github.com]: https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white
+[Github-url]: https://github.com/
