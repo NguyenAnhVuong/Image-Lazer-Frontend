@@ -3,7 +3,7 @@
 
 This is the Front-end for our 3rd year final semester OOP project, an image sharing social networking site called "Image Lazer".
 
-Inspired by [Pinterest](pinterest.com).
+Inspired by [Pinterest](https://pinterest.com).
 
 ### Image Lazer Back-end
 If you want to check out the Back-end side of our codebase, click [here](https://github.com/ngocban284/Image-Lazer-Backend)
